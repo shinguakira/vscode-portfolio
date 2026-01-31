@@ -1,7 +1,6 @@
 "use client"
 
 import type React from "react"
-
 import { useState, useEffect, useCallback } from "react"
 import { X, ChevronLeft, ChevronRight, HelpCircle } from "lucide-react"
 import { Button } from "@/components/ui/button"
@@ -12,6 +11,7 @@ export interface TutorialStep {
   title: string
   description: string
   position: "top" | "bottom" | "left" | "right"
+  mobilePosition?: "top" | "bottom" | "center"
   uiState?: {
     sidebarMode?: "explorer" | "search" | "gitHistory" | "gitDiff" | "extensions" | "settings"
     terminalOpen?: boolean
@@ -28,94 +28,102 @@ const TUTORIAL_STEPS: TutorialStep[] = [
     id: "activity-bar",
     targetSelector: "[data-tutorial='activity-bar']",
     title: "アクティビティバー",
-    description:
-      "左端のアイコンメニューです。ファイルエクスプローラー、検索、Git履歴、拡張機能、設定などに切り替えられます。",
+    description: "左のアイコンでファイル、検索、Git履歴、拡張機能、設定に切り替え可能です。",
     position: "right",
+    mobilePosition: "bottom",
     uiState: { sidebarMode: "explorer", sidebarCollapsed: false },
   },
   {
     id: "explorer",
     targetSelector: "[data-tutorial='sidebar']",
     title: "エクスプローラー",
-    description: "ポートフォリオのファイル一覧です。クリックするとファイルの内容がエディタで開きます。",
+    description: "ファイル一覧です。タップで内容を表示します。",
     position: "right",
+    mobilePosition: "bottom",
     uiState: { sidebarMode: "explorer", sidebarCollapsed: false },
   },
   {
     id: "file-profile",
     targetSelector: "[data-tutorial='file-profile.md']",
-    title: "プロフィールファイル",
-    description: "profile.mdには自己紹介が記載されています。次のステップでこのファイルを開きます。",
+    title: "プロフィール",
+    description: "profile.mdには自己紹介が記載されています。",
     position: "right",
+    mobilePosition: "bottom",
     uiState: { sidebarMode: "explorer", sidebarCollapsed: false },
   },
   {
     id: "file-profile-open",
     targetSelector: "[data-tutorial='editor-area']",
-    title: "ファイルの内容",
-    description: "profile.mdの内容が表示されました。マークダウン形式で自己紹介が記載されています。",
+    title: "ファイル内容",
+    description: "マークダウン形式で自己紹介が表示されます。",
     position: "bottom",
+    mobilePosition: "top",
     uiState: { sidebarMode: "explorer", sidebarCollapsed: false },
     action: { type: "openFile", payload: "profile.md" },
   },
   {
     id: "preview-button",
     targetSelector: "[data-tutorial='preview-button']",
-    title: "プレビューボタン",
-    description: "このボタンでプレビューモードに切り替えられます。次のステップでプレビューを表示します。",
+    title: "プレビュー",
+    description: "このボタンでプレビューモードに切り替えられます。",
     position: "bottom",
+    mobilePosition: "bottom",
     uiState: { sidebarMode: "explorer", sidebarCollapsed: false },
   },
   {
     id: "preview-mode",
     targetSelector: "[data-tutorial='editor-area']",
     title: "プレビューモード",
-    description: "洗練されたデザインでコンテンツがレンダリングされます。3つのテーマから選択可能です。",
+    description: "洗練されたデザインで表示されます。3つのテーマから選択可能。",
     position: "bottom",
+    mobilePosition: "top",
     uiState: { sidebarMode: "explorer", sidebarCollapsed: false },
     action: { type: "togglePreview", payload: "on" },
   },
   {
     id: "search",
     targetSelector: "[data-tutorial='sidebar']",
-    title: "検索機能",
-    description: "ファイル内のテキストを検索できます。検索結果をクリックすると該当ファイルが開きます。",
+    title: "検索",
+    description: "テキスト検索が可能です。結果をタップでファイルを開きます。",
     position: "right",
+    mobilePosition: "bottom",
     uiState: { sidebarMode: "search", sidebarCollapsed: false },
     action: { type: "togglePreview", payload: "off" },
   },
   {
     id: "git-history",
     targetSelector: "[data-tutorial='sidebar']",
-    title: "Git履歴（経歴）",
-    description: "Git Historyでは職務経歴をコミット履歴風に表示しています。時系列で経験を確認できます。",
+    title: "Git履歴",
+    description: "職務経歴をコミット履歴風に表示しています。",
     position: "right",
+    mobilePosition: "bottom",
     uiState: { sidebarMode: "gitHistory", sidebarCollapsed: false },
   },
   {
     id: "git-diff",
     targetSelector: "[data-tutorial='sidebar']",
-    title: "Git Diff（成長）",
-    description: "Git Diffではスキルの成長を差分形式で表現しています。技術の習得過程を確認できます。",
+    title: "Git Diff",
+    description: "スキルの成長を差分形式で表現しています。",
     position: "right",
+    mobilePosition: "bottom",
     uiState: { sidebarMode: "gitDiff", sidebarCollapsed: false },
   },
   {
     id: "extensions",
     targetSelector: "[data-tutorial='sidebar']",
-    title: "拡張機能（ポートフォリオ）",
-    description:
-      "拡張機能セクションでは制作物をショーケース形式で紹介しています。次のステップでプロジェクトを開きます。",
+    title: "拡張機能",
+    description: "制作物をショーケース形式で紹介しています。",
     position: "right",
+    mobilePosition: "bottom",
     uiState: { sidebarMode: "extensions", sidebarCollapsed: false },
   },
   {
     id: "extension-showcase",
     targetSelector: "[data-tutorial='editor-area']",
     title: "プロジェクト詳細",
-    description:
-      "プロジェクトの詳細がショーケース形式で表示されます。スクリーンショット、技術スタック、リンクなどが確認できます。",
+    description: "スクリーンショット、技術スタック、リンクなどが確認できます。",
     position: "left",
+    mobilePosition: "top",
     uiState: { sidebarMode: "extensions", sidebarCollapsed: false },
     action: { type: "openExtension", payload: "ecommerce-platform" },
   },
@@ -123,18 +131,18 @@ const TUTORIAL_STEPS: TutorialStep[] = [
     id: "terminal-intro",
     targetSelector: "[data-tutorial='terminal']",
     title: "ターミナル",
-    description:
-      "ターミナルでコマンドを実行できます。次のステップで'help'コマンドを実行して利用可能なコマンドを確認します。",
+    description: "コマンドを実行できます。次で'help'を実行します。",
     position: "top",
+    mobilePosition: "top",
     uiState: { terminalOpen: true, sidebarMode: "explorer" },
   },
   {
     id: "terminal-help",
     targetSelector: "[data-tutorial='terminal']",
     title: "helpコマンド",
-    description:
-      "利用可能なコマンド一覧が表示されました。'npm run start'で経歴ログを表示したり、'ls'でファイル一覧を確認できます。",
+    description: "利用可能なコマンド一覧が表示されました。",
     position: "top",
+    mobilePosition: "top",
     uiState: { terminalOpen: true, sidebarMode: "explorer" },
     action: { type: "runCommand", payload: "help" },
   },
@@ -142,8 +150,9 @@ const TUTORIAL_STEPS: TutorialStep[] = [
     id: "settings",
     targetSelector: "[data-tutorial='editor-area']",
     title: "設定",
-    description: "テーマカラーやフォントサイズ、プレビューテーマなどをカスタマイズできます。設定アイコンをクリックして開けます。",
+    description: "テーマカラーやフォントサイズをカスタマイズできます。",
     position: "left",
+    mobilePosition: "top",
     uiState: { sidebarMode: "settings", sidebarCollapsed: false, terminalOpen: false },
   },
 ]
@@ -175,24 +184,28 @@ export function TutorialOverlay({
   const [isTutorialActive, setIsTutorialActive] = useState(false)
   const [currentStep, setCurrentStep] = useState(0)
   const [targetRect, setTargetRect] = useState<DOMRect | null>(null)
-  const [isMobile, setIsMobile] = useState(false)
+  const [isSmallScreen, setIsSmallScreen] = useState(false)
   const [dontShowAgain, setDontShowAgain] = useState(false)
 
+  // Check for small screens (iPhone SE landscape ~568x320)
   useEffect(() => {
-    const checkMobile = () => setIsMobile(window.innerWidth < 1024)
-    checkMobile()
-    window.addEventListener("resize", checkMobile)
-    return () => window.removeEventListener("resize", checkMobile)
+    const checkScreenSize = () => {
+      const width = window.innerWidth
+      const height = window.innerHeight
+      setIsSmallScreen(width < 768 || height < 400)
+    }
+    checkScreenSize()
+    window.addEventListener("resize", checkScreenSize)
+    return () => window.removeEventListener("resize", checkScreenSize)
   }, [])
 
   useEffect(() => {
-    if (isMobile) return
     const dontShow = localStorage.getItem("portfolio-tutorial-dont-show")
     if (dontShow !== "true") {
       const timer = setTimeout(() => setShowInitialModal(true), 500)
       return () => clearTimeout(timer)
     }
-  }, [isMobile])
+  }, [])
 
   const updateTargetPosition = useCallback(() => {
     if (!isTutorialActive) return
@@ -310,34 +323,51 @@ export function TutorialOverlay({
     }
   }, [onRestartRef, restartTutorial])
 
-  if (isMobile) return null
-
+  // Initial modal - responsive for mobile landscape
   if (showInitialModal) {
     return (
-      <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/70">
-        <div className="max-w-md p-6 rounded-lg shadow-2xl" style={{ backgroundColor, color: textColor }}>
-          <div className="flex items-center gap-3 mb-4">
-            <HelpCircle className="w-8 h-8" style={{ color: accentColor }} />
-            <h2 className="text-xl font-bold">ポートフォリオへようこそ!</h2>
+      <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/70 p-2">
+        <div
+          className={`rounded-lg shadow-2xl ${isSmallScreen ? "max-w-[90vw] max-h-[90vh] p-3" : "max-w-md p-6"}`}
+          style={{ backgroundColor, color: textColor }}
+        >
+          <div className={`flex items-center gap-2 ${isSmallScreen ? "mb-2" : "gap-3 mb-4"}`}>
+            <HelpCircle
+              className={isSmallScreen ? "w-5 h-5 shrink-0" : "w-8 h-8"}
+              style={{ color: accentColor }}
+            />
+            <h2 className={`font-bold ${isSmallScreen ? "text-sm" : "text-xl"}`}>
+              ポートフォリオへようこそ!
+            </h2>
           </div>
-          <p className="mb-6 text-sm opacity-80">
-            このポートフォリオはVS Code風のUIで作成されています。 使い方の説明をご覧になりますか？
+          <p className={`opacity-80 ${isSmallScreen ? "text-xs mb-3" : "text-sm mb-6"}`}>
+            VS Code風のUIで作成されています。使い方の説明をご覧になりますか？
           </p>
-          <label className="flex items-center gap-2 mb-4 cursor-pointer text-sm opacity-70 hover:opacity-100">
+          <label
+            className={`flex items-center gap-2 cursor-pointer opacity-70 hover:opacity-100 ${isSmallScreen ? "text-xs mb-2" : "text-sm mb-4"}`}
+          >
             <input
               type="checkbox"
               checked={dontShowAgain}
               onChange={(e) => setDontShowAgain(e.target.checked)}
-              className="w-4 h-4 rounded"
+              className={`rounded ${isSmallScreen ? "w-3 h-3" : "w-4 h-4"}`}
               style={{ accentColor }}
             />
             今後このメッセージを表示しない
           </label>
-          <div className="flex gap-3 justify-end">
-            <Button variant="outline" onClick={skipTutorial} className="border-current/30 bg-transparent">
+          <div className="flex gap-2 justify-end">
+            <Button
+              variant="outline"
+              onClick={skipTutorial}
+              className={`border-current/30 bg-transparent ${isSmallScreen ? "text-xs px-2 py-1 h-7" : ""}`}
+            >
               スキップ
             </Button>
-            <Button onClick={startTutorial} style={{ backgroundColor: accentColor, color: "#fff" }}>
+            <Button
+              onClick={startTutorial}
+              className={isSmallScreen ? "text-xs px-2 py-1 h-7" : ""}
+              style={{ backgroundColor: accentColor, color: "#fff" }}
+            >
               説明を見る
             </Button>
           </div>
@@ -349,36 +379,48 @@ export function TutorialOverlay({
   if (!isTutorialActive || !targetRect) return null
 
   const step = TUTORIAL_STEPS[currentStep]
-  const padding = 8
+  const padding = isSmallScreen ? 4 : 8
 
+  // Responsive tooltip positioning
   const getTooltipStyle = (): React.CSSProperties => {
-    const tooltipWidth = 320
-    const tooltipHeight = 200
-    const gap = 16
+    const tooltipWidth = isSmallScreen ? 220 : 320
+    const tooltipHeight = isSmallScreen ? 140 : 200
+    const gap = isSmallScreen ? 8 : 16
+
+    // For small screens, use mobilePosition or fallback logic
+    const effectivePosition = isSmallScreen && step.mobilePosition ? step.mobilePosition : step.position
 
     let style: React.CSSProperties = {}
 
-    switch (step.position) {
+    if (isSmallScreen && step.mobilePosition === "center") {
+      // Center on screen for mobile
+      return {
+        left: (window.innerWidth - tooltipWidth) / 2,
+        top: (window.innerHeight - tooltipHeight) / 2,
+      }
+    }
+
+    switch (effectivePosition) {
       case "right":
         style = {
-          left: Math.min(targetRect.right + gap, window.innerWidth - tooltipWidth - 20),
+          left: Math.min(targetRect.right + gap, window.innerWidth - tooltipWidth - 10),
           top: Math.max(
-            20,
+            10,
             Math.min(
               targetRect.top + targetRect.height / 2 - tooltipHeight / 2,
-              window.innerHeight - tooltipHeight - 20,
+              window.innerHeight - tooltipHeight - 10,
             ),
           ),
         }
         break
       case "left":
         style = {
-          left: Math.max(20, targetRect.left - tooltipWidth - gap),
+          left: Math.max(10, targetRect.left - tooltipWidth - gap),
           top: Math.max(
-            20,
+            10,
             Math.min(
               targetRect.top + targetRect.height / 2 - tooltipHeight / 2,
-              window.innerHeight - tooltipHeight - 20,
+              window.innerHeight - tooltipHeight - 10,
             ),
           ),
         }
@@ -386,19 +428,20 @@ export function TutorialOverlay({
       case "top":
         style = {
           left: Math.max(
-            20,
-            Math.min(targetRect.left + targetRect.width / 2 - tooltipWidth / 2, window.innerWidth - tooltipWidth - 20),
+            10,
+            Math.min(targetRect.left + targetRect.width / 2 - tooltipWidth / 2, window.innerWidth - tooltipWidth - 10),
           ),
-          top: Math.max(20, targetRect.top - tooltipHeight - gap),
+          top: Math.max(10, targetRect.top - tooltipHeight - gap),
         }
         break
       case "bottom":
+      default:
         style = {
           left: Math.max(
-            20,
-            Math.min(targetRect.left + targetRect.width / 2 - tooltipWidth / 2, window.innerWidth - tooltipWidth - 20),
+            10,
+            Math.min(targetRect.left + targetRect.width / 2 - tooltipWidth / 2, window.innerWidth - tooltipWidth - 10),
           ),
-          top: Math.min(targetRect.bottom + gap, window.innerHeight - tooltipHeight - 20),
+          top: Math.min(targetRect.bottom + gap, window.innerHeight - tooltipHeight - 10),
         }
         break
     }
@@ -408,6 +451,7 @@ export function TutorialOverlay({
 
   return (
     <div className="fixed inset-0 z-[100] pointer-events-none">
+      {/* Overlay with cutout */}
       <svg className="absolute inset-0 w-full h-full">
         <defs>
           <mask id="tutorial-mask">
@@ -425,6 +469,7 @@ export function TutorialOverlay({
         <rect x="0" y="0" width="100%" height="100%" fill="rgba(0,0,0,0.75)" mask="url(#tutorial-mask)" />
       </svg>
 
+      {/* Highlight border */}
       <div
         className="absolute rounded transition-all duration-300 pointer-events-none"
         style={{
@@ -433,12 +478,13 @@ export function TutorialOverlay({
           width: targetRect.width + padding * 2,
           height: targetRect.height + padding * 2,
           border: `2px solid ${accentColor}`,
-          boxShadow: `0 0 20px ${accentColor}50`,
+          boxShadow: `0 0 ${isSmallScreen ? "10px" : "20px"} ${accentColor}50`,
         }}
       />
 
+      {/* Tooltip */}
       <div
-        className="absolute w-80 p-4 rounded-lg shadow-2xl pointer-events-auto transition-all duration-300"
+        className={`absolute rounded-lg shadow-2xl pointer-events-auto transition-all duration-300 ${isSmallScreen ? "w-[220px] p-2" : "w-80 p-4"}`}
         style={{
           ...getTooltipStyle(),
           backgroundColor,
@@ -448,20 +494,25 @@ export function TutorialOverlay({
       >
         <button
           onClick={endTutorial}
-          className="absolute top-2 right-2 p-1 rounded hover:bg-white/10 transition-colors"
+          className="absolute top-1 right-1 p-0.5 rounded hover:bg-white/10 transition-colors"
         >
-          <X className="w-4 h-4" />
+          <X className={isSmallScreen ? "w-3 h-3" : "w-4 h-4"} />
         </button>
 
-        <div className="text-xs opacity-60 mb-2">
+        <div className={`opacity-60 ${isSmallScreen ? "text-[10px] mb-1" : "text-xs mb-2"}`}>
           {currentStep + 1} / {TUTORIAL_STEPS.length}
         </div>
 
-        <h3 className="text-lg font-bold mb-2" style={{ color: accentColor }}>
+        <h3
+          className={`font-bold ${isSmallScreen ? "text-xs mb-1" : "text-lg mb-2"}`}
+          style={{ color: accentColor }}
+        >
           {step.title}
         </h3>
 
-        <p className="text-sm opacity-80 mb-4 leading-relaxed">{step.description}</p>
+        <p className={`opacity-80 leading-relaxed ${isSmallScreen ? "text-[10px] mb-2" : "text-sm mb-4"}`}>
+          {step.description}
+        </p>
 
         <div className="flex justify-between items-center">
           <Button
@@ -469,18 +520,23 @@ export function TutorialOverlay({
             size="sm"
             onClick={prevStep}
             disabled={currentStep === 0}
-            className="border-current/30 disabled:opacity-30 bg-transparent"
+            className={`border-current/30 disabled:opacity-30 bg-transparent ${isSmallScreen ? "text-[10px] px-1.5 py-0.5 h-5" : ""}`}
           >
-            <ChevronLeft className="w-4 h-4 mr-1" />
-            前へ
+            <ChevronLeft className={isSmallScreen ? "w-2.5 h-2.5" : "w-4 h-4 mr-1"} />
+            {!isSmallScreen && "前へ"}
           </Button>
-          <Button size="sm" onClick={nextStep} style={{ backgroundColor: accentColor, color: "#fff" }}>
+          <Button
+            size="sm"
+            onClick={nextStep}
+            className={isSmallScreen ? "text-[10px] px-1.5 py-0.5 h-5" : ""}
+            style={{ backgroundColor: accentColor, color: "#fff" }}
+          >
             {currentStep === TUTORIAL_STEPS.length - 1 ? (
-              "閉じる"
+              isSmallScreen ? "完了" : "閉じる"
             ) : (
               <>
-                次へ
-                <ChevronRight className="w-4 h-4 ml-1" />
+                {!isSmallScreen && "次へ"}
+                <ChevronRight className={isSmallScreen ? "w-2.5 h-2.5" : "w-4 h-4 ml-1"} />
               </>
             )}
           </Button>
