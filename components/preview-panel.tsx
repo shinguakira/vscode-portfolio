@@ -1,10 +1,11 @@
 "use client"
 
 import { useState } from "react"
-import { Mail, Github, Linkedin, Twitter, ExternalLink, ChevronRight, X, Star, Download } from "lucide-react"
+
+import { Mail, Github, Linkedin, Twitter, ExternalLink, ChevronRight, Star, Download } from "lucide-react"
 import { Badge } from "@/components/ui/badge"
 import { Card } from "@/components/ui/card"
-import type { PreviewTheme, Extension } from "@/types"
+import type { PreviewTheme } from "@/types"
 import { extensions } from "@/constants/portfolio-data"
 
 interface PreviewPanelProps {
@@ -425,7 +426,7 @@ export function PreviewPanel({ fileName, content, theme = "modern" }: PreviewPan
     }
 
     if (previewType === "readme") {
-      return <ExtensionGallery theme="innovative" />
+      return <ExtensionDetailView theme="innovative" />
     }
   }
 
@@ -811,7 +812,7 @@ export function PreviewPanel({ fileName, content, theme = "modern" }: PreviewPan
     }
 
     if (previewType === "readme") {
-      return <ExtensionGallery theme="professional" />
+      return <ExtensionDetailView theme="professional" />
     }
 
     if (previewType === "skills") {
@@ -1512,9 +1513,9 @@ export function PreviewPanel({ fileName, content, theme = "modern" }: PreviewPan
       )
     }
 
-    // README用プレビュー (Extension風カード一覧+モーダル)
+    // README用プレビュー - Extension詳細ページスタイル
     if (previewType === "readme") {
-      return <ExtensionGallery theme="modern" />
+      return <ExtensionDetailView theme="modern" />
     }
   }
 
@@ -1528,7 +1529,7 @@ export function PreviewPanel({ fileName, content, theme = "modern" }: PreviewPan
   )
 }
 
-// Extension Gallery Component with Modal
+// README用 - Extension一覧ギャラリー（カード表示+モーダル）
 function ExtensionGallery({ theme }: { theme: PreviewTheme }) {
   const [selectedExtension, setSelectedExtension] = useState<Extension | null>(null)
 
@@ -1544,37 +1545,25 @@ function ExtensionGallery({ theme }: { theme: PreviewTheme }) {
   if (theme === "professional") {
     return (
       <div className="min-h-full bg-white">
-        <div className="max-w-4xl mx-auto px-8 py-24">
+        <div className="max-w-6xl mx-auto px-8 py-24">
           <div className="mb-16 border-b border-gray-200 pb-8">
-            <h1 className="text-5xl font-serif font-bold text-gray-900 mb-3">プロジェクト一覧</h1>
-            <p className="text-xl text-gray-600">クリックして詳細を表示</p>
+            <h1 className="text-5xl font-serif font-bold text-gray-900 mb-3">プロジェクト</h1>
+            <p className="text-xl text-gray-600">Featured Projects</p>
           </div>
 
-          <div className="space-y-6">
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             {extensions.map((ext) => (
-              <div
-                key={ext.id}
-                onClick={() => setSelectedExtension(ext)}
-                className="border border-gray-200 p-6 hover:border-gray-400 transition-colors cursor-pointer"
-              >
-                <div className="flex items-start gap-4">
-                  <div className="text-3xl">{ext.icon}</div>
-                  <div className="flex-1">
-                    <div className="flex items-center justify-between mb-2">
-                      <h3 className="text-xl font-bold text-gray-900">{ext.displayName}</h3>
-                      <span className="text-sm text-gray-500">v{ext.version}</span>
-                    </div>
-                    <p className="text-gray-600 text-sm mb-3">{ext.description}</p>
-                    <div className="flex items-center gap-4 text-sm text-gray-500">
-                      <span className="flex items-center gap-1">
-                        <Star className="w-4 h-4 text-amber-500 fill-amber-500" />
-                        {ext.rating}
-                      </span>
-                      <span className="flex items-center gap-1">
-                        <Download className="w-4 h-4" />
-                        {(ext.downloads / 1000).toFixed(1)}K
-                      </span>
-                    </div>
+              <div key={ext.id} className="border border-gray-200 rounded-lg overflow-hidden hover:shadow-lg transition-shadow cursor-pointer" onClick={() => setSelectedExtension(ext)}>
+                <div className="p-6">
+                  <div className="text-4xl mb-4">{ext.icon}</div>
+                  <h3 className="text-xl font-bold text-gray-900 mb-2">{ext.displayName}</h3>
+                  <p className="text-sm text-gray-600 mb-4 line-clamp-2">{ext.description}</p>
+                  <div className="flex items-center gap-4 text-xs text-gray-500">
+                    <span className="flex items-center gap-1">
+                      <Star className="w-3 h-3 text-amber-500 fill-amber-500" />
+                      {ext.rating}
+                    </span>
+                    <span>{ext.downloads.toLocaleString()}</span>
                   </div>
                 </div>
               </div>
@@ -1582,37 +1571,21 @@ function ExtensionGallery({ theme }: { theme: PreviewTheme }) {
           </div>
         </div>
 
-        {/* Professional Modal */}
         {selectedExtension && (
           <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4" onClick={() => setSelectedExtension(null)}>
-            <div className="bg-white max-w-2xl w-full max-h-[90vh] overflow-y-auto rounded-lg" onClick={(e) => e.stopPropagation()}>
+            <div className="bg-white rounded-lg max-w-2xl w-full max-h-[90vh] overflow-y-auto" onClick={(e) => e.stopPropagation()}>
               <div className="p-8">
-                <div className="flex items-start justify-between mb-6">
-                  <div className="flex items-center gap-4">
-                    <div className="text-4xl">{selectedExtension.icon}</div>
-                    <div>
-                      <h2 className="text-2xl font-bold text-gray-900">{selectedExtension.displayName}</h2>
-                      <p className="text-gray-500">v{selectedExtension.version} by {selectedExtension.publisher}</p>
-                    </div>
+                <button onClick={() => setSelectedExtension(null)} className="float-right text-gray-500 hover:text-gray-700">
+                  <X className="w-6 h-6" />
+                </button>
+                <div className="flex items-center gap-4 mb-6">
+                  <div className="text-5xl">{selectedExtension.icon}</div>
+                  <div>
+                    <h2 className="text-3xl font-bold text-gray-900">{selectedExtension.displayName}</h2>
+                    <p className="text-gray-500">v{selectedExtension.version}</p>
                   </div>
-                  <button onClick={() => setSelectedExtension(null)} className="text-gray-400 hover:text-gray-600">
-                    <X className="w-6 h-6" />
-                  </button>
                 </div>
-
                 <p className="text-gray-700 mb-6">{selectedExtension.description}</p>
-
-                <div className="flex items-center gap-6 mb-6 text-sm">
-                  <span className="flex items-center gap-1">
-                    <Star className="w-4 h-4 text-amber-500 fill-amber-500" />
-                    {selectedExtension.rating}
-                  </span>
-                  <span className="flex items-center gap-1">
-                    <Download className="w-4 h-4" />
-                    {selectedExtension.downloads.toLocaleString()} downloads
-                  </span>
-                </div>
-
                 <div className="mb-6">
                   <h3 className="font-bold text-gray-900 mb-3">Features</h3>
                   <ul className="space-y-2">
@@ -1621,25 +1594,15 @@ function ExtensionGallery({ theme }: { theme: PreviewTheme }) {
                     ))}
                   </ul>
                 </div>
-
-                <div className="mb-6">
-                  <h3 className="font-bold text-gray-900 mb-3">Technologies</h3>
-                  <div className="flex flex-wrap gap-2">
-                    {selectedExtension.tags.map((tag) => (
-                      <span key={tag} className="px-2 py-1 text-xs border border-gray-300 text-gray-600">{tag}</span>
-                    ))}
-                  </div>
-                </div>
-
                 <div className="flex gap-3">
                   {selectedExtension.repository && (
-                    <a href={selectedExtension.repository} target="_blank" rel="noopener noreferrer" className="px-4 py-2 bg-gray-900 text-white text-sm flex items-center gap-2 hover:bg-gray-800">
-                      <Github className="w-4 h-4" /> GitHub
+                    <a href={selectedExtension.repository} target="_blank" rel="noopener noreferrer" className="px-4 py-2 bg-gray-900 text-white text-sm">
+                      <Github className="w-4 h-4 inline mr-2" /> GitHub
                     </a>
                   )}
                   {selectedExtension.homepage && (
-                    <a href={selectedExtension.homepage} target="_blank" rel="noopener noreferrer" className="px-4 py-2 border border-gray-900 text-gray-900 text-sm flex items-center gap-2 hover:bg-gray-50">
-                      <ExternalLink className="w-4 h-4" /> Demo
+                    <a href={selectedExtension.homepage} target="_blank" rel="noopener noreferrer" className="px-4 py-2 border border-gray-900 text-gray-900 text-sm">
+                      <ExternalLink className="w-4 h-4 inline mr-2" /> Demo
                     </a>
                   )}
                 </div>
@@ -1647,6 +1610,250 @@ function ExtensionGallery({ theme }: { theme: PreviewTheme }) {
             </div>
           </div>
         )}
+      </div>
+    )
+  }
+
+  if (theme === "innovative") {
+    return (
+      <div className="min-h-full bg-black">
+        <div className="max-w-7xl mx-auto px-8 py-20">
+          <h1 className="text-7xl font-black mb-20 text-center text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-purple-400 to-pink-400">
+            Featured Projects
+          </h1>
+
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {extensions.map((ext) => (
+              <div key={ext.id} className="group relative cursor-pointer" onClick={() => setSelectedExtension(ext)}>
+                <div className={`absolute -inset-0.5 bg-gradient-to-r ${colorMap[ext.id] || "from-cyan-500 to-purple-500"} rounded-2xl blur opacity-30 group-hover:opacity-60 transition`} />
+                <div className="relative bg-black border border-gray-800 rounded-2xl p-6">
+                  <div className="text-5xl mb-4">{ext.icon}</div>
+                  <h3 className={`text-xl font-black mb-2 text-transparent bg-clip-text bg-gradient-to-r ${colorMap[ext.id] || "from-cyan-500 to-purple-500"}`}>
+                    {ext.displayName}
+                  </h3>
+                  <p className="text-gray-400 text-sm mb-4 line-clamp-2">{ext.description}</p>
+                  <div className="flex items-center gap-4 text-xs">
+                    <span className="flex items-center gap-1 text-amber-400">
+                      <Star className="w-3 h-3 fill-amber-400" />
+                      {ext.rating}
+                    </span>
+                    <span className="text-gray-500">{ext.downloads.toLocaleString()}</span>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {selectedExtension && (
+          <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50 p-4" onClick={() => setSelectedExtension(null)}>
+            <div className="bg-black border border-gray-800 rounded-3xl max-w-2xl w-full max-h-[90vh] overflow-y-auto" onClick={(e) => e.stopPropagation()}>
+              <div className="p-8">
+                <button onClick={() => setSelectedExtension(null)} className="float-right text-gray-500 hover:text-gray-300">
+                  <X className="w-6 h-6" />
+                </button>
+                <div className="flex items-center gap-4 mb-6">
+                  <div className={`w-16 h-16 rounded-2xl bg-gradient-to-br ${colorMap[selectedExtension.id] || "from-cyan-500 to-purple-500"} flex items-center justify-center text-3xl`}>
+                    {selectedExtension.icon}
+                  </div>
+                  <div>
+                    <h2 className={`text-3xl font-black text-transparent bg-clip-text bg-gradient-to-r ${colorMap[selectedExtension.id] || "from-cyan-500 to-purple-500"}`}>
+                      {selectedExtension.displayName}
+                    </h2>
+                    <p className="text-gray-500">v{selectedExtension.version}</p>
+                  </div>
+                </div>
+                <p className="text-gray-300 mb-6">{selectedExtension.description}</p>
+                <div className="mb-6">
+                  <h3 className="text-lg font-bold text-white mb-3">Features</h3>
+                  <ul className="space-y-2">
+                    {selectedExtension.features.map((f) => (
+                      <li key={f} className="text-gray-400 flex items-center gap-2">
+                        <ChevronRight className="w-4 h-4 text-cyan-400" />
+                        {f}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+                <div className="flex gap-3">
+                  {selectedExtension.repository && (
+                    <a href={selectedExtension.repository} target="_blank" rel="noopener noreferrer" className="px-4 py-2 bg-gradient-to-r from-cyan-600 to-purple-600 text-white text-sm rounded-xl">
+                      <Github className="w-4 h-4 inline mr-2" /> GitHub
+                    </a>
+                  )}
+                  {selectedExtension.homepage && (
+                    <a href={selectedExtension.homepage} target="_blank" rel="noopener noreferrer" className="px-4 py-2 border border-gray-700 text-gray-300 text-sm rounded-xl">
+                      <ExternalLink className="w-4 h-4 inline mr-2" /> Demo
+                    </a>
+                  )}
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
+    )
+  }
+
+  // Modern theme (default)
+  return (
+    <div className="min-h-full bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950">
+      <div className="max-w-7xl mx-auto px-8 py-16">
+        <div className="mb-12 text-center">
+          <h1 className="text-5xl font-bold mb-4 bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
+            Featured Projects
+          </h1>
+          <p className="text-xl text-slate-400">主要プロジェクト</p>
+        </div>
+
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {extensions.map((ext) => (
+            <Card key={ext.id} className="bg-slate-900/50 border-slate-800 backdrop-blur hover:border-slate-700 transition-all cursor-pointer group" onClick={() => setSelectedExtension(ext)}>
+              <div className="p-6">
+                <div className={`w-16 h-16 rounded-2xl bg-gradient-to-br ${colorMap[ext.id] || "from-blue-500 to-purple-500"} flex items-center justify-center text-3xl mb-4 group-hover:scale-110 transition-transform`}>
+                  {ext.icon}
+                </div>
+                <h3 className="text-xl font-bold text-white mb-2">{ext.displayName}</h3>
+                <p className="text-slate-400 text-sm mb-4 line-clamp-2">{ext.description}</p>
+                <div className="flex items-center gap-4 text-xs">
+                  <span className="flex items-center gap-1 text-amber-400">
+                    <Star className="w-3 h-3 fill-amber-400" />
+                    {ext.rating}
+                  </span>
+                  <span className="text-slate-500">{ext.downloads.toLocaleString()}</span>
+                </div>
+              </div>
+            </Card>
+          ))}
+        </div>
+      </div>
+
+      {selectedExtension && (
+        <div className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50 p-4" onClick={() => setSelectedExtension(null)}>
+          <Card className="bg-slate-900 border-slate-800 max-w-2xl w-full max-h-[90vh] overflow-y-auto" onClick={(e) => e.stopPropagation()}>
+            <div className="p-8">
+              <button onClick={() => setSelectedExtension(null)} className="float-right text-slate-500 hover:text-slate-300">
+                <X className="w-6 h-6" />
+              </button>
+              <div className="flex items-center gap-4 mb-6">
+                <div className={`w-16 h-16 rounded-2xl bg-gradient-to-br ${colorMap[selectedExtension.id] || "from-blue-500 to-purple-500"} flex items-center justify-center text-3xl`}>
+                  {selectedExtension.icon}
+                </div>
+                <div>
+                  <h2 className="text-3xl font-bold text-white">{selectedExtension.displayName}</h2>
+                  <p className="text-slate-400">v{selectedExtension.version}</p>
+                </div>
+              </div>
+              <p className="text-slate-300 mb-6">{selectedExtension.description}</p>
+              <div className="mb-6">
+                <h3 className="text-lg font-bold text-white mb-3">Features</h3>
+                <ul className="space-y-2">
+                  {selectedExtension.features.map((f) => (
+                    <li key={f} className="text-slate-400 flex items-center gap-2">
+                      <ChevronRight className="w-4 h-4 text-blue-400" />
+                      {f}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+              <div className="flex gap-3">
+                {selectedExtension.repository && (
+                  <a href={selectedExtension.repository} target="_blank" rel="noopener noreferrer" className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm rounded-lg">
+                    <Github className="w-4 h-4 inline mr-2" /> GitHub
+                  </a>
+                )}
+                {selectedExtension.homepage && (
+                  <a href={selectedExtension.homepage} target="_blank" rel="noopener noreferrer" className="px-4 py-2 border border-slate-600 text-slate-300 text-sm rounded-lg hover:border-slate-500">
+                    <ExternalLink className="w-4 h-4 inline mr-2" /> Demo
+                  </a>
+                )}
+              </div>
+            </div>
+          </Card>
+        </div>
+      )}
+    </div>
+  )
+}
+
+// README用 - Extension詳細ページスタイル表示（複数プロジェクトを縦に並べる）
+function ExtensionDetailView({ theme }: { theme: PreviewTheme }) {
+  const colorMap: Record<string, string> = {
+    "nextjs-ecommerce": "from-emerald-500 to-teal-500",
+    "realtime-chat": "from-blue-500 to-cyan-500",
+    "project-management": "from-violet-500 to-purple-500",
+    "design-system": "from-pink-500 to-rose-500",
+    "ai-content-generator": "from-orange-500 to-amber-500",
+    "image-optimizer": "from-indigo-500 to-blue-500",
+  }
+
+  if (theme === "professional") {
+    return (
+      <div className="min-h-full bg-white">
+        <div className="max-w-4xl mx-auto px-8 py-24">
+          <div className="mb-16 border-b border-gray-200 pb-8">
+            <h1 className="text-5xl font-serif font-bold text-gray-900 mb-3">プロジェクト詳細</h1>
+            <p className="text-xl text-gray-600">Featured Projects</p>
+          </div>
+
+          <div className="space-y-16">
+            {extensions.map((ext) => (
+              <div key={ext.id} className="border-b border-gray-100 pb-16 last:border-0">
+                <div className="flex items-center gap-4 mb-6">
+                  <div className="text-4xl">{ext.icon}</div>
+                  <div>
+                    <h2 className="text-2xl font-bold text-gray-900">{ext.displayName}</h2>
+                    <p className="text-gray-500">v{ext.version} by {ext.publisher}</p>
+                  </div>
+                </div>
+
+                <p className="text-gray-700 mb-6 leading-relaxed">{ext.description}</p>
+
+                <div className="flex items-center gap-6 mb-6 text-sm">
+                  <span className="flex items-center gap-1">
+                    <Star className="w-4 h-4 text-amber-500 fill-amber-500" />
+                    {ext.rating}
+                  </span>
+                  <span className="flex items-center gap-1">
+                    <Download className="w-4 h-4" />
+                    {ext.downloads.toLocaleString()} downloads
+                  </span>
+                </div>
+
+                <div className="mb-6">
+                  <h3 className="font-bold text-gray-900 mb-3">Features</h3>
+                  <ul className="space-y-2">
+                    {ext.features.map((f) => (
+                      <li key={f} className="text-gray-600 pl-4 border-l-2 border-gray-900 text-sm">{f}</li>
+                    ))}
+                  </ul>
+                </div>
+
+                <div className="mb-6">
+                  <h3 className="font-bold text-gray-900 mb-3">Technologies</h3>
+                  <div className="flex flex-wrap gap-2">
+                    {ext.tags.map((tag) => (
+                      <span key={tag} className="px-2 py-1 text-xs border border-gray-300 text-gray-600">{tag}</span>
+                    ))}
+                  </div>
+                </div>
+
+                <div className="flex gap-3">
+                  {ext.repository && (
+                    <a href={ext.repository} target="_blank" rel="noopener noreferrer" className="px-4 py-2 bg-gray-900 text-white text-sm flex items-center gap-2 hover:bg-gray-800">
+                      <Github className="w-4 h-4" /> GitHub
+                    </a>
+                  )}
+                  {ext.homepage && (
+                    <a href={ext.homepage} target="_blank" rel="noopener noreferrer" className="px-4 py-2 border border-gray-900 text-gray-900 text-sm flex items-center gap-2 hover:bg-gray-50">
+                      <ExternalLink className="w-4 h-4" /> Demo
+                    </a>
+                  )}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
       </div>
     )
   }
@@ -1662,118 +1869,82 @@ function ExtensionGallery({ theme }: { theme: PreviewTheme }) {
         <div className="relative max-w-5xl mx-auto px-8 py-20">
           <div className="text-center mb-16">
             <h1 className="text-8xl font-black mb-6 text-transparent bg-clip-text bg-gradient-to-r from-teal-400 via-green-400 to-emerald-400">
-              EXTENSIONS
+              PROJECTS
             </h1>
-            <p className="text-2xl text-gray-400 font-light">クリックして詳細を表示</p>
+            <p className="text-2xl text-gray-400 font-light">Featured Work Details</p>
           </div>
 
-          <div className="grid md:grid-cols-2 gap-6">
+          <div className="space-y-12">
             {extensions.map((ext) => (
-              <div
-                key={ext.id}
-                onClick={() => setSelectedExtension(ext)}
-                className="group relative cursor-pointer"
-              >
-                <div className={`absolute -inset-0.5 bg-gradient-to-r ${colorMap[ext.id] || "from-teal-500 to-green-500"} rounded-3xl blur opacity-30 group-hover:opacity-70 transition duration-500`} />
-                <div className="relative bg-black border border-gray-800 rounded-3xl p-6 h-full">
-                  <div className="flex items-center gap-4 mb-4">
-                    <div className={`w-14 h-14 rounded-2xl bg-gradient-to-br ${colorMap[ext.id] || "from-teal-500 to-green-500"} flex items-center justify-center text-2xl`}>
+              <div key={ext.id} className="group relative">
+                <div className={`absolute -inset-0.5 bg-gradient-to-r ${colorMap[ext.id] || "from-teal-500 to-green-500"} rounded-3xl blur opacity-30`} />
+                <div className="relative bg-black border border-gray-800 rounded-3xl p-8">
+                  <div className="flex items-center gap-4 mb-6">
+                    <div className={`w-16 h-16 rounded-2xl bg-gradient-to-br ${colorMap[ext.id] || "from-teal-500 to-green-500"} flex items-center justify-center text-3xl`}>
                       {ext.icon}
                     </div>
                     <div>
-                      <h3 className="text-lg font-black text-white">{ext.displayName}</h3>
-                      <span className="text-xs text-gray-500">v{ext.version}</span>
+                      <h2 className={`text-2xl font-black text-transparent bg-clip-text bg-gradient-to-r ${colorMap[ext.id] || "from-teal-500 to-green-500"}`}>
+                        {ext.displayName}
+                      </h2>
+                      <p className="text-gray-500">v{ext.version}</p>
                     </div>
                   </div>
-                  <p className="text-gray-400 text-sm mb-4 line-clamp-2">{ext.description}</p>
-                  <div className="flex items-center justify-between text-sm">
-                    <span className="text-gray-500">{(ext.downloads / 1000).toFixed(1)}K downloads</span>
-                    <span className="flex items-center gap-1 text-amber-400">
-                      {"★".repeat(Math.floor(ext.rating))}
-                      <span className="text-gray-500 ml-1">{ext.rating}</span>
+
+                  <p className="text-gray-300 mb-6">{ext.description}</p>
+
+                  <div className="flex items-center gap-6 mb-6">
+                    <span className="flex items-center gap-2 text-amber-400">
+                      <Star className="w-5 h-5 fill-amber-400" />
+                      {ext.rating}
                     </span>
+                    <span className="flex items-center gap-2 text-gray-400">
+                      <Download className="w-5 h-5" />
+                      {ext.downloads.toLocaleString()}
+                    </span>
+                  </div>
+
+                  <div className="mb-6">
+                    <h3 className="text-lg font-bold text-white mb-3">Features</h3>
+                    <ul className="space-y-2">
+                      {ext.features.map((f) => (
+                        <li key={f} className="text-gray-400 flex items-center gap-2">
+                          <ChevronRight className="w-4 h-4 text-teal-400" />
+                          {f}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+
+                  <div className="mb-6">
+                    <h3 className="text-lg font-bold text-white mb-3">Technologies</h3>
+                    <div className="flex flex-wrap gap-2">
+                      {ext.tags.map((tag) => (
+                        <span key={tag} className="px-3 py-1 text-sm rounded-full border border-gray-700 text-gray-400">{tag}</span>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div className="flex gap-3">
+                    {ext.repository && (
+                      <a href={ext.repository} target="_blank" rel="noopener noreferrer" className="group/btn relative">
+                        <div className={`absolute -inset-0.5 bg-gradient-to-r ${colorMap[ext.id] || "from-teal-500 to-green-500"} rounded-xl blur opacity-50 group-hover/btn:opacity-100 transition`} />
+                        <div className="relative px-4 py-2 bg-black rounded-xl text-white text-sm flex items-center gap-2">
+                          <Github className="w-4 h-4" /> GitHub
+                        </div>
+                      </a>
+                    )}
+                    {ext.homepage && (
+                      <a href={ext.homepage} target="_blank" rel="noopener noreferrer" className="px-4 py-2 border border-gray-700 rounded-xl text-gray-300 text-sm flex items-center gap-2 hover:border-gray-500">
+                        <ExternalLink className="w-4 h-4" /> Demo
+                      </a>
+                    )}
                   </div>
                 </div>
               </div>
             ))}
           </div>
         </div>
-
-        {/* Innovative Modal */}
-        {selectedExtension && (
-          <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50 p-4" onClick={() => setSelectedExtension(null)}>
-            <div className="relative max-w-2xl w-full max-h-[90vh] overflow-y-auto" onClick={(e) => e.stopPropagation()}>
-              <div className={`absolute -inset-0.5 bg-gradient-to-r ${colorMap[selectedExtension.id] || "from-teal-500 to-green-500"} rounded-3xl blur opacity-50`} />
-              <div className="relative bg-black border border-gray-800 rounded-3xl p-8">
-                <button onClick={() => setSelectedExtension(null)} className="absolute top-4 right-4 text-gray-400 hover:text-white">
-                  <X className="w-6 h-6" />
-                </button>
-
-                <div className="flex items-center gap-4 mb-6">
-                  <div className={`w-16 h-16 rounded-2xl bg-gradient-to-br ${colorMap[selectedExtension.id] || "from-teal-500 to-green-500"} flex items-center justify-center text-3xl`}>
-                    {selectedExtension.icon}
-                  </div>
-                  <div>
-                    <h2 className={`text-2xl font-black text-transparent bg-clip-text bg-gradient-to-r ${colorMap[selectedExtension.id] || "from-teal-500 to-green-500"}`}>
-                      {selectedExtension.displayName}
-                    </h2>
-                    <p className="text-gray-500">v{selectedExtension.version}</p>
-                  </div>
-                </div>
-
-                <p className="text-gray-300 mb-6">{selectedExtension.description}</p>
-
-                <div className="flex items-center gap-6 mb-6">
-                  <span className="flex items-center gap-2 text-amber-400">
-                    <Star className="w-5 h-5 fill-amber-400" />
-                    {selectedExtension.rating}
-                  </span>
-                  <span className="flex items-center gap-2 text-gray-400">
-                    <Download className="w-5 h-5" />
-                    {selectedExtension.downloads.toLocaleString()}
-                  </span>
-                </div>
-
-                <div className="mb-6">
-                  <h3 className="text-lg font-bold text-white mb-3">Features</h3>
-                  <ul className="space-y-2">
-                    {selectedExtension.features.map((f) => (
-                      <li key={f} className="text-gray-400 flex items-center gap-2">
-                        <ChevronRight className="w-4 h-4 text-teal-400" />
-                        {f}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-
-                <div className="mb-6">
-                  <h3 className="text-lg font-bold text-white mb-3">Technologies</h3>
-                  <div className="flex flex-wrap gap-2">
-                    {selectedExtension.tags.map((tag) => (
-                      <span key={tag} className="px-3 py-1 text-sm rounded-full border border-gray-700 text-gray-400">{tag}</span>
-                    ))}
-                  </div>
-                </div>
-
-                <div className="flex gap-3">
-                  {selectedExtension.repository && (
-                    <a href={selectedExtension.repository} target="_blank" rel="noopener noreferrer" className="group relative">
-                      <div className="absolute -inset-0.5 bg-gradient-to-r from-teal-500 to-green-500 rounded-xl blur opacity-50 group-hover:opacity-100 transition" />
-                      <div className="relative px-4 py-2 bg-black rounded-xl text-white text-sm flex items-center gap-2">
-                        <Github className="w-4 h-4" /> GitHub
-                      </div>
-                    </a>
-                  )}
-                  {selectedExtension.homepage && (
-                    <a href={selectedExtension.homepage} target="_blank" rel="noopener noreferrer" className="px-4 py-2 border border-gray-700 rounded-xl text-gray-300 text-sm flex items-center gap-2 hover:border-gray-500">
-                      <ExternalLink className="w-4 h-4" /> Demo
-                    </a>
-                  )}
-                </div>
-              </div>
-            </div>
-          </div>
-        )}
       </div>
     )
   }
@@ -1786,86 +1957,41 @@ function ExtensionGallery({ theme }: { theme: PreviewTheme }) {
           <h1 className="text-5xl font-bold mb-4 bg-gradient-to-r from-teal-400 to-emerald-400 bg-clip-text text-transparent">
             Featured Projects
           </h1>
-          <p className="text-xl text-slate-400">クリックして詳細を表示</p>
+          <p className="text-xl text-slate-400">プロジェクト詳細</p>
         </div>
 
-        <div className="space-y-6">
+        <div className="space-y-10">
           {extensions.map((ext) => (
-            <Card
-              key={ext.id}
-              onClick={() => setSelectedExtension(ext)}
-              className="p-6 bg-slate-900/50 border-slate-800 backdrop-blur hover:border-slate-600 transition-all cursor-pointer group"
-            >
-              <div className="flex items-start gap-5">
-                <div className={`w-16 h-16 rounded-2xl bg-gradient-to-br ${colorMap[ext.id] || "from-teal-500 to-emerald-500"} flex items-center justify-center text-3xl shrink-0 group-hover:scale-105 transition-transform`}>
-                  {ext.icon}
-                </div>
-                <div className="flex-1 min-w-0">
-                  <div className="flex items-center gap-3 mb-2">
-                    <h3 className="text-xl font-bold text-white truncate">{ext.displayName}</h3>
-                    <span className="text-sm text-slate-500 shrink-0">v{ext.version}</span>
-                  </div>
-                  <p className="text-slate-400 text-sm leading-relaxed mb-4">{ext.description}</p>
-                  <div className="flex flex-wrap gap-2 mb-4">
-                    {ext.tags.slice(0, 4).map((tag) => (
-                      <Badge key={tag} className="px-2 py-1 bg-slate-800 text-slate-300 border-slate-700 text-xs">
-                        {tag}
-                      </Badge>
-                    ))}
-                  </div>
-                  <div className="flex items-center gap-6 text-sm">
-                    <span className="text-slate-500">
-                      <span className="text-slate-300 font-medium">{(ext.downloads / 1000).toFixed(1)}K</span> downloads
-                    </span>
-                    <span className="flex items-center gap-1 text-amber-400">
-                      {"★".repeat(Math.floor(ext.rating))}
-                      <span className="text-slate-500 ml-1">{ext.rating}</span>
-                    </span>
-                  </div>
-                </div>
-              </div>
-            </Card>
-          ))}
-        </div>
-      </div>
-
-      {/* Modern Modal */}
-      {selectedExtension && (
-        <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50 p-4" onClick={() => setSelectedExtension(null)}>
-          <Card className="max-w-2xl w-full max-h-[90vh] overflow-y-auto bg-slate-900 border-slate-700" onClick={(e) => e.stopPropagation()}>
-            <div className="p-8">
+            <Card key={ext.id} className="p-8 bg-slate-900/50 border-slate-800 backdrop-blur">
               <div className="flex items-start justify-between mb-6">
                 <div className="flex items-center gap-4">
-                  <div className={`w-16 h-16 rounded-2xl bg-gradient-to-br ${colorMap[selectedExtension.id] || "from-teal-500 to-emerald-500"} flex items-center justify-center text-3xl`}>
-                    {selectedExtension.icon}
+                  <div className={`w-16 h-16 rounded-2xl bg-gradient-to-br ${colorMap[ext.id] || "from-teal-500 to-emerald-500"} flex items-center justify-center text-3xl`}>
+                    {ext.icon}
                   </div>
                   <div>
-                    <h2 className="text-2xl font-bold text-white">{selectedExtension.displayName}</h2>
-                    <p className="text-slate-400">v{selectedExtension.version} by {selectedExtension.publisher}</p>
+                    <h2 className="text-2xl font-bold text-white">{ext.displayName}</h2>
+                    <p className="text-slate-400">v{ext.version} by {ext.publisher}</p>
                   </div>
                 </div>
-                <button onClick={() => setSelectedExtension(null)} className="text-slate-400 hover:text-white">
-                  <X className="w-6 h-6" />
-                </button>
               </div>
 
-              <p className="text-slate-300 mb-6">{selectedExtension.description}</p>
+              <p className="text-slate-300 mb-6">{ext.description}</p>
 
               <div className="flex items-center gap-6 mb-6">
                 <span className="flex items-center gap-2 text-amber-400">
                   <Star className="w-5 h-5 fill-amber-400" />
-                  {selectedExtension.rating}
+                  {ext.rating}
                 </span>
                 <span className="flex items-center gap-2 text-slate-400">
                   <Download className="w-5 h-5" />
-                  {selectedExtension.downloads.toLocaleString()} downloads
+                  {ext.downloads.toLocaleString()} downloads
                 </span>
               </div>
 
               <div className="mb-6">
                 <h3 className="text-lg font-bold text-white mb-3">Features</h3>
                 <ul className="space-y-2">
-                  {selectedExtension.features.map((f) => (
+                  {ext.features.map((f) => (
                     <li key={f} className="text-slate-400 flex items-center gap-2">
                       <ChevronRight className="w-4 h-4 text-teal-400" />
                       {f}
@@ -1877,28 +2003,28 @@ function ExtensionGallery({ theme }: { theme: PreviewTheme }) {
               <div className="mb-6">
                 <h3 className="text-lg font-bold text-white mb-3">Technologies</h3>
                 <div className="flex flex-wrap gap-2">
-                  {selectedExtension.tags.map((tag) => (
+                  {ext.tags.map((tag) => (
                     <Badge key={tag} className="px-3 py-1 bg-slate-800 text-slate-300 border-slate-700">{tag}</Badge>
                   ))}
                 </div>
               </div>
 
               <div className="flex gap-3">
-                {selectedExtension.repository && (
-                  <a href={selectedExtension.repository} target="_blank" rel="noopener noreferrer" className="px-4 py-2 bg-teal-600 hover:bg-teal-700 text-white text-sm flex items-center gap-2 rounded-lg transition">
+                {ext.repository && (
+                  <a href={ext.repository} target="_blank" rel="noopener noreferrer" className="px-4 py-2 bg-teal-600 hover:bg-teal-700 text-white text-sm flex items-center gap-2 rounded-lg transition">
                     <Github className="w-4 h-4" /> GitHub
                   </a>
                 )}
-                {selectedExtension.homepage && (
-                  <a href={selectedExtension.homepage} target="_blank" rel="noopener noreferrer" className="px-4 py-2 border border-slate-600 text-slate-300 text-sm flex items-center gap-2 rounded-lg hover:border-slate-500 transition">
+                {ext.homepage && (
+                  <a href={ext.homepage} target="_blank" rel="noopener noreferrer" className="px-4 py-2 border border-slate-600 text-slate-300 text-sm flex items-center gap-2 rounded-lg hover:border-slate-500 transition">
                     <ExternalLink className="w-4 h-4" /> Demo
                   </a>
                 )}
               </div>
-            </div>
-          </Card>
+            </Card>
+          ))}
         </div>
-      )}
+      </div>
     </div>
   )
 }
