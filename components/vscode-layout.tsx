@@ -34,6 +34,7 @@ export function VSCodeLayout() {
   const [extensionsMode, setExtensionsMode] = useState(false)
   const [terminalOpen, setTerminalOpen] = useState(false)
   const [activeExtension, setActiveExtension] = useState<Extension | null>(null)
+  const [isMobile, setIsMobile] = useState(false)
 
   const [sidebarWidth, setSidebarWidth] = useState(240)
   const [terminalHeight, setTerminalHeight] = useState(200)
@@ -136,14 +137,16 @@ export function VSCodeLayout() {
     const handleResize = () => {
       const width = window.innerWidth
       const isSmallMobile = width < 640 // iPhone SE landscape ~568px
-      const isMobile = width < 1024
+      const isMobileScreen = width < 1024
+
+      setIsMobile(isMobileScreen)
 
       if (isSmallMobile) {
         setSidebarCollapsed(true)
         setTerminalOpen(false)
         setSidebarWidth(Math.min(160, width - 60))
         setTerminalHeight(120)
-      } else if (isMobile) {
+      } else if (isMobileScreen) {
         setSidebarCollapsed(true)
         setTerminalOpen(false)
         setSidebarWidth(Math.min(200, width - 80))
@@ -159,6 +162,12 @@ export function VSCodeLayout() {
     window.addEventListener("resize", handleResize)
     return () => window.removeEventListener("resize", handleResize)
   }, [])
+
+  const handleMainAreaClick = useCallback(() => {
+    if (isMobile && !sidebarCollapsed) {
+      setSidebarCollapsed(true)
+    }
+  }, [isMobile, sidebarCollapsed])
 
   useEffect(() => {
     const saved = localStorage.getItem("vscode-settings")
@@ -435,7 +444,16 @@ export function VSCodeLayout() {
             </>
           )}
 
-          <div className="flex-1 flex flex-col min-w-0" style={{ backgroundColor: bgMain }}>
+          <div
+              className="flex-1 flex flex-col min-w-0"
+              style={{ backgroundColor: bgMain }}
+              onClick={handleMainAreaClick}
+              onKeyDown={(e) => {
+                if (e.key === "Escape" && isMobile) {
+                  setSidebarCollapsed(true)
+                }
+              }}
+            >
             <TabBar
               tabs={tabs}
               activeTab={activeTab}
