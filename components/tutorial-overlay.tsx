@@ -286,15 +286,22 @@ export function TutorialOverlay({
           }, 200)
           break
         case "showPreviewWithTheme":
+          // First change the theme
           if (onChangePreviewTheme && step.action.payload) {
             onChangePreviewTheme(step.action.payload)
           }
-          if (onOpenFile) {
-            onOpenFile("profile.md")
-          }
-          if (onTogglePreview) {
-            setTimeout(() => onTogglePreview(true), 100)
-          }
+          // Then open file and enable preview with sufficient delay
+          setTimeout(() => {
+            if (onOpenFile) {
+              onOpenFile("profile.md")
+            }
+            // Wait for file to open before enabling preview
+            setTimeout(() => {
+              if (onTogglePreview) {
+                onTogglePreview(true)
+              }
+            }, 200)
+          }, 100)
           break
       }
     },
