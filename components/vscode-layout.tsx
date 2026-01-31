@@ -127,6 +127,14 @@ export function VSCodeLayout() {
     }
   }, [])
 
+  const handleTutorialChangePreviewTheme = useCallback((themeId: string) => {
+    setSettings((prev) => {
+      const newSettings = { ...prev, previewTheme: themeId as "terminal" | "notion" | "minimal" }
+      localStorage.setItem("vscode-settings", JSON.stringify(newSettings))
+      return newSettings
+    })
+  }, [])
+
   const handleHelpClick = useCallback(() => {
     if (tutorialRestartRef.current) {
       tutorialRestartRef.current()
@@ -362,6 +370,7 @@ export function VSCodeLayout() {
         onOpenExtension={handleTutorialOpenExtension}
         onTogglePreview={handleTutorialTogglePreview}
         onRunCommand={handleTutorialRunCommand}
+        onChangePreviewTheme={handleTutorialChangePreviewTheme}
         accentColor={settings.accentColor}
         backgroundColor={bgSidebar}
         textColor={textPrimary}

@@ -155,6 +155,26 @@ const TUTORIAL_STEPS: TutorialStep[] = [
     mobilePosition: "top",
     uiState: { sidebarMode: "settings", sidebarCollapsed: false, terminalOpen: false },
   },
+  {
+    id: "preview-theme-change",
+    targetSelector: "[data-tutorial='editor-area']",
+    title: "プレビューテーマ変更",
+    description: "設定からプレビューテーマを変更できます。Terminal、Notion、Minimalistの3種類から選べます。",
+    position: "left",
+    mobilePosition: "top",
+    uiState: { sidebarMode: "settings", sidebarCollapsed: false, terminalOpen: false },
+    action: { type: "changePreviewTheme", payload: "notion" },
+  },
+  {
+    id: "preview-theme-result",
+    targetSelector: "[data-tutorial='editor-area']",
+    title: "テーマ変更後のプレビュー",
+    description: "Notionテーマに変更されました。プレビューボタンを押すとこのテーマでコンテンツが表示されます。",
+    position: "left",
+    mobilePosition: "top",
+    uiState: { sidebarMode: "explorer", sidebarCollapsed: false, terminalOpen: false },
+    action: { type: "showPreviewWithTheme", payload: "notion" },
+  },
 ]
 
 interface TutorialOverlayProps {
@@ -163,6 +183,7 @@ interface TutorialOverlayProps {
   onOpenExtension?: (extensionId: string) => void
   onTogglePreview?: (on: boolean) => void
   onRunCommand?: (command: string) => void
+  onChangePreviewTheme?: (themeId: string) => void
   accentColor: string
   backgroundColor: string
   textColor: string
@@ -175,6 +196,7 @@ export function TutorialOverlay({
   onOpenExtension,
   onTogglePreview,
   onRunCommand,
+  onChangePreviewTheme,
   accentColor,
   backgroundColor,
   textColor,
@@ -241,9 +263,25 @@ export function TutorialOverlay({
             onRunCommand(step.action.payload)
           }
           break
+        case "changePreviewTheme":
+          if (onChangePreviewTheme && step.action.payload) {
+            onChangePreviewTheme(step.action.payload)
+          }
+          break
+        case "showPreviewWithTheme":
+          if (onChangePreviewTheme && step.action.payload) {
+            onChangePreviewTheme(step.action.payload)
+          }
+          if (onOpenFile) {
+            onOpenFile("profile.md")
+          }
+          if (onTogglePreview) {
+            setTimeout(() => onTogglePreview(true), 100)
+          }
+          break
       }
     },
-    [onOpenFile, onOpenExtension, onTogglePreview, onRunCommand],
+    [onOpenFile, onOpenExtension, onTogglePreview, onRunCommand, onChangePreviewTheme],
   )
 
   useEffect(() => {
