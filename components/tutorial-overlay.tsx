@@ -140,10 +140,10 @@ const TUTORIAL_STEPS: TutorialStep[] = [
   },
   {
     id: "settings",
-    targetSelector: "[data-tutorial='sidebar']",
+    targetSelector: "[data-tutorial='editor-area']",
     title: "設定",
-    description: "テーマカラーやフォントサイズ、プレビューテーマなどをカスタマイズできます。",
-    position: "right",
+    description: "テーマカラーやフォントサイズ、プレビューテーマなどをカスタマイズできます。設定アイコンをクリックして開けます。",
+    position: "left",
     uiState: { sidebarMode: "settings", sidebarCollapsed: false, terminalOpen: false },
   },
 ]
