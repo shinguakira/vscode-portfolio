@@ -1,7 +1,7 @@
 "use client"
 
 import type React from "react"
-import { useState, useEffect, useRef } from "react"
+import { useState, useEffect, useRef, useCallback } from "react"
 import { ChevronUp, Trash2 } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { gitHistory } from "@/constants/portfolio-data"
@@ -15,6 +15,7 @@ interface TerminalPanelProps {
     accentColor: string
     fontSize: number
   }
+  onCommandRef?: (fn: (command: string) => void) => void
 }
 
 interface LogEntry {
@@ -24,7 +25,7 @@ interface LogEntry {
   timestamp?: string
 }
 
-export function TerminalPanel({ isOpen, onClose, settings }: TerminalPanelProps) {
+export function TerminalPanel({ isOpen, onClose, settings, onCommandRef }: TerminalPanelProps) {
   const [logs, setLogs] = useState<LogEntry[]>([
     { id: 1, type: "info", content: "Microsoft Windows [Version 10.0.19045.2364]" },
     { id: 2, type: "info", content: "(c) Microsoft Corporation. All rights reserved." },
@@ -39,7 +40,6 @@ export function TerminalPanel({ isOpen, onClose, settings }: TerminalPanelProps)
   const bgPanel = settings.backgroundColor
   const textPrimary = settings.textColor
 
-  // 明るさ調整関数 (layoutと同じロジック)
   const adjustBrightness = (color: string, amount: number) => {
     if (!color || typeof color !== "string") return "#000000"
     const hex = color.replace("#", "")
@@ -51,7 +51,6 @@ export function TerminalPanel({ isOpen, onClose, settings }: TerminalPanelProps)
   }
 
   const borderColor = adjustBrightness(bgPanel, 20)
-  const bgHeader = adjustBrightness(bgPanel, 5)
 
   useEffect(() => {
     if (isOpen && inputRef.current) {
@@ -64,10 +63,9 @@ export function TerminalPanel({ isOpen, onClose, settings }: TerminalPanelProps)
     logsEndRef.current?.scrollIntoView({ behavior: "smooth" })
   }
 
-  const handleCommand = async (cmd: string) => {
+  const handleCommand = useCallback(async (cmd: string) => {
     const trimmedCmd = cmd.trim()
 
-    // コマンド履歴に追加
     setLogs((prev) => [...prev, { id: Date.now(), type: "command", content: `user@portfolio:~$ ${trimmedCmd}` }])
     setInput("")
 
@@ -80,11 +78,16 @@ export function TerminalPanel({ isOpen, onClose, settings }: TerminalPanelProps)
 
     if (trimmedCmd === "help") {
       const helpText = [
-        "Available commands:",
-        "  npm run start  - Start the career development server (Show career history)",
-        "  ls             - List project directories",
-        "  clear          - Clear terminal output",
-        "  help           - Show this help message",
+        "",
+        "╔══════════════════════════════════════════════════════════╗",
+        "║                  Available Commands                       ║",
+        "╠══════════════════════════════════════════════════════════╣",
+        "║  npm run start  │ Show career history as dev server log  ║",
+        "║  ls             │ List project directories               ║",
+        "║  clear          │ Clear terminal output                  ║",
+        "║  help           │ Show this help message                 ║",
+        "╚══════════════════════════════════════════════════════════╝",
+        "",
       ]
       setLogs((prev) => [
         ...prev,
@@ -114,13 +117,11 @@ export function TerminalPanel({ isOpen, onClose, settings }: TerminalPanelProps)
         "info  - Loaded env from .env",
       ]
 
-      // 初期起動ログ
       for (const line of startSequence) {
         await new Promise((r) => setTimeout(r, 300))
         setLogs((prev) => [...prev, { id: Date.now(), type: "info", content: line }])
       }
 
-      // 経歴ログの表示
       const sortedHistory = [...gitHistory].sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime())
 
       for (const commit of sortedHistory) {
@@ -160,7 +161,13 @@ export function TerminalPanel({ isOpen, onClose, settings }: TerminalPanelProps)
         content: `Command not found: ${trimmedCmd}. Type 'help' for available commands.`,
       },
     ])
-  }
+  }, [])
+
+  useEffect(() => {
+    if (onCommandRef) {
+      onCommandRef(handleCommand)
+    }
+  }, [onCommandRef, handleCommand])
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === "Enter" && !isRunning) {
@@ -172,7 +179,7 @@ export function TerminalPanel({ isOpen, onClose, settings }: TerminalPanelProps)
 
   return (
     <div
-      className="h-64 border-t flex flex-col font-mono text-sm"
+      className="h-full border-t flex flex-col font-mono text-[9px] sm:text-[11px] md:text-sm"
       style={{
         backgroundColor: bgPanel,
         borderColor: borderColor,
@@ -180,14 +187,14 @@ export function TerminalPanel({ isOpen, onClose, settings }: TerminalPanelProps)
       }}
     >
       {/* ターミナルタブヘッダー */}
-      <div className="flex items-center px-4 border-b h-9 select-none" style={{ borderColor }}>
-        <div className="flex gap-6 text-[11px] font-medium tracking-wide">
-          {["PROBLEMS", "OUTPUT", "DEBUG CONSOLE", "TERMINAL", "GIT LENS"].map((tab) => (
+      <div className="flex items-center px-1 sm:px-2 md:px-4 border-b h-6 sm:h-7 md:h-9 select-none shrink-0" style={{ borderColor }}>
+        <div className="flex gap-2 sm:gap-4 md:gap-6 text-[8px] sm:text-[9px] md:text-[11px] font-medium tracking-wide overflow-x-auto">
+          {["TERMINAL", "OUTPUT", "PROBLEMS"].map((tab) => (
             <button
               key={tab}
               onClick={() => setActiveTab(tab)}
               className={cn(
-                "h-9 relative px-1 transition-colors hover:text-opacity-100",
+                "h-6 sm:h-7 md:h-9 relative px-0.5 sm:px-1 transition-colors hover:text-opacity-100 whitespace-nowrap",
                 activeTab === tab ? "text-opacity-100" : "text-opacity-60",
               )}
               style={{
@@ -200,20 +207,20 @@ export function TerminalPanel({ isOpen, onClose, settings }: TerminalPanelProps)
           ))}
         </div>
         <div className="flex-1" />
-        <div className="flex items-center gap-2">
-          <button onClick={() => setLogs([])} className="p-1 rounded hover:bg-white/10" title="Clear Terminal">
-            <Trash2 className="w-3.5 h-3.5" />
+        <div className="flex items-center gap-1 sm:gap-2">
+          <button onClick={() => setLogs([])} className="p-0.5 sm:p-1 rounded hover:bg-white/10" title="Clear">
+            <Trash2 className="w-2.5 h-2.5 sm:w-3 sm:h-3 md:w-3.5 md:h-3.5" />
           </button>
-          <button className="p-1 rounded hover:bg-white/10" title="Maximize Panel">
-            <ChevronUp className="w-3.5 h-3.5" />
+          <button className="p-0.5 sm:p-1 rounded hover:bg-white/10" title="Maximize">
+            <ChevronUp className="w-2.5 h-2.5 sm:w-3 sm:h-3 md:w-3.5 md:h-3.5" />
           </button>
         </div>
       </div>
 
       {/* ターミナルコンテンツ */}
-      <div className="flex-1 overflow-auto p-2 font-mono text-[13px]" onClick={() => inputRef.current?.focus()}>
+      <div className="flex-1 overflow-auto p-1 sm:p-2 font-mono text-[8px] sm:text-[10px] md:text-[13px]" onClick={() => inputRef.current?.focus()}>
         {logs.map((log) => (
-          <div key={log.id} className="leading-6 whitespace-pre-wrap break-all">
+          <div key={log.id} className="leading-4 sm:leading-5 md:leading-6 whitespace-pre-wrap break-all">
             <span
               className={cn(
                 log.type === "error"
@@ -231,10 +238,10 @@ export function TerminalPanel({ isOpen, onClose, settings }: TerminalPanelProps)
           </div>
         ))}
 
-        <div className="flex items-center mt-1">
-          <span className="mr-2 text-green-400">➜</span>
-          <span className="mr-2 text-cyan-400">portfolio</span>
-          <span className="mr-2 text-yellow-400">git:(main)</span>
+        <div className="flex items-center mt-0.5 sm:mt-1">
+          <span className="mr-1 sm:mr-2 text-green-400">$</span>
+          <span className="mr-1 sm:mr-2 text-cyan-400 hidden sm:inline">portfolio</span>
+          <span className="mr-1 sm:mr-2 text-yellow-400 hidden md:inline">git:(main)</span>
           <div className="flex-1 relative">
             <input
               ref={inputRef}
@@ -242,12 +249,12 @@ export function TerminalPanel({ isOpen, onClose, settings }: TerminalPanelProps)
               value={input}
               onChange={(e) => setInput(e.target.value)}
               onKeyDown={handleKeyDown}
-              className="w-full bg-transparent outline-none border-none p-0 m-0"
+              className="w-full bg-transparent outline-none border-none p-0 m-0 text-[8px] sm:text-[10px] md:text-[13px]"
               style={{ color: textPrimary, caretColor: textPrimary }}
               disabled={isRunning}
               autoComplete="off"
               spellCheck="false"
-              placeholder="Type 'help' for available commands..."
+              placeholder="help"
             />
           </div>
         </div>

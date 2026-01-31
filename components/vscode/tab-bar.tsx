@@ -41,7 +41,7 @@ export function TabBar({
           key={tab.id}
           onClick={() => setActiveTab(tab.id)}
           className={cn(
-            "flex items-center gap-2 px-3 py-2 min-w-[120px] max-w-[200px] text-[13px] border-r border-r-white/5 cursor-pointer group relative",
+            "flex items-center gap-1 sm:gap-2 px-1.5 sm:px-2 md:px-3 py-1 sm:py-1.5 md:py-2 min-w-[60px] sm:min-w-[80px] md:min-w-[120px] max-w-[100px] sm:max-w-[150px] md:max-w-[200px] text-[9px] sm:text-[11px] md:text-[13px] border-r border-r-white/5 cursor-pointer group relative",
             activeTab === tab.id ? "bg-[#1E1E1E]" : "bg-[#141414]",
           )}
           style={{
@@ -50,30 +50,31 @@ export function TabBar({
             borderTop: activeTab === tab.id ? `1px solid ${settings.accentColor}` : "1px solid transparent",
           }}
         >
-          <span>{tab.icon}</span>
+          <span className="text-[8px] sm:text-[10px] md:text-[13px]">{tab.icon}</span>
           <span className="truncate flex-1">{tab.name}</span>
           <button
             onClick={(e) => closeTab(tab.id, e)}
             className="opacity-0 group-hover:opacity-100 p-0.5 rounded hover:bg-white/10"
           >
-            <X className="w-3 h-3" />
+            <X className="w-2 h-2 sm:w-2.5 sm:h-2.5 md:w-3 md:h-3" />
           </button>
         </div>
       ))}
       <div className="flex-1 border-b" style={{ borderColor: bgMain, backgroundColor: bgTab }} />
 
       {activeTab && (
-        <div className="flex items-center px-2 border-b" style={{ borderColor: bgMain, backgroundColor: bgTab }}>
+        <div className="flex items-center px-1 sm:px-2 border-b" style={{ borderColor: bgMain, backgroundColor: bgTab }}>
           <button
             onClick={() => setPreviewMode(!previewMode)}
-            className="flex items-center gap-1 px-2 py-1 text-xs rounded hover:bg-white/10 transition-colors"
+            className="flex items-center gap-0.5 sm:gap-1 px-1 sm:px-2 py-0.5 sm:py-1 text-[8px] sm:text-[10px] md:text-xs rounded hover:bg-white/10 transition-colors"
             style={{
               color: previewMode ? settings.accentColor : textSecondary,
             }}
-            title="プレビュー切り替え"
+            title="Preview"
+            data-tutorial="preview-button"
           >
-            <Play className="w-3 h-3" />
-            <span>プレビュー</span>
+            <Play className="w-2 h-2 sm:w-2.5 sm:h-2.5 md:w-3 md:h-3" />
+            <span className="hidden sm:inline">Preview</span>
           </button>
         </div>
       )}

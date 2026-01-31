@@ -51,10 +51,8 @@ export function ActivityBar({
       extensionsMode === targetExtensionsMode
 
     if (isCurrentMode && !sidebarCollapsed) {
-      // 既に同じモードでサイドバーが開いている場合は閉じる
       setSidebarCollapsed(true)
     } else {
-      // 異なるモードまたはサイドバーが閉じている場合は開く
       setSidebarCollapsed(false)
       setSearchMode(targetSearchMode)
       setHistoryMode(targetHistoryMode)
@@ -65,13 +63,13 @@ export function ActivityBar({
 
   return (
     <div
-      className="w-10 md:w-12 flex flex-col items-center py-1 md:py-2 border-r shrink-0"
+      className="w-8 sm:w-10 md:w-12 flex flex-col items-center py-0.5 sm:py-1 md:py-2 border-r shrink-0"
       style={{ backgroundColor: bgActivityBar, borderColor: bgMain }}
     >
       <button
         onClick={() => handleModeClick(false, false, false, false)}
         className={cn(
-          "w-10 h-10 md:w-12 md:h-12 flex items-center justify-center relative",
+          "w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 flex items-center justify-center relative",
           !searchMode && !historyMode && !diffMode && !extensionsMode && !sidebarCollapsed && "border-l-2",
         )}
         style={{
@@ -81,30 +79,30 @@ export function ActivityBar({
               : textSecondary,
           borderColor: settings.accentColor,
         }}
-        title="エクスプローラー"
+        title="Explorer"
       >
-        <FileText className="w-5 h-5 md:w-6 md:h-6" />
+        <FileText className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6" />
       </button>
 
       <button
         onClick={() => handleModeClick(true, false, false, false)}
         className={cn(
-          "w-10 h-10 md:w-12 md:h-12 flex items-center justify-center relative",
+          "w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 flex items-center justify-center relative",
           searchMode && !sidebarCollapsed && "border-l-2",
         )}
         style={{
           color: searchMode && !sidebarCollapsed ? settings.accentColor : textSecondary,
           borderColor: settings.accentColor,
         }}
-        title="検索"
+        title="Search"
       >
-        <Search className="w-5 h-5 md:w-6 md:h-6" />
+        <Search className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6" />
       </button>
 
       <button
         onClick={() => handleModeClick(false, true, false, false)}
         className={cn(
-          "w-10 h-10 md:w-12 md:h-12 flex items-center justify-center relative",
+          "w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 flex items-center justify-center relative",
           historyMode && !sidebarCollapsed && "border-l-2",
         )}
         style={{
@@ -113,13 +111,13 @@ export function ActivityBar({
         }}
         title="Git History"
       >
-        <History className="w-5 h-5 md:w-6 md:h-6" />
+        <History className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6" />
       </button>
 
       <button
         onClick={() => handleModeClick(false, false, true, false)}
         className={cn(
-          "w-10 h-10 md:w-12 md:h-12 flex items-center justify-center relative",
+          "w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 flex items-center justify-center relative",
           diffMode && !sidebarCollapsed && "border-l-2",
         )}
         style={{
@@ -128,32 +126,32 @@ export function ActivityBar({
         }}
         title="Git Diff"
       >
-        <GitBranch className="w-5 h-5 md:w-6 md:h-6" />
+        <GitBranch className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6" />
       </button>
 
       <button
         onClick={() => handleModeClick(false, false, false, true)}
         className={cn(
-          "w-10 h-10 md:w-12 md:h-12 flex items-center justify-center relative",
+          "w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 flex items-center justify-center relative",
           extensionsMode && !sidebarCollapsed && "border-l-2",
         )}
         style={{
           color: extensionsMode && !sidebarCollapsed ? settings.accentColor : textSecondary,
           borderColor: settings.accentColor,
         }}
-        title="拡張機能"
+        title="Extensions"
       >
-        <Package className="w-5 h-5 md:w-6 md:h-6" />
+        <Package className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6" />
       </button>
 
       <div className="flex-1" />
       <button
         onClick={() => setSettingsOpen(true)}
-        className="w-10 h-10 md:w-12 md:h-12 flex items-center justify-center"
+        className="w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 flex items-center justify-center"
         style={{ color: textSecondary }}
-        title="設定"
+        title="Settings"
       >
-        <Settings className="w-5 h-5 md:w-6 md:h-6" />
+        <Settings className="w-4 h-4 sm:w-5 sm:h-5 md:w-6 md:h-6" />
       </button>
     </div>
   )

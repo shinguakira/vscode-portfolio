@@ -1,7 +1,7 @@
 "use client"
 
 import type React from "react"
-import { useState, useEffect } from "react"
+import { useState, useEffect, useCallback, useRef } from "react"
 import { fileTree, type FileItem, extensions } from "@/constants/portfolio-data"
 import { DEFAULT_SETTINGS } from "@/constants/vscode-config"
 import { PreviewPanel } from "@/components/preview-panel"
@@ -16,13 +16,14 @@ import { StatusBar } from "@/components/vscode/status-bar"
 import { SettingsPanel } from "@/components/vscode/settings-panel"
 import { LandscapePrompt } from "@/components/landscape-prompt"
 import { ResizableDivider } from "@/components/resizable-divider"
+import { TutorialOverlay } from "@/components/tutorial-overlay"
 import type { Tab, VSCodeSettings, SearchResult, Extension } from "@/types"
 
 export function VSCodeLayout() {
   const [openFolders, setOpenFolders] = useState<string[]>(["about", "projects"])
   const [tabs, setTabs] = useState<Tab[]>([])
   const [activeTab, setActiveTab] = useState<string | null>(null)
-  const [sidebarCollapsed, setSidebarCollapsed] = useState(false)
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(true)
   const [settingsOpen, setSettingsOpen] = useState(false)
   const [previewMode, setPreviewMode] = useState(false)
   const [searchMode, setSearchMode] = useState(false)
@@ -31,11 +32,14 @@ export function VSCodeLayout() {
   const [historyMode, setHistoryMode] = useState(false)
   const [diffMode, setDiffMode] = useState(false)
   const [extensionsMode, setExtensionsMode] = useState(false)
-  const [terminalOpen, setTerminalOpen] = useState(true)
+  const [terminalOpen, setTerminalOpen] = useState(false)
   const [activeExtension, setActiveExtension] = useState<Extension | null>(null)
 
-  const [sidebarWidth, setSidebarWidth] = useState(280)
-  const [terminalHeight, setTerminalHeight] = useState(300)
+  const [sidebarWidth, setSidebarWidth] = useState(240)
+  const [terminalHeight, setTerminalHeight] = useState(200)
+
+  const terminalCommandRef = useRef<((command: string) => void) | null>(null)
+  const tutorialRestartRef = useRef<(() => void) | null>(null)
 
   const [settings, setSettings] = useState<VSCodeSettings>({
     backgroundColor: DEFAULT_SETTINGS.backgroundColor || "#0d0d0d",
@@ -44,6 +48,117 @@ export function VSCodeLayout() {
     fontSize: DEFAULT_SETTINGS.fontSize || 14,
     previewTheme: DEFAULT_SETTINGS.previewTheme || "modern",
   })
+
+  const handleTutorialUIChange = useCallback(
+    (uiState: {
+      sidebarMode?: "explorer" | "search" | "gitHistory" | "gitDiff" | "extensions" | "settings"
+      terminalOpen?: boolean
+      sidebarCollapsed?: boolean
+    }) => {
+      if (uiState.sidebarCollapsed !== undefined) {
+        setSidebarCollapsed(uiState.sidebarCollapsed)
+      }
+      if (uiState.terminalOpen !== undefined) {
+        setTerminalOpen(uiState.terminalOpen)
+      }
+      if (uiState.sidebarMode) {
+        setSearchMode(false)
+        setHistoryMode(false)
+        setDiffMode(false)
+        setExtensionsMode(false)
+        setSettingsOpen(false)
+
+        switch (uiState.sidebarMode) {
+          case "explorer":
+            break
+          case "search":
+            setSearchMode(true)
+            break
+          case "gitHistory":
+            setHistoryMode(true)
+            break
+          case "gitDiff":
+            setDiffMode(true)
+            break
+          case "extensions":
+            setExtensionsMode(true)
+            break
+          case "settings":
+            setSettingsOpen(true)
+            break
+        }
+      }
+    },
+    [],
+  )
+
+  const handleTutorialOpenFile = useCallback((fileName: string) => {
+    const findFile = (items: FileItem[], path: string[] = []): { file: FileItem; path: string[] } | null => {
+      for (const item of items) {
+        if (item.type === "file" && item.name === fileName) {
+          return { file: item, path }
+        }
+        if (item.type === "folder" && item.children) {
+          const found = findFile(item.children, [...path, item.name])
+          if (found) return found
+        }
+      }
+      return null
+    }
+
+    const result = findFile(fileTree)
+    if (result) {
+      openFile(result.file, result.path)
+    }
+  }, [])
+
+  const handleTutorialOpenExtension = useCallback((extensionId: string) => {
+    openExtension(extensionId)
+  }, [])
+
+  const handleTutorialTogglePreview = useCallback((on: boolean) => {
+    setPreviewMode(on)
+  }, [])
+
+  const handleTutorialRunCommand = useCallback((command: string) => {
+    if (terminalCommandRef.current) {
+      terminalCommandRef.current(command)
+    }
+  }, [])
+
+  const handleHelpClick = useCallback(() => {
+    if (tutorialRestartRef.current) {
+      tutorialRestartRef.current()
+    }
+  }, [])
+
+  useEffect(() => {
+    const handleResize = () => {
+      const width = window.innerWidth
+      const isSmallMobile = width < 640 // iPhone SE landscape ~568px
+      const isMobile = width < 1024
+
+      if (isSmallMobile) {
+        setSidebarCollapsed(true)
+        setTerminalOpen(false)
+        setSidebarWidth(Math.min(160, width - 60))
+        setTerminalHeight(120)
+      } else if (isMobile) {
+        setSidebarCollapsed(true)
+        setTerminalOpen(false)
+        setSidebarWidth(Math.min(200, width - 80))
+        setTerminalHeight(150)
+      } else {
+        setSidebarCollapsed(false)
+        setSidebarWidth(280)
+        setTerminalHeight(200)
+      }
+    }
+
+    handleResize()
+    window.addEventListener("resize", handleResize)
+    return () => window.removeEventListener("resize", handleResize)
+  }, [])
 
   useEffect(() => {
     const saved = localStorage.getItem("vscode-settings")
@@ -232,6 +347,20 @@ export function VSCodeLayout() {
     <>
       <LandscapePrompt bgColor={bgMain} textColor={textPrimary} accentColor={settings.accentColor} />
 
+      <TutorialOverlay
+        onUIStateChange={handleTutorialUIChange}
+        onOpenFile={handleTutorialOpenFile}
+        onOpenExtension={handleTutorialOpenExtension}
+        onTogglePreview={handleTutorialTogglePreview}
+        onRunCommand={handleTutorialRunCommand}
+        accentColor={settings.accentColor}
+        backgroundColor={bgSidebar}
+        textColor={textPrimary}
+        onRestartRef={(fn) => {
+          tutorialRestartRef.current = fn
+        }}
+      />
+
       <div className="h-screen w-full flex flex-col font-mono overflow-hidden" style={{ backgroundColor: bgMain }}>
         <TitleBar
           settings={settings}
@@ -244,30 +373,33 @@ export function VSCodeLayout() {
           bgTitleBar={bgTitleBar}
           textPrimary={textPrimary}
           textSecondary={textSecondary}
+          onHelpClick={handleHelpClick}
         />
 
         <div className="flex flex-1 overflow-hidden">
-          <ActivityBar
-            settings={settings}
-            searchMode={searchMode}
-            historyMode={historyMode}
-            diffMode={diffMode}
-            extensionsMode={extensionsMode}
-            sidebarCollapsed={sidebarCollapsed}
-            setSearchMode={setSearchMode}
-            setHistoryMode={setHistoryMode}
-            setDiffMode={setDiffMode}
-            setExtensionsMode={setExtensionsMode}
-            setSidebarCollapsed={setSidebarCollapsed}
-            setSettingsOpen={setSettingsOpen}
-            bgActivityBar={bgActivityBar}
-            bgMain={bgMain}
-            textSecondary={textSecondary}
-          />
+          <div data-tutorial="activity-bar">
+            <ActivityBar
+              settings={settings}
+              searchMode={searchMode}
+              historyMode={historyMode}
+              diffMode={diffMode}
+              extensionsMode={extensionsMode}
+              sidebarCollapsed={sidebarCollapsed}
+              setSearchMode={setSearchMode}
+              setHistoryMode={setHistoryMode}
+              setDiffMode={setDiffMode}
+              setExtensionsMode={setExtensionsMode}
+              setSidebarCollapsed={setSidebarCollapsed}
+              setSettingsOpen={setSettingsOpen}
+              bgActivityBar={bgActivityBar}
+              bgMain={bgMain}
+              textSecondary={textSecondary}
+            />
+          </div>
 
           {!sidebarCollapsed && (
             <>
-              <div style={{ width: `${sidebarWidth}px` }} className="shrink-0 flex flex-col">
+              <div style={{ width: `${sidebarWidth}px` }} className="shrink-0 flex flex-col" data-tutorial="sidebar">
                 <SideBar
                   settings={settings}
                   sidebarCollapsed={sidebarCollapsed}
@@ -303,7 +435,6 @@ export function VSCodeLayout() {
             </>
           )}
 
-          {/* メインエリア */}
           <div className="flex-1 flex flex-col min-w-0" style={{ backgroundColor: bgMain }}>
             <TabBar
               tabs={tabs}
@@ -319,8 +450,7 @@ export function VSCodeLayout() {
               textSecondary={textSecondary}
             />
 
-            {/* コンテンツエリア */}
-            <div className="flex-1 overflow-hidden relative">
+            <div className="flex-1 overflow-hidden relative" data-tutorial="editor-area">
               {activeExtension ? (
                 <ExtensionShowcase extension={activeExtension} settings={settings} />
               ) : activeTabContent ? (
@@ -336,11 +466,11 @@ export function VSCodeLayout() {
                   <div className="h-full overflow-auto">
                     <div className="flex min-h-full">
                       <div
-                        className="w-8 md:w-12 flex flex-col items-end pr-1 md:pr-2 pt-4 select-none opacity-50 text-[10px] md:text-xs font-mono shrink-0"
+                        className="w-6 md:w-8 lg:w-12 flex flex-col items-end pr-1 md:pr-2 pt-2 md:pt-4 select-none opacity-50 text-[9px] md:text-[10px] lg:text-xs font-mono shrink-0"
                         style={{ color: textSecondary }}
                       >
                         {activeTabContent.content.split("\n").map((_, i) => (
-                          <div key={i} className="h-5 md:h-6 leading-5 md:leading-6">
+                          <div key={i} className="h-4 md:h-5 lg:h-6 leading-4 md:leading-5 lg:leading-6">
                             {i + 1}
                           </div>
                         ))}
@@ -355,8 +485,8 @@ export function VSCodeLayout() {
                             ),
                           )
                         }}
-                        className="flex-1 bg-transparent border-none outline-none resize-none p-2 md:p-4 font-mono text-[11px] md:text-sm leading-5 md:leading-6 whitespace-pre min-w-0"
-                        style={{ color: textPrimary, fontSize: `${Math.max(settings.fontSize - 2, 10)}px` }}
+                        className="flex-1 bg-transparent border-none outline-none resize-none p-1 md:p-2 lg:p-4 font-mono text-[10px] md:text-[11px] lg:text-sm leading-4 md:leading-5 lg:leading-6 whitespace-pre min-w-0"
+                        style={{ color: textPrimary, fontSize: `${Math.max(settings.fontSize - 3, 9)}px` }}
                         spellCheck={false}
                       />
                     </div>
@@ -367,14 +497,14 @@ export function VSCodeLayout() {
                   className="h-full flex flex-col items-center justify-center text-opacity-30 select-none px-4"
                   style={{ color: textPrimary }}
                 >
-                  <div className="w-16 h-16 md:w-24 md:h-24 mb-4 opacity-20">
+                  <div className="w-12 h-12 md:w-16 md:h-16 lg:w-24 lg:h-24 mb-2 md:mb-4 opacity-20">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1">
                       <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
                       <polyline points="14 2 14 8 20 8" />
                     </svg>
                   </div>
-                  <p className="text-xs md:text-sm text-center">ファイルを選択して開く</p>
-                  <p className="text-[10px] md:text-xs mt-2 opacity-50">⌘P でファイルを検索</p>
+                  <p className="text-[10px] md:text-xs lg:text-sm text-center">ファイルを選択して開く</p>
+                  <p className="text-[8px] md:text-[10px] lg:text-xs mt-1 md:mt-2 opacity-50">⌘P でファイルを検索</p>
                 </div>
               )}
             </div>
@@ -387,8 +517,19 @@ export function VSCodeLayout() {
                   bgColor={bgActivityBar}
                   hoverColor={settings.accentColor}
                 />
-                <div style={{ height: `${terminalHeight}px` }} className="shrink-0 flex flex-col">
-                  <TerminalPanel settings={settings} isOpen={true} onClose={() => setTerminalOpen(false)} />
+                <div
+                  style={{ height: `${terminalHeight}px`, minHeight: "150px" }}
+                  className="shrink-0 flex flex-col"
+                  data-tutorial="terminal"
+                >
+                  <TerminalPanel
+                    settings={settings}
+                    isOpen={true}
+                    onClose={() => setTerminalOpen(false)}
+                    onCommandRef={(fn) => {
+                      terminalCommandRef.current = fn
+                    }}
+                  />
                 </div>
               </>
             )}
