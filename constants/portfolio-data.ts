@@ -340,88 +340,56 @@ export const fileTree: FileItem[] = [
     icon: "📁",
     children: [
       {
-        name: "featured.tsx",
-        type: "file",
-        icon: "⚛️",
-        content: `import { Project } from '@/types'
-
-export const featuredProjects: Project[] = [
-  {
-    id: 1,
-    title: 'Eコマースプラットフォーム',
-    description: 'Next.js 14とSupabaseを使用した完全なEコマースソリューション',
-    technologies: ['Next.js', 'TypeScript', 'Supabase', 'Stripe', 'Tailwind CSS'],
-    image: '/projects/ecommerce.png',
-    liveUrl: 'https://example.com',
-    githubUrl: 'https://github.com/example/ecommerce',
-    features: [
-      '商品管理と在庫システム',
-      'Stripe決済統合',
-      'ユーザー認証と注文履歴',
-      'レスポンシブデザイン'
-    ]
-  },
-  {
-    id: 2,
-    title: 'リアルタイムチャットアプリ',
-    description: 'WebSocketを使用したリアルタイムコミュニケーションプラットフォーム',
-    technologies: ['React', 'Node.js', 'Socket.io', 'MongoDB', 'Redis'],
-    image: '/projects/chat-app.png',
-    liveUrl: 'https://example.com',
-    githubUrl: 'https://github.com/example/chat-app',
-    features: [
-      'リアルタイムメッセージング',
-      'プライベートとグループチャット',
-      'ファイル共有機能',
-      'オンラインステータス表示'
-    ]
-  },
-  {
-    id: 3,
-    title: 'プロジェクト管理ツール',
-    description: 'チーム向けの包括的なプロジェクト管理システム',
-    technologies: ['Next.js', 'tRPC', 'Prisma', 'PostgreSQL', 'Zustand'],
-    image: '/projects/project-manager.png',
-    liveUrl: 'https://example.com',
-    githubUrl: 'https://github.com/example/project-manager',
-    features: [
-      'かんばんボードとガントチャート',
-      'タスク管理と進捗追跡',
-      'チームコラボレーション機能',
-      'リアルタイム通知'
-    ]
-  }
-]
-
-export default featuredProjects`,
-      },
-      {
         name: "README.md",
         type: "file",
         icon: "📖",
         content: `# プロジェクト一覧
 
 このフォルダには、私が開発した主要なプロジェクトが含まれています。
+詳細は拡張機能パネルからご確認ください。
 
-## ハイライト
+## Featured Projects
 
-### 🛒 Eコマースプラットフォーム
-モダンなフルスタックEコマースソリューション。Next.js 14の最新機能を活用し、Supabaseでバックエンドを構築。Stripeを使用した安全な決済システムを実装。
+### Next.js Eコマースプラットフォーム v2.1.0
+Next.js 14とSupabaseを使用した完全なEコマースソリューション。
+Stripe決済、在庫管理、ユーザー認証などの機能を備えた実用的なプラットフォーム。
 
-### 💬 リアルタイムチャットアプリ
-WebSocketベースのリアルタイムコミュニケーションプラットフォーム。低遅延のメッセージング、ファイル共有、オンラインプレゼンス機能を備えています。
+**Technologies:** Next.js, TypeScript, Supabase, Stripe, Tailwind CSS
+**Downloads:** 15,000+ | **Rating:** 4.8/5
 
-### 📊 プロジェクト管理ツール
-チーム向けの包括的なプロジェクト管理システム。タスク管理、かんばんボード、リアルタイムコラボレーション機能を提供。
+---
 
-## 技術スタック
+### リアルタイムチャットアプリ v1.5.3
+WebSocketを使用した高性能なリアルタイムコミュニケーションプラットフォーム。
+プライベート/グループチャット、ファイル共有、通知機能を実装。
 
-- **フロントエンド**: React, Next.js, TypeScript, Tailwind CSS
-- **バックエンド**: Node.js, tRPC, Prisma
-- **データベース**: PostgreSQL, MongoDB, Supabase
-- **リアルタイム**: Socket.io, WebSocket
-- **認証**: NextAuth, Supabase Auth
-- **決済**: Stripe
+**Technologies:** React, Node.js, Socket.io, MongoDB, Redis
+**Downloads:** 8,500+ | **Rating:** 4.6/5
+
+---
+
+### プロジェクト管理ツール v3.0.1
+チーム向けの包括的なプロジェクト管理システム。
+かんばんボード、ガントチャート、タスク管理、リアルタイムコラボレーション機能を提供。
+
+**Technologies:** Next.js, tRPC, Prisma, PostgreSQL, Zustand
+**Downloads:** 12,000+ | **Rating:** 4.9/5
+
+---
+
+### React UIコンポーネントライブラリ v1.8.0
+再利用可能でアクセシブルなReactコンポーネントライブラリ。
+Tailwind CSSベースで、ダークモード、テーマカスタマイズをサポート。
+
+**Technologies:** React, TypeScript, Tailwind CSS, Storybook
+**Downloads:** 25,000+ | **Rating:** 4.7/5
+
+---
+
+## More Projects
+
+- AI コンテンツジェネレーター - OpenAI APIを使用したコンテンツ生成ツール
+- 画像最適化API - 高速な画像変換・圧縮APIサービス
 
 すべてのプロジェクトはGitHubで公開されており、デモもご覧いただけます。`,
       },

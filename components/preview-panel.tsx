@@ -433,44 +433,50 @@ export function PreviewPanel({ fileName, content, theme = "modern" }: PreviewPan
           <div className="relative max-w-5xl mx-auto px-8 py-20">
             <div className="text-center mb-16">
               <h1 className="text-8xl font-black mb-6 text-transparent bg-clip-text bg-gradient-to-r from-teal-400 via-green-400 to-emerald-400">
-                PROJECTS
+                EXTENSIONS
               </h1>
-              <p className="text-2xl text-gray-400 font-light">Featured Work Overview</p>
+              <p className="text-2xl text-gray-400 font-light">Featured Projects Gallery</p>
             </div>
 
-            <div className="space-y-8">
+            <div className="grid md:grid-cols-2 gap-6">
               {[
-                { title: "E-commerce Platform", desc: "Next.js 14とSupabaseを使用したフルスタックECサイト。Stripe決済、在庫管理機能搭載。", tags: ["Next.js", "Supabase", "Stripe"], color: "from-teal-500 to-green-500" },
-                { title: "Realtime Chat App", desc: "WebSocketベースのリアルタイムチャット。ファイル共有、オンラインステータス表示機能。", tags: ["React", "Socket.io", "Redis"], color: "from-green-500 to-emerald-500" },
-                { title: "Project Management", desc: "チーム向けプロジェクト管理ツール。カンバン、ガントチャート、リアルタイムコラボ機能。", tags: ["Next.js", "tRPC", "PostgreSQL"], color: "from-emerald-500 to-cyan-500" },
+                { icon: "🛒", name: "E-commerce Platform", version: "v2.1.0", desc: "Next.js 14 + Supabase + Stripe", downloads: "15K+", rating: 4.8, color: "from-emerald-500 to-teal-500" },
+                { icon: "💬", name: "Realtime Chat", version: "v1.5.3", desc: "React + Socket.io + MongoDB", downloads: "8.5K+", rating: 4.6, color: "from-blue-500 to-cyan-500" },
+                { icon: "📊", name: "Project Manager", version: "v3.0.1", desc: "Next.js + tRPC + PostgreSQL", downloads: "12K+", rating: 4.9, color: "from-violet-500 to-purple-500" },
+                { icon: "🎨", name: "UI Components", version: "v1.8.0", desc: "React + TypeScript + Tailwind", downloads: "25K+", rating: 4.7, color: "from-pink-500 to-rose-500" },
               ].map((project, i) => (
                 <div key={i} className="group relative">
-                  <div className={`absolute -inset-0.5 bg-gradient-to-r ${project.color} rounded-2xl blur opacity-20 group-hover:opacity-50 transition duration-500`} />
-                  <div className="relative bg-black border border-gray-800 rounded-2xl p-8">
-                    <h3 className={`text-2xl font-black mb-3 text-transparent bg-clip-text bg-gradient-to-r ${project.color}`}>
-                      {project.title}
-                    </h3>
-                    <p className="text-gray-400 mb-4">{project.desc}</p>
-                    <div className="flex gap-2">
-                      {project.tags.map((tag) => (
-                        <span key={tag} className="px-3 py-1 text-sm rounded-full border border-gray-700 text-gray-400">
-                          {tag}
-                        </span>
-                      ))}
+                  <div className={`absolute -inset-0.5 bg-gradient-to-r ${project.color} rounded-3xl blur opacity-30 group-hover:opacity-70 transition duration-500`} />
+                  <div className="relative bg-black border border-gray-800 rounded-3xl p-6 h-full">
+                    <div className="flex items-center gap-4 mb-4">
+                      <div className={`w-14 h-14 rounded-2xl bg-gradient-to-br ${project.color} flex items-center justify-center text-2xl`}>
+                        {project.icon}
+                      </div>
+                      <div>
+                        <h3 className="text-lg font-black text-white">{project.name}</h3>
+                        <span className="text-xs text-gray-500">{project.version}</span>
+                      </div>
+                    </div>
+                    <p className="text-gray-400 text-sm mb-4">{project.desc}</p>
+                    <div className="flex items-center justify-between text-sm">
+                      <span className="text-gray-500">{project.downloads} downloads</span>
+                      <span className="flex items-center gap-1 text-amber-400">
+                        {"★".repeat(Math.floor(project.rating))}
+                        <span className="text-gray-500 ml-1">{project.rating}</span>
+                      </span>
                     </div>
                   </div>
                 </div>
               ))}
             </div>
 
-            <div className="mt-12 p-8 border border-gray-800 rounded-2xl bg-black/50">
-              <h3 className="text-xl font-bold text-white mb-4">Tech Stack</h3>
-              <div className="flex flex-wrap gap-3">
-                {["React", "Next.js", "TypeScript", "Node.js", "PostgreSQL", "Supabase", "Socket.io", "Stripe"].map((tech) => (
-                  <span key={tech} className="px-4 py-2 rounded-xl bg-gradient-to-r from-teal-500/20 to-green-500/20 border border-teal-500/30 text-teal-400">
-                    {tech}
-                  </span>
-                ))}
+            <div className="mt-12 text-center">
+              <p className="text-gray-500 mb-6">詳細は拡張機能パネルからご確認ください</p>
+              <div className="inline-block group relative">
+                <div className="absolute -inset-1 bg-gradient-to-r from-teal-500 to-emerald-500 rounded-2xl blur opacity-50 group-hover:opacity-100 transition" />
+                <button className="relative px-10 py-4 bg-black rounded-2xl text-white font-bold">
+                  View All Extensions
+                </button>
               </div>
             </div>
           </div>
@@ -865,44 +871,45 @@ export function PreviewPanel({ fileName, content, theme = "modern" }: PreviewPan
         <div className="min-h-full bg-white">
           <div className="max-w-4xl mx-auto px-8 py-24">
             <div className="mb-16 border-b border-gray-200 pb-8">
-              <h1 className="text-5xl font-serif font-bold text-gray-900 mb-3">プロジェクト概要</h1>
-              <p className="text-xl text-gray-600">Projects Overview</p>
+              <h1 className="text-5xl font-serif font-bold text-gray-900 mb-3">プロジェクト一覧</h1>
+              <p className="text-xl text-gray-600">詳細は拡張機能パネルをご確認ください</p>
             </div>
 
-            <div className="prose prose-lg max-w-none">
-              <p className="text-gray-700 leading-relaxed mb-8">
-                このフォルダには、私が開発した主要なプロジェクトが含まれています。
-                モダンな技術スタックを活用し、ユーザー体験とパフォーマンスを重視した開発を行っています。
-              </p>
-
-              <h2 className="text-sm font-bold text-gray-500 uppercase tracking-wider mb-6 pb-3 border-b border-gray-200">
-                ハイライト
-              </h2>
-
-              <div className="space-y-8 mb-12">
-                {[
-                  { title: "Eコマースプラットフォーム", desc: "Next.js 14の最新機能を活用し、Supabaseでバックエンドを構築。Stripeを使用した安全な決済システムを実装。" },
-                  { title: "リアルタイムチャットアプリ", desc: "WebSocketベースのリアルタイムコミュニケーション。低遅延のメッセージング、ファイル共有機能を提供。" },
-                  { title: "プロジェクト管理ツール", desc: "タスク管理、かんばんボード、リアルタイムコラボレーション機能を備えたチーム向けツール。" },
-                ].map((project) => (
-                  <div key={project.title} className="border-l-2 border-gray-900 pl-6">
-                    <h3 className="text-lg font-bold text-gray-900 mb-2">{project.title}</h3>
-                    <p className="text-gray-600 text-sm leading-relaxed">{project.desc}</p>
+            <div className="space-y-8">
+              {[
+                { name: "Next.js Eコマースプラットフォーム", version: "v2.1.0", desc: "Next.js 14とSupabaseを使用した完全なEコマースソリューション。Stripe決済、在庫管理、ユーザー認証などの機能を備えた実用的なプラットフォーム。", tags: ["Next.js", "TypeScript", "Supabase", "Stripe"], downloads: "15,000+", rating: 4.8 },
+                { name: "リアルタイムチャットアプリ", version: "v1.5.3", desc: "WebSocketを使用した高性能なリアルタイムコミュニケーションプラットフォーム。プライベート/グループチャット、ファイル共有、通知機能を実装。", tags: ["React", "Socket.io", "MongoDB", "Redis"], downloads: "8,500+", rating: 4.6 },
+                { name: "プロジェクト管理ツール", version: "v3.0.1", desc: "チーム向けの包括的なプロジェクト管理システム。かんばんボード、ガントチャート、タスク管理、リアルタイムコラボレーション機能を提供。", tags: ["Next.js", "tRPC", "Prisma", "PostgreSQL"], downloads: "12,000+", rating: 4.9 },
+                { name: "React UIコンポーネントライブラリ", version: "v1.8.0", desc: "再利用可能でアクセシブルなReactコンポーネントライブラリ。Tailwind CSSベースで、ダークモード、テーマカスタマイズをサポート。", tags: ["React", "TypeScript", "Tailwind CSS", "Storybook"], downloads: "25,000+", rating: 4.7 },
+              ].map((project) => (
+                <div key={project.name} className="border border-gray-200 p-6 hover:border-gray-400 transition-colors">
+                  <div className="flex items-start justify-between mb-4">
+                    <div>
+                      <h3 className="text-xl font-bold text-gray-900">{project.name}</h3>
+                      <span className="text-sm text-gray-500">{project.version}</span>
+                    </div>
+                    <div className="text-right">
+                      <div className="flex items-center gap-1 text-amber-500 text-sm">
+                        {"★".repeat(Math.floor(project.rating))}
+                        <span className="text-gray-500 ml-1">{project.rating}</span>
+                      </div>
+                      <div className="text-xs text-gray-500">{project.downloads} downloads</div>
+                    </div>
                   </div>
-                ))}
-              </div>
+                  <p className="text-gray-600 text-sm leading-relaxed mb-4">{project.desc}</p>
+                  <div className="flex flex-wrap gap-2">
+                    {project.tags.map((tag) => (
+                      <span key={tag} className="px-2 py-1 text-xs border border-gray-300 text-gray-600">
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              ))}
+            </div>
 
-              <h2 className="text-sm font-bold text-gray-500 uppercase tracking-wider mb-6 pb-3 border-b border-gray-200">
-                技術スタック
-              </h2>
-
-              <div className="flex flex-wrap gap-2">
-                {["React", "Next.js", "TypeScript", "Node.js", "PostgreSQL", "Supabase", "Socket.io", "Stripe"].map((tech) => (
-                  <span key={tech} className="px-3 py-1 text-sm border border-gray-300 text-gray-700">
-                    {tech}
-                  </span>
-                ))}
-              </div>
+            <div className="mt-12 pt-8 border-t border-gray-200 text-center">
+              <p className="text-gray-600 mb-4">全てのプロジェクトの詳細、スクリーンショット、ライブデモは拡張機能パネルからご確認いただけます。</p>
             </div>
           </div>
         </div>
@@ -1599,59 +1606,64 @@ export function PreviewPanel({ fileName, content, theme = "modern" }: PreviewPan
       )
     }
 
-    // README用プレビュー
+    // README用プレビュー (Extension風)
     if (previewType === "readme") {
       return (
         <div className="min-h-full bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950">
           <div className="max-w-5xl mx-auto px-8 py-16">
             <div className="mb-12 text-center">
               <h1 className="text-5xl font-bold mb-4 bg-gradient-to-r from-teal-400 to-emerald-400 bg-clip-text text-transparent">
-                プロジェクト一覧
+                Featured Projects
               </h1>
-              <p className="text-xl text-slate-400">Featured Projects Overview</p>
+              <p className="text-xl text-slate-400">詳細は拡張機能パネルからご確認ください</p>
             </div>
 
-            <Card className="p-8 bg-slate-900/50 border-slate-800 backdrop-blur mb-8">
-              <p className="text-slate-300 text-lg leading-relaxed">
-                このフォルダには、私が開発した主要なプロジェクトが含まれています。
-                モダンな技術スタックで高品質なプロダクトを提供しています。
-              </p>
-            </Card>
-
-            <h2 className="text-2xl font-bold mb-6 text-white flex items-center gap-3">
-              <span className="text-3xl">&#11088;</span>
-              ハイライト
-            </h2>
-
-            <div className="space-y-6 mb-12">
+            <div className="space-y-6">
               {[
-                { title: "Eコマースプラットフォーム", desc: "Next.js 14とSupabaseを使用したフルスタックECサイト。Stripe決済、在庫管理機能を実装。", icon: "&#128722;", color: "from-teal-500 to-emerald-500" },
-                { title: "リアルタイムチャットアプリ", desc: "WebSocketベースのリアルタイムチャット。ファイル共有、オンラインステータス表示機能。", icon: "&#128172;", color: "from-emerald-500 to-green-500" },
-                { title: "プロジェクト管理ツール", desc: "カンバンボード、ガントチャート、リアルタイムコラボレーション機能を備えたチーム向けツール。", icon: "&#128202;", color: "from-green-500 to-cyan-500" },
+                { icon: "🛒", name: "Next.js Eコマースプラットフォーム", version: "v2.1.0", desc: "Next.js 14とSupabaseを使用した完全なEコマースソリューション。Stripe決済、在庫管理、ユーザー認証などの機能を備えた実用的なプラットフォーム。", tags: ["Next.js", "TypeScript", "Supabase", "Stripe"], downloads: "15,000+", rating: 4.8, color: "from-emerald-500 to-teal-500" },
+                { icon: "💬", name: "リアルタイムチャットアプリ", version: "v1.5.3", desc: "WebSocketを使用した高性能なリアルタイムコミュニケーションプラットフォーム。プライベート/グループチャット、ファイル共有、通知機能を実装。", tags: ["React", "Socket.io", "MongoDB", "Redis"], downloads: "8,500+", rating: 4.6, color: "from-blue-500 to-cyan-500" },
+                { icon: "📊", name: "プロジェクト管理ツール", version: "v3.0.1", desc: "チーム向けの包括的なプロジェクト管理システム。かんばんボード、ガントチャート、タスク管理、リアルタイムコラボレーション機能を提供。", tags: ["Next.js", "tRPC", "Prisma", "PostgreSQL"], downloads: "12,000+", rating: 4.9, color: "from-violet-500 to-purple-500" },
+                { icon: "🎨", name: "React UIコンポーネントライブラリ", version: "v1.8.0", desc: "再利用可能でアクセシブルなReactコンポーネントライブラリ。Tailwind CSSベースで、ダークモード、テーマカスタマイズをサポート。", tags: ["React", "TypeScript", "Tailwind CSS", "Storybook"], downloads: "25,000+", rating: 4.7, color: "from-pink-500 to-rose-500" },
               ].map((project, i) => (
-                <Card key={i} className="p-6 bg-slate-900/50 border-slate-800 backdrop-blur hover:border-slate-700 transition-all">
-                  <div className="flex items-start gap-4">
-                    <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${project.color} flex items-center justify-center text-2xl shrink-0`} dangerouslySetInnerHTML={{ __html: project.icon }} />
-                    <div>
-                      <h3 className={`text-xl font-bold mb-2 text-transparent bg-clip-text bg-gradient-to-r ${project.color}`}>
-                        {project.title}
-                      </h3>
-                      <p className="text-slate-400">{project.desc}</p>
+                <Card key={i} className="p-6 bg-slate-900/50 border-slate-800 backdrop-blur hover:border-slate-600 transition-all group">
+                  <div className="flex items-start gap-5">
+                    <div className={`w-16 h-16 rounded-2xl bg-gradient-to-br ${project.color} flex items-center justify-center text-3xl shrink-0 group-hover:scale-105 transition-transform`}>
+                      {project.icon}
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center gap-3 mb-2">
+                        <h3 className="text-xl font-bold text-white truncate">{project.name}</h3>
+                        <span className="text-sm text-slate-500 shrink-0">{project.version}</span>
+                      </div>
+                      <p className="text-slate-400 text-sm leading-relaxed mb-4">{project.desc}</p>
+                      <div className="flex flex-wrap gap-2 mb-4">
+                        {project.tags.map((tag) => (
+                          <Badge key={tag} className="px-2 py-1 bg-slate-800 text-slate-300 border-slate-700 text-xs">
+                            {tag}
+                          </Badge>
+                        ))}
+                      </div>
+                      <div className="flex items-center gap-6 text-sm">
+                        <span className="text-slate-500">
+                          <span className="text-slate-300 font-medium">{project.downloads}</span> downloads
+                        </span>
+                        <span className="flex items-center gap-1 text-amber-400">
+                          {"★".repeat(Math.floor(project.rating))}
+                          <span className="text-slate-500 ml-1">{project.rating}</span>
+                        </span>
+                      </div>
                     </div>
                   </div>
                 </Card>
               ))}
             </div>
 
-            <Card className="p-8 bg-slate-900/50 border-slate-800 backdrop-blur">
-              <h3 className="text-xl font-bold mb-6 text-white">技術スタック</h3>
-              <div className="flex flex-wrap gap-3">
-                {["React", "Next.js", "TypeScript", "Tailwind CSS", "Node.js", "tRPC", "Prisma", "PostgreSQL", "Supabase", "Socket.io", "Stripe"].map((tech) => (
-                  <Badge key={tech} className="px-4 py-2 bg-gradient-to-r from-teal-600/20 to-emerald-600/20 text-teal-400 border-teal-500/30 text-sm">
-                    {tech}
-                  </Badge>
-                ))}
-              </div>
+            <Card className="mt-8 p-6 bg-slate-800/30 border-slate-700 backdrop-blur">
+              <p className="text-slate-400 text-center">
+                全てのプロジェクトの詳細、スクリーンショット、ライブデモは
+                <span className="text-teal-400 font-medium"> 拡張機能パネル </span>
+                からご確認いただけます
+              </p>
             </Card>
           </div>
         </div>
