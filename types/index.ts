@@ -37,12 +37,14 @@ export interface Tab {
   isDirty: boolean
 }
 
+export type PreviewTheme = "modern" | "innovative" | "professional"
+
 export interface VSCodeSettings {
   backgroundColor: string
   textColor: string
   accentColor: string
   fontSize: number
-  previewTheme: "modern" | "innovative" | "professional"
+  previewTheme: PreviewTheme
 }
 
 export interface SearchResult {

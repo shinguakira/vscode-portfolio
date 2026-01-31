@@ -3,11 +3,12 @@
 import { Mail, Github, Linkedin, Twitter, ExternalLink, ChevronRight } from "lucide-react"
 import { Badge } from "@/components/ui/badge"
 import { Card } from "@/components/ui/card"
+import type { PreviewTheme } from "@/types"
 
 interface PreviewPanelProps {
   fileName: string
   content: string
-  theme?: "modern" | "innovative" | "professional" // テーマプロップを追加
+  theme?: PreviewTheme
 }
 
 export function PreviewPanel({ fileName, content, theme = "modern" }: PreviewPanelProps) {

@@ -1,5 +1,7 @@
 // VS Code UIの配色とレイアウト定数
 
+import type { PreviewTheme } from "@/types"
+
 export const DEFAULT_COLORS = {
   bgMain: "#0D0D0D",
   bgSidebar: "#141414",
@@ -70,30 +72,36 @@ export const THEME_PRESETS = [
   },
 ]
 
-export const PREVIEW_THEMES = [
+export const PREVIEW_THEMES: Array<{ id: PreviewTheme; name: string; description: string }> = [
   {
-    id: "modern" as const,
+    id: "modern",
     name: "モダン",
     description: "ダークテーマとグラデーションを使用した現代的なデザイン",
   },
   {
-    id: "innovative" as const,
+    id: "innovative",
     name: "革新的",
     description: "実験的で未来的な大胆なビジュアルデザイン",
   },
   {
-    id: "professional" as const,
+    id: "professional",
     name: "プロフェッショナル",
     description: "洗練されたミニマルでエレガントなデザイン",
   },
 ]
 
-export const DEFAULT_SETTINGS = {
+export const DEFAULT_SETTINGS: {
+  backgroundColor: string
+  textColor: string
+  accentColor: string
+  fontSize: number
+  previewTheme: PreviewTheme
+} = {
   backgroundColor: "#0D0D0D",
   textColor: "#CCCCCC",
   accentColor: "#007ACC",
   fontSize: 14,
-  previewTheme: "modern" as const,
+  previewTheme: "modern",
 }
 
 export const FILE_ICONS: Record<string, string> = {

@@ -17,7 +17,7 @@ import { SettingsPanel } from "@/components/vscode/settings-panel"
 import { LandscapePrompt } from "@/components/landscape-prompt"
 import { ResizableDivider } from "@/components/resizable-divider"
 import { TutorialOverlay } from "@/components/tutorial-overlay"
-import type { Tab, VSCodeSettings, SearchResult, Extension } from "@/types"
+import type { Tab, VSCodeSettings, SearchResult, Extension, PreviewTheme } from "@/types"
 
 export function VSCodeLayout() {
   const [openFolders, setOpenFolders] = useState<string[]>(["about", "projects"])
@@ -129,7 +129,7 @@ export function VSCodeLayout() {
 
   const handleTutorialChangePreviewTheme = useCallback((themeId: string) => {
     setSettings((prev) => {
-      const newSettings = { ...prev, previewTheme: themeId as "modern" | "innovative" | "professional" }
+      const newSettings = { ...prev, previewTheme: themeId as PreviewTheme }
       localStorage.setItem("vscode-settings", JSON.stringify(newSettings))
       return newSettings
     })
@@ -486,7 +486,7 @@ export function VSCodeLayout() {
                     <PreviewPanel
                       content={activeTabContent.content}
                       fileName={activeTabContent.name}
-                      settings={settings}
+                      theme={settings.previewTheme}
                     />
                   </div>
                 ) : (
