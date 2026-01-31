@@ -1,6 +1,6 @@
 // ポートフォリオのファイルツリーデータ
 
-import type { FileItem, GitCommit, SkillDiff, Extension } from "@/types"
+import type { FileItem, GitCommit, SkillDiff, Extension, ChangelogEntry } from "@/types"
 
 export const gitHistory: GitCommit[] = [
   {
@@ -50,108 +50,85 @@ export const gitHistory: GitCommit[] = [
   },
 ]
 
-export const skillDiffs: SkillDiff[] = [
+// アプリの変更履歴 (CHANGELOG)
+export const changelog: ChangelogEntry[] = [
   {
-    category: "フロントエンド",
+    version: "2.0.0",
+    date: "2024-01-15",
+    type: "major",
+    title: "VS Code風UIの完全リニューアル",
     changes: [
-      {
-        type: "added",
-        skill: "Next.js 14",
-        after: "App Router, Server Actions",
-        description: "最新のNext.js機能を実務で活用",
-      },
-      {
-        type: "improved",
-        skill: "TypeScript",
-        before: "70%",
-        after: "90%",
-        description: "高度な型システムの理解と実践",
-      },
-      {
-        type: "improved",
-        skill: "React",
-        before: "80%",
-        after: "95%",
-        description: "React 19とServer Componentsの習得",
-      },
-      {
-        type: "added",
-        skill: "Tailwind CSS",
-        after: "95%",
-        description: "デザインシステム構築とカスタマイズ",
-      },
+      { type: "added", description: "VS Code風のエディタUI全面採用" },
+      { type: "added", description: "3種類のプレビューテーマ(モダン/革新的/プロフェッショナル)" },
+      { type: "added", description: "インタラクティブチュートリアル機能" },
+      { type: "improved", description: "レスポンシブデザインの改善" },
     ],
   },
   {
-    category: "バックエンド",
+    version: "1.5.0",
+    date: "2023-11-20",
+    type: "minor",
+    title: "拡張機能パネルの追加",
     changes: [
-      {
-        type: "added",
-        skill: "Go",
-        after: "70%",
-        description: "マイクロサービス開発での採用",
-      },
-      {
-        type: "improved",
-        skill: "Node.js",
-        before: "75%",
-        after: "90%",
-        description: "パフォーマンス最適化とスケーリング",
-      },
-      {
-        type: "added",
-        skill: "tRPC",
-        after: "85%",
-        description: "型安全なAPI設計",
-      },
+      { type: "added", description: "プロジェクト一覧を拡張機能形式で表示" },
+      { type: "added", description: "スクリーンショットギャラリー機能" },
+      { type: "added", description: "GitHubリポジトリ/デモサイトへのリンク" },
+      { type: "improved", description: "検索機能の精度向上" },
     ],
   },
   {
-    category: "インフラ・DevOps",
+    version: "1.4.0",
+    date: "2023-09-10",
+    type: "minor",
+    title: "Git履歴ビューの実装",
     changes: [
-      {
-        type: "added",
-        skill: "Kubernetes",
-        after: "75%",
-        description: "コンテナオーケストレーション",
-      },
-      {
-        type: "improved",
-        skill: "Docker",
-        before: "60%",
-        after: "85%",
-        description: "マルチステージビルドとセキュリティ",
-      },
-      {
-        type: "added",
-        skill: "GitHub Actions",
-        after: "90%",
-        description: "CI/CDパイプラインの自動化",
-      },
+      { type: "added", description: "キャリア履歴をGitコミット形式で表示" },
+      { type: "added", description: "タイムライン形式のUI" },
+      { type: "improved", description: "アニメーションの追加" },
     ],
   },
   {
-    category: "ソフトスキル",
+    version: "1.3.0",
+    date: "2023-07-05",
+    type: "minor",
+    title: "ターミナル機能の追加",
     changes: [
-      {
-        type: "added",
-        skill: "チームリーダーシップ",
-        after: "12名のチームをリード",
-        description: "技術的意思決定とメンタリング",
-      },
-      {
-        type: "improved",
-        skill: "アーキテクチャ設計",
-        before: "小規模プロジェクト",
-        after: "大規模SaaSアーキテクチャ",
-        description: "スケーラブルなシステム設計",
-      },
-      {
-        type: "added",
-        skill: "技術記事執筆",
-        after: "月間10万PV",
-        description: "技術ブログでの情報発信",
-      },
+      { type: "added", description: "インタラクティブターミナルUI" },
+      { type: "added", description: "コマンド履歴機能" },
+      { type: "added", description: "help, about, skills コマンド" },
+    ],
+  },
+  {
+    version: "1.2.0",
+    date: "2023-05-15",
+    type: "minor",
+    title: "設定パネルの追加",
+    changes: [
+      { type: "added", description: "背景色/テキスト色/アクセントカラーのカスタマイズ" },
+      { type: "added", description: "フォントサイズ調整機能" },
+      { type: "improved", description: "設定のローカルストレージ保存" },
+    ],
+  },
+  {
+    version: "1.1.0",
+    date: "2023-03-20",
+    type: "minor",
+    title: "検索機能の実装",
+    changes: [
+      { type: "added", description: "ファイル内容の全文検索" },
+      { type: "added", description: "検索結果のハイライト表示" },
+      { type: "fixed", description: "ファイルツリーの展開状態の保持" },
+    ],
+  },
+  {
+    version: "1.0.0",
+    date: "2023-01-10",
+    type: "major",
+    title: "初回リリース",
+    changes: [
+      { type: "added", description: "VS Code風ファイルエクスプローラー" },
+      { type: "added", description: "Markdownファイルのプレビュー機能" },
+      { type: "added", description: "タブ形式のエディタUI" },
     ],
   },
 ]

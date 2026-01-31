@@ -29,6 +29,19 @@ export interface SkillDiff {
   changes: SkillChange[]
 }
 
+export interface ChangelogChange {
+  type: "added" | "improved" | "fixed" | "removed"
+  description: string
+}
+
+export interface ChangelogEntry {
+  version: string
+  date: string
+  type: "major" | "minor" | "patch"
+  title: string
+  changes: ChangelogChange[]
+}
+
 export interface Tab {
   id: string
   name: string
