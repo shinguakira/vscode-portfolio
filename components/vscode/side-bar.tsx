@@ -78,9 +78,9 @@ export function SideBar({
           <div key={item.name}>
             <button
               onClick={() => toggleFolder(itemPath.join("/"))}
-              className="flex items-center gap-1 w-full px-2 py-1 text-[11px] md:text-[13px] select-none"
+              className="flex items-center gap-0.5 sm:gap-1 w-full px-1 sm:px-2 py-0.5 sm:py-1 text-[9px] sm:text-[11px] md:text-[13px] select-none"
               style={{
-                paddingLeft: `${level * 8 + 8}px`,
+                paddingLeft: `${level * 6 + 6}px`,
                 color: textPrimary,
               }}
               onMouseEnter={(e) => {
@@ -90,8 +90,8 @@ export function SideBar({
                 e.currentTarget.style.backgroundColor = "transparent"
               }}
             >
-              {isOpen ? <ChevronDown className="w-3 h-3" /> : <ChevronRight className="w-3 h-3" />}
-              <span className="mr-1">{item.icon}</span>
+              {isOpen ? <ChevronDown className="w-2.5 h-2.5 sm:w-3 sm:h-3" /> : <ChevronRight className="w-2.5 h-2.5 sm:w-3 sm:h-3" />}
+              <span className="mr-0.5 sm:mr-1 text-[8px] sm:text-[11px]">{item.icon}</span>
               <span className="truncate">{item.name}</span>
             </button>
             {isOpen && item.children && <div>{renderFileTree(item.children, level + 1, itemPath)}</div>}
@@ -103,11 +103,12 @@ export function SideBar({
         <button
           key={item.name}
           onClick={() => openFile(item, path)}
-          className="flex items-center gap-1 w-full px-2 py-1 text-[11px] md:text-[13px] select-none"
+          className="flex items-center gap-0.5 sm:gap-1 w-full px-1 sm:px-2 py-0.5 sm:py-1 text-[9px] sm:text-[11px] md:text-[13px] select-none"
           style={{
-            paddingLeft: `${level * 8 + 24}px`,
+            paddingLeft: `${level * 6 + 18}px`,
             color: textPrimary,
           }}
+          data-tutorial={`file-${item.name}`}
           onMouseEnter={(e) => {
             e.currentTarget.style.backgroundColor = bgHover
           }}
@@ -115,7 +116,7 @@ export function SideBar({
             e.currentTarget.style.backgroundColor = "transparent"
           }}
         >
-          <span className="mr-1">{item.icon}</span>
+          <span className="mr-0.5 sm:mr-1 text-[8px] sm:text-[11px]">{item.icon}</span>
           <span className="truncate">{item.name}</span>
         </button>
       )
@@ -126,29 +127,29 @@ export function SideBar({
     <div
       className={cn(
         "border-r transition-all duration-200 flex flex-col shrink-0 h-full",
-        sidebarCollapsed ? "w-0" : "w-48 md:w-64",
+        sidebarCollapsed ? "w-0" : "w-full",
       )}
       style={{ backgroundColor: bgSidebar, borderColor: bgMain }}
     >
       {!sidebarCollapsed && (
         <>
           <div
-            className="h-8 md:h-9 px-2 md:px-4 flex items-center justify-between text-[10px] md:text-[11px] uppercase tracking-wide shrink-0"
+            className="h-6 sm:h-7 md:h-9 px-1 sm:px-2 md:px-4 flex items-center justify-between text-[8px] sm:text-[10px] md:text-[11px] uppercase tracking-wide shrink-0"
             style={{ color: textPrimary }}
           >
             <span className="truncate">
               {searchMode
-                ? "検索"
+                ? "Search"
                 : historyMode
-                  ? "Git History"
+                  ? "History"
                   : diffMode
-                    ? "Git Diff"
+                    ? "Diff"
                     : extensionsMode
-                      ? "拡張機能"
-                      : "エクスプローラー"}
+                      ? "Extensions"
+                      : "Explorer"}
             </span>
             <button onClick={() => setSidebarCollapsed(true)}>
-              <Menu className="w-4 h-4" />
+              <Menu className="w-3 h-3 sm:w-4 sm:h-4" />
             </button>
           </div>
 
