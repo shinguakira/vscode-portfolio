@@ -18,7 +18,7 @@ export interface TutorialStep {
     sidebarCollapsed?: boolean
   }
   action?: {
-    type: "openFile" | "openExtension" | "togglePreview" | "runCommand"
+    type: "openFile" | "openExtension" | "togglePreview" | "runCommand" | "changePreviewTheme" | "showPreviewWithTheme"
     payload?: string
   }
 }
@@ -267,6 +267,13 @@ export function TutorialOverlay({
           if (onChangePreviewTheme && step.action.payload) {
             onChangePreviewTheme(step.action.payload)
           }
+          // Scroll to preview theme selector in settings panel
+          setTimeout(() => {
+            const previewThemeSection = document.querySelector("[data-tutorial='preview-theme-selector']")
+            if (previewThemeSection) {
+              previewThemeSection.scrollIntoView({ behavior: "smooth", block: "center" })
+            }
+          }, 200)
           break
         case "showPreviewWithTheme":
           if (onChangePreviewTheme && step.action.payload) {
