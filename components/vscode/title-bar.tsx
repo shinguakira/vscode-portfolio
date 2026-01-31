@@ -55,6 +55,7 @@ export function TitleBar({
             className="p-0.5 sm:p-1 rounded hover:bg-white/10 transition-colors shrink-0"
             title="Help"
             style={{ color: textSecondary }}
+            data-tutorial="help-button"
           >
             <HelpCircle className="w-2.5 h-2.5 sm:w-3 sm:h-3 md:w-4 md:h-4" />
           </button>

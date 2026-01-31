@@ -129,7 +129,7 @@ export function VSCodeLayout() {
 
   const handleTutorialChangePreviewTheme = useCallback((themeId: string) => {
     setSettings((prev) => {
-      const newSettings = { ...prev, previewTheme: themeId as "terminal" | "notion" | "minimal" }
+      const newSettings = { ...prev, previewTheme: themeId as "modern" | "innovative" | "professional" }
       localStorage.setItem("vscode-settings", JSON.stringify(newSettings))
       return newSettings
     })
