@@ -1,7 +1,6 @@
 "use client"
 
 import type React from "react"
-import { useState } from "react"
 import {
   Menu,
   ChevronDown,
@@ -14,9 +13,7 @@ import {
   Download,
   ExternalLink,
   Github,
-  X,
 } from "lucide-react"
-import type { Extension } from "@/types"
 import { cn } from "@/lib/utils"
 import type { VSCodeSettings, FileItem, SearchResult } from "@/types"
 import { adjustBrightness } from "@/lib/color-utils"
@@ -71,8 +68,6 @@ export function SideBar({
   textSecondary,
   textMuted,
 }: SideBarProps) {
-  const [selectedExtension, setSelectedExtension] = useState<Extension | null>(null)
-
   const renderFileTree = (items: FileItem[], level = 0, path: string[] = []) => {
     return items.map((item) => {
       const itemPath = [...path, item.name]
@@ -176,7 +171,7 @@ export function SideBar({
                 {extensions.map((ext) => (
                   <div
                     key={ext.id}
-                    onClick={() => setSelectedExtension(ext)}
+                    onClick={() => openExtension(ext.id)}
                     className="px-2 md:px-3 py-2 md:py-3 border-b cursor-pointer transition-colors"
                     style={{ borderColor: bgMain }}
                     onMouseEnter={(e) => {
@@ -513,117 +508,6 @@ export function SideBar({
             )}
           </div>
         </>
-      )}
-
-      {/* Extension Detail Modal */}
-      {selectedExtension && (
-        <div
-          className="fixed inset-0 bg-black/70 flex items-center justify-center z-50 p-4"
-          onClick={() => setSelectedExtension(null)}
-        >
-          <div
-            className="max-w-2xl w-full max-h-[90vh] overflow-y-auto rounded-lg"
-            style={{ backgroundColor: bgSidebar }}
-            onClick={(e) => e.stopPropagation()}
-          >
-            <div className="p-6 md:p-8">
-              <div className="flex items-start justify-between mb-6">
-                <div className="flex items-center gap-4">
-                  <div className="text-4xl">{selectedExtension.icon}</div>
-                  <div>
-                    <h2 className="text-xl md:text-2xl font-bold" style={{ color: textPrimary }}>
-                      {selectedExtension.displayName}
-                    </h2>
-                    <p style={{ color: textMuted }}>
-                      v{selectedExtension.version} by {selectedExtension.publisher}
-                    </p>
-                  </div>
-                </div>
-                <button
-                  onClick={() => setSelectedExtension(null)}
-                  className="p-1 rounded hover:bg-white/10 transition"
-                  style={{ color: textSecondary }}
-                >
-                  <X className="w-6 h-6" />
-                </button>
-              </div>
-
-              <p className="mb-6" style={{ color: textSecondary }}>
-                {selectedExtension.description}
-              </p>
-
-              <div className="flex items-center gap-6 mb-6 text-sm">
-                <span className="flex items-center gap-1 text-amber-400">
-                  <Star className="w-4 h-4 fill-amber-400" />
-                  {selectedExtension.rating}
-                </span>
-                <span className="flex items-center gap-1" style={{ color: textMuted }}>
-                  <Download className="w-4 h-4" />
-                  {selectedExtension.downloads.toLocaleString()} downloads
-                </span>
-              </div>
-
-              <div className="mb-6">
-                <h3 className="font-bold mb-3" style={{ color: textPrimary }}>
-                  Features
-                </h3>
-                <ul className="space-y-2">
-                  {selectedExtension.features.map((f) => (
-                    <li
-                      key={f}
-                      className="pl-4 text-sm"
-                      style={{ color: textSecondary, borderLeft: `2px solid ${settings.accentColor}` }}
-                    >
-                      {f}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-
-              <div className="mb-6">
-                <h3 className="font-bold mb-3" style={{ color: textPrimary }}>
-                  Technologies
-                </h3>
-                <div className="flex flex-wrap gap-2">
-                  {selectedExtension.tags.map((tag) => (
-                    <span
-                      key={tag}
-                      className="px-2 py-1 text-xs rounded"
-                      style={{ backgroundColor: bgHover, color: textSecondary }}
-                    >
-                      {tag}
-                    </span>
-                  ))}
-                </div>
-              </div>
-
-              <div className="flex gap-3">
-                {selectedExtension.repository && (
-                  <a
-                    href={selectedExtension.repository}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="px-4 py-2 text-white text-sm flex items-center gap-2 rounded transition hover:opacity-80"
-                    style={{ backgroundColor: settings.accentColor }}
-                  >
-                    <Github className="w-4 h-4" /> GitHub
-                  </a>
-                )}
-                {selectedExtension.homepage && (
-                  <a
-                    href={selectedExtension.homepage}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="px-4 py-2 text-sm flex items-center gap-2 rounded border transition hover:opacity-80"
-                    style={{ borderColor: textMuted, color: textSecondary }}
-                  >
-                    <ExternalLink className="w-4 h-4" /> Demo
-                  </a>
-                )}
-              </div>
-            </div>
-          </div>
-        </div>
       )}
     </div>
   )
