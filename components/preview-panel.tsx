@@ -19,7 +19,8 @@ export function PreviewPanel({ fileName, content, theme = "modern" }: PreviewPan
     if (name.includes("faq")) return "faq"
     if (name.includes("profile") || name.includes("about")) return "profile"
     if (name.includes("experience")) return "experience"
-    if (name.includes("featured") || name.includes("projects") || name.includes("README")) return "projects"
+    if (name.includes("README")) return "readme"
+    if (name.includes("featured") || name.includes("projects")) return "projects"
     if (name.includes("skills")) return "skills"
     if (name.includes("contact")) return "contact"
     return "default"
@@ -322,6 +323,160 @@ export function PreviewPanel({ fileName, content, theme = "modern" }: PreviewPan
         </div>
       )
     }
+
+    if (previewType === "experience") {
+      return (
+        <div className="min-h-full bg-black relative overflow-hidden">
+          <div className="absolute inset-0">
+            <div className="absolute top-1/3 right-0 w-[500px] h-[500px] bg-violet-500/10 rounded-full blur-3xl" />
+            <div className="absolute bottom-0 left-1/4 w-[500px] h-[500px] bg-indigo-500/10 rounded-full blur-3xl" />
+          </div>
+
+          <div className="relative max-w-5xl mx-auto px-8 py-20">
+            <div className="text-center mb-16">
+              <h1 className="text-8xl font-black mb-6 text-transparent bg-clip-text bg-gradient-to-r from-violet-400 via-indigo-400 to-blue-400">
+                CAREER
+              </h1>
+              <p className="text-2xl text-gray-400 font-light">Professional Journey</p>
+            </div>
+
+            <div className="relative">
+              <div className="absolute left-1/2 top-0 bottom-0 w-px bg-gradient-to-b from-violet-500 via-indigo-500 to-blue-500" />
+
+              {[
+                { year: "2021 - Now", title: "シニアフルスタックエンジニア", company: "Tech Startup Inc.", desc: "SaaSプロダクトの設計と開発をリード。ユーザー数150%増加に貢献。", color: "from-violet-500 to-indigo-500" },
+                { year: "2019 - 2021", title: "フロントエンドエンジニア", company: "Web Agency Co.", desc: "20以上のプロジェクトを納品。React/Next.jsへの技術スタック移行を主導。", color: "from-indigo-500 to-blue-500" },
+                { year: "2019", title: "情報工学学士", company: "○○大学", desc: "情報工学を専攻し、Web開発の基礎を習得。", color: "from-blue-500 to-cyan-500" },
+              ].map((item, i) => (
+                <div key={i} className={`relative flex ${i % 2 === 0 ? 'justify-start' : 'justify-end'} mb-16`}>
+                  <div className={`w-5/12 ${i % 2 === 0 ? 'pr-12 text-right' : 'pl-12 text-left'}`}>
+                    <div className="group relative">
+                      <div className={`absolute -inset-0.5 bg-gradient-to-r ${item.color} rounded-2xl blur opacity-30 group-hover:opacity-70 transition duration-500`} />
+                      <div className="relative bg-black border border-gray-800 rounded-2xl p-8">
+                        <div className={`text-sm font-bold mb-2 text-transparent bg-clip-text bg-gradient-to-r ${item.color}`}>
+                          {item.year}
+                        </div>
+                        <h3 className="text-2xl font-black text-white mb-2">{item.title}</h3>
+                        <div className="text-gray-500 mb-4">{item.company}</div>
+                        <p className="text-gray-400">{item.desc}</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div className={`absolute left-1/2 top-8 w-4 h-4 rounded-full bg-gradient-to-r ${item.color} transform -translate-x-1/2`} />
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      )
+    }
+
+    if (previewType === "contact") {
+      return (
+        <div className="min-h-full bg-black relative overflow-hidden">
+          <div className="absolute inset-0">
+            <div className="absolute top-0 left-1/3 w-[600px] h-[600px] bg-rose-500/10 rounded-full blur-3xl" />
+            <div className="absolute bottom-1/4 right-0 w-[500px] h-[500px] bg-pink-500/10 rounded-full blur-3xl" />
+          </div>
+
+          <div className="relative max-w-4xl mx-auto px-8 py-20">
+            <div className="text-center mb-16">
+              <h1 className="text-8xl font-black mb-6 text-transparent bg-clip-text bg-gradient-to-r from-rose-400 via-pink-400 to-purple-400">
+                CONTACT
+              </h1>
+              <p className="text-2xl text-gray-400 font-light">Let's Build Something Amazing</p>
+            </div>
+
+            <div className="grid md:grid-cols-2 gap-8 mb-12">
+              {[
+                { icon: <Mail className="w-8 h-8" />, label: "Email", value: "contact@example.com", color: "from-rose-500 to-pink-500" },
+                { icon: <Github className="w-8 h-8" />, label: "GitHub", value: "@yourusername", color: "from-pink-500 to-purple-500" },
+                { icon: <Linkedin className="w-8 h-8" />, label: "LinkedIn", value: "yourprofile", color: "from-purple-500 to-indigo-500" },
+                { icon: <Twitter className="w-8 h-8" />, label: "Twitter/X", value: "@yourusername", color: "from-indigo-500 to-blue-500" },
+              ].map((item, i) => (
+                <div key={i} className="group relative">
+                  <div className={`absolute -inset-0.5 bg-gradient-to-r ${item.color} rounded-2xl blur opacity-30 group-hover:opacity-70 transition duration-500`} />
+                  <div className="relative bg-black border border-gray-800 rounded-2xl p-6 flex items-center gap-6">
+                    <div className={`w-16 h-16 rounded-xl bg-gradient-to-r ${item.color} flex items-center justify-center text-white`}>
+                      {item.icon}
+                    </div>
+                    <div>
+                      <div className="text-gray-500 text-sm mb-1">{item.label}</div>
+                      <div className="text-xl font-bold text-white">{item.value}</div>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            <div className="text-center">
+              <div className="inline-block group relative">
+                <div className="absolute -inset-1 bg-gradient-to-r from-rose-500 via-pink-500 to-purple-500 rounded-2xl blur opacity-75 group-hover:opacity-100 transition" />
+                <button className="relative px-12 py-6 bg-black rounded-2xl text-white font-bold text-xl">
+                  お仕事のご相談はこちら
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )
+    }
+
+    if (previewType === "readme") {
+      return (
+        <div className="min-h-full bg-black relative overflow-hidden">
+          <div className="absolute inset-0">
+            <div className="absolute top-1/4 left-0 w-[500px] h-[500px] bg-teal-500/10 rounded-full blur-3xl" />
+            <div className="absolute bottom-0 right-1/4 w-[500px] h-[500px] bg-green-500/10 rounded-full blur-3xl" />
+          </div>
+
+          <div className="relative max-w-5xl mx-auto px-8 py-20">
+            <div className="text-center mb-16">
+              <h1 className="text-8xl font-black mb-6 text-transparent bg-clip-text bg-gradient-to-r from-teal-400 via-green-400 to-emerald-400">
+                PROJECTS
+              </h1>
+              <p className="text-2xl text-gray-400 font-light">Featured Work Overview</p>
+            </div>
+
+            <div className="space-y-8">
+              {[
+                { title: "E-commerce Platform", desc: "Next.js 14とSupabaseを使用したフルスタックECサイト。Stripe決済、在庫管理機能搭載。", tags: ["Next.js", "Supabase", "Stripe"], color: "from-teal-500 to-green-500" },
+                { title: "Realtime Chat App", desc: "WebSocketベースのリアルタイムチャット。ファイル共有、オンラインステータス表示機能。", tags: ["React", "Socket.io", "Redis"], color: "from-green-500 to-emerald-500" },
+                { title: "Project Management", desc: "チーム向けプロジェクト管理ツール。カンバン、ガントチャート、リアルタイムコラボ機能。", tags: ["Next.js", "tRPC", "PostgreSQL"], color: "from-emerald-500 to-cyan-500" },
+              ].map((project, i) => (
+                <div key={i} className="group relative">
+                  <div className={`absolute -inset-0.5 bg-gradient-to-r ${project.color} rounded-2xl blur opacity-20 group-hover:opacity-50 transition duration-500`} />
+                  <div className="relative bg-black border border-gray-800 rounded-2xl p-8">
+                    <h3 className={`text-2xl font-black mb-3 text-transparent bg-clip-text bg-gradient-to-r ${project.color}`}>
+                      {project.title}
+                    </h3>
+                    <p className="text-gray-400 mb-4">{project.desc}</p>
+                    <div className="flex gap-2">
+                      {project.tags.map((tag) => (
+                        <span key={tag} className="px-3 py-1 text-sm rounded-full border border-gray-700 text-gray-400">
+                          {tag}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            <div className="mt-12 p-8 border border-gray-800 rounded-2xl bg-black/50">
+              <h3 className="text-xl font-bold text-white mb-4">Tech Stack</h3>
+              <div className="flex flex-wrap gap-3">
+                {["React", "Next.js", "TypeScript", "Node.js", "PostgreSQL", "Supabase", "Socket.io", "Stripe"].map((tech) => (
+                  <span key={tech} className="px-4 py-2 rounded-xl bg-gradient-to-r from-teal-500/20 to-green-500/20 border border-teal-500/30 text-teal-400">
+                    {tech}
+                  </span>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      )
+    }
   }
 
   if (theme === "professional") {
@@ -587,6 +742,167 @@ export function PreviewPanel({ fileName, content, theme = "modern" }: PreviewPan
                   </div>
                 </div>
               ))}
+            </div>
+          </div>
+        </div>
+      )
+    }
+
+    if (previewType === "experience") {
+      return (
+        <div className="min-h-full bg-white">
+          <div className="max-w-4xl mx-auto px-8 py-24">
+            <div className="mb-16 border-b border-gray-200 pb-8">
+              <h1 className="text-5xl font-serif font-bold text-gray-900 mb-3">経歴</h1>
+              <p className="text-xl text-gray-600">Professional Experience</p>
+            </div>
+
+            <div className="space-y-12 mb-16">
+              <div>
+                <h2 className="text-sm font-bold text-gray-500 uppercase tracking-wider mb-8 pb-3 border-b border-gray-200">
+                  職務経歴
+                </h2>
+                {[
+                  { period: "2021 - 現在", title: "シニアフルスタックエンジニア", company: "Tech Startup Inc.", achievements: ["SaaSプロダクトの設計と開発をリード", "ユーザー数150%増加に貢献", "パフォーマンス40%改善", "CI/CDパイプラインの構築"] },
+                  { period: "2019 - 2021", title: "フロントエンドエンジニア", company: "Web Agency Co.", achievements: ["20以上のプロジェクトを納品", "React/Next.jsへの技術移行を主導", "コードレビュー文化の確立"] },
+                ].map((job) => (
+                  <div key={job.period} className="grid md:grid-cols-12 gap-6 mb-10 pb-10 border-b border-gray-100 last:border-0">
+                    <div className="md:col-span-3">
+                      <div className="text-sm text-gray-500">{job.period}</div>
+                    </div>
+                    <div className="md:col-span-9">
+                      <h3 className="text-xl font-bold text-gray-900 mb-1">{job.title}</h3>
+                      <div className="text-gray-600 mb-4">{job.company}</div>
+                      <ul className="space-y-2">
+                        {job.achievements.map((a) => (
+                          <li key={a} className="text-sm text-gray-600 pl-4 border-l-2 border-gray-300">{a}</li>
+                        ))}
+                      </ul>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              <div>
+                <h2 className="text-sm font-bold text-gray-500 uppercase tracking-wider mb-8 pb-3 border-b border-gray-200">
+                  学歴
+                </h2>
+                <div className="grid md:grid-cols-12 gap-6">
+                  <div className="md:col-span-3">
+                    <div className="text-sm text-gray-500">2019年卒業</div>
+                  </div>
+                  <div className="md:col-span-9">
+                    <h3 className="text-xl font-bold text-gray-900 mb-1">情報工学学士</h3>
+                    <div className="text-gray-600">○○大学</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )
+    }
+
+    if (previewType === "contact") {
+      return (
+        <div className="min-h-full bg-white">
+          <div className="max-w-4xl mx-auto px-8 py-24">
+            <div className="mb-16 border-b border-gray-200 pb-8">
+              <h1 className="text-5xl font-serif font-bold text-gray-900 mb-3">お問い合わせ</h1>
+              <p className="text-xl text-gray-600">Get in Touch</p>
+            </div>
+
+            <div className="grid md:grid-cols-2 gap-16">
+              <div>
+                <h2 className="text-sm font-bold text-gray-500 uppercase tracking-wider mb-6 pb-3 border-b border-gray-200">
+                  連絡先
+                </h2>
+                <div className="space-y-6">
+                  {[
+                    { label: "Email", value: "contact@example.com", icon: <Mail className="w-5 h-5" /> },
+                    { label: "GitHub", value: "github.com/yourusername", icon: <Github className="w-5 h-5" /> },
+                    { label: "LinkedIn", value: "linkedin.com/in/yourprofile", icon: <Linkedin className="w-5 h-5" /> },
+                    { label: "Twitter", value: "@yourusername", icon: <Twitter className="w-5 h-5" /> },
+                  ].map((contact) => (
+                    <div key={contact.label} className="flex items-center gap-4">
+                      <div className="w-10 h-10 rounded-full border border-gray-200 flex items-center justify-center text-gray-600">
+                        {contact.icon}
+                      </div>
+                      <div>
+                        <div className="text-xs text-gray-500 uppercase tracking-wide">{contact.label}</div>
+                        <div className="text-gray-900">{contact.value}</div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              <div>
+                <h2 className="text-sm font-bold text-gray-500 uppercase tracking-wider mb-6 pb-3 border-b border-gray-200">
+                  対応可能な業務
+                </h2>
+                <ul className="space-y-3">
+                  {["Webアプリケーション開発", "フロントエンド開発", "バックエンド開発", "技術コンサルティング", "コードレビュー", "技術記事執筆"].map((service) => (
+                    <li key={service} className="text-gray-700 pl-4 border-l-2 border-gray-900">{service}</li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+
+            <div className="mt-16 pt-12 border-t border-gray-200 text-center">
+              <p className="text-gray-600 mb-6">お仕事のご依頼やご相談など、お気軽にご連絡ください。</p>
+              <button className="px-8 py-3 bg-gray-900 text-white font-medium hover:bg-gray-800 transition">
+                メールで問い合わせる
+              </button>
+            </div>
+          </div>
+        </div>
+      )
+    }
+
+    if (previewType === "readme") {
+      return (
+        <div className="min-h-full bg-white">
+          <div className="max-w-4xl mx-auto px-8 py-24">
+            <div className="mb-16 border-b border-gray-200 pb-8">
+              <h1 className="text-5xl font-serif font-bold text-gray-900 mb-3">プロジェクト概要</h1>
+              <p className="text-xl text-gray-600">Projects Overview</p>
+            </div>
+
+            <div className="prose prose-lg max-w-none">
+              <p className="text-gray-700 leading-relaxed mb-8">
+                このフォルダには、私が開発した主要なプロジェクトが含まれています。
+                モダンな技術スタックを活用し、ユーザー体験とパフォーマンスを重視した開発を行っています。
+              </p>
+
+              <h2 className="text-sm font-bold text-gray-500 uppercase tracking-wider mb-6 pb-3 border-b border-gray-200">
+                ハイライト
+              </h2>
+
+              <div className="space-y-8 mb-12">
+                {[
+                  { title: "Eコマースプラットフォーム", desc: "Next.js 14の最新機能を活用し、Supabaseでバックエンドを構築。Stripeを使用した安全な決済システムを実装。" },
+                  { title: "リアルタイムチャットアプリ", desc: "WebSocketベースのリアルタイムコミュニケーション。低遅延のメッセージング、ファイル共有機能を提供。" },
+                  { title: "プロジェクト管理ツール", desc: "タスク管理、かんばんボード、リアルタイムコラボレーション機能を備えたチーム向けツール。" },
+                ].map((project) => (
+                  <div key={project.title} className="border-l-2 border-gray-900 pl-6">
+                    <h3 className="text-lg font-bold text-gray-900 mb-2">{project.title}</h3>
+                    <p className="text-gray-600 text-sm leading-relaxed">{project.desc}</p>
+                  </div>
+                ))}
+              </div>
+
+              <h2 className="text-sm font-bold text-gray-500 uppercase tracking-wider mb-6 pb-3 border-b border-gray-200">
+                技術スタック
+              </h2>
+
+              <div className="flex flex-wrap gap-2">
+                {["React", "Next.js", "TypeScript", "Node.js", "PostgreSQL", "Supabase", "Socket.io", "Stripe"].map((tech) => (
+                  <span key={tech} className="px-3 py-1 text-sm border border-gray-300 text-gray-700">
+                    {tech}
+                  </span>
+                ))}
+              </div>
             </div>
           </div>
         </div>
@@ -1276,6 +1592,65 @@ export function PreviewPanel({ fileName, content, theme = "modern" }: PreviewPan
                   <p className="text-white font-semibold">情報工学学士</p>
                   <p className="text-slate-400">○○大学 • 2019年卒業</p>
                 </div>
+              </div>
+            </Card>
+          </div>
+        </div>
+      )
+    }
+
+    // README用プレビュー
+    if (previewType === "readme") {
+      return (
+        <div className="min-h-full bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950">
+          <div className="max-w-5xl mx-auto px-8 py-16">
+            <div className="mb-12 text-center">
+              <h1 className="text-5xl font-bold mb-4 bg-gradient-to-r from-teal-400 to-emerald-400 bg-clip-text text-transparent">
+                プロジェクト一覧
+              </h1>
+              <p className="text-xl text-slate-400">Featured Projects Overview</p>
+            </div>
+
+            <Card className="p-8 bg-slate-900/50 border-slate-800 backdrop-blur mb-8">
+              <p className="text-slate-300 text-lg leading-relaxed">
+                このフォルダには、私が開発した主要なプロジェクトが含まれています。
+                モダンな技術スタックで高品質なプロダクトを提供しています。
+              </p>
+            </Card>
+
+            <h2 className="text-2xl font-bold mb-6 text-white flex items-center gap-3">
+              <span className="text-3xl">&#11088;</span>
+              ハイライト
+            </h2>
+
+            <div className="space-y-6 mb-12">
+              {[
+                { title: "Eコマースプラットフォーム", desc: "Next.js 14とSupabaseを使用したフルスタックECサイト。Stripe決済、在庫管理機能を実装。", icon: "&#128722;", color: "from-teal-500 to-emerald-500" },
+                { title: "リアルタイムチャットアプリ", desc: "WebSocketベースのリアルタイムチャット。ファイル共有、オンラインステータス表示機能。", icon: "&#128172;", color: "from-emerald-500 to-green-500" },
+                { title: "プロジェクト管理ツール", desc: "カンバンボード、ガントチャート、リアルタイムコラボレーション機能を備えたチーム向けツール。", icon: "&#128202;", color: "from-green-500 to-cyan-500" },
+              ].map((project, i) => (
+                <Card key={i} className="p-6 bg-slate-900/50 border-slate-800 backdrop-blur hover:border-slate-700 transition-all">
+                  <div className="flex items-start gap-4">
+                    <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${project.color} flex items-center justify-center text-2xl shrink-0`} dangerouslySetInnerHTML={{ __html: project.icon }} />
+                    <div>
+                      <h3 className={`text-xl font-bold mb-2 text-transparent bg-clip-text bg-gradient-to-r ${project.color}`}>
+                        {project.title}
+                      </h3>
+                      <p className="text-slate-400">{project.desc}</p>
+                    </div>
+                  </div>
+                </Card>
+              ))}
+            </div>
+
+            <Card className="p-8 bg-slate-900/50 border-slate-800 backdrop-blur">
+              <h3 className="text-xl font-bold mb-6 text-white">技術スタック</h3>
+              <div className="flex flex-wrap gap-3">
+                {["React", "Next.js", "TypeScript", "Tailwind CSS", "Node.js", "tRPC", "Prisma", "PostgreSQL", "Supabase", "Socket.io", "Stripe"].map((tech) => (
+                  <Badge key={tech} className="px-4 py-2 bg-gradient-to-r from-teal-600/20 to-emerald-600/20 text-teal-400 border-teal-500/30 text-sm">
+                    {tech}
+                  </Badge>
+                ))}
               </div>
             </Card>
           </div>
