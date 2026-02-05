@@ -386,8 +386,8 @@ export function PreviewPanel({ fileName, content, theme = "modern" }: PreviewPan
                           </div>
                         </div>
                       </div>
-                    </div>
-                  ))}
+                    ))}
+                  </div>
                 </div>
               ))}
             </div>
@@ -1205,7 +1205,7 @@ export function PreviewPanel({ fileName, content, theme = "modern" }: PreviewPan
             <div className="grid md:grid-cols-2 gap-8 mb-16">
               <Card className="p-8 bg-slate-900/50 border-slate-800 backdrop-blur">
                 <h3 className="text-2xl font-bold mb-6 text-white flex items-center gap-2">
-                  <span className="text-3xl">💻</span>
+                  <Monitor className="w-7 h-7 text-blue-400" />
                   フロントエンド
                 </h3>
                 <div className="space-y-3">
@@ -1220,7 +1220,7 @@ export function PreviewPanel({ fileName, content, theme = "modern" }: PreviewPan
 
               <Card className="p-8 bg-slate-900/50 border-slate-800 backdrop-blur">
                 <h3 className="text-2xl font-bold mb-6 text-white flex items-center gap-2">
-                  <span className="text-3xl">⚙️</span>
+                  <Server className="w-7 h-7 text-purple-400" />
                   バックエンド
                 </h3>
                 <div className="space-y-3">
@@ -1237,7 +1237,7 @@ export function PreviewPanel({ fileName, content, theme = "modern" }: PreviewPan
             {/* 経験セクション */}
             <Card className="p-8 bg-slate-900/50 border-slate-800 backdrop-blur">
               <h3 className="text-2xl font-bold mb-6 text-white flex items-center gap-2">
-                <span className="text-3xl">🚀</span>
+                <Rocket className="w-7 h-7 text-pink-400" />
                 実績
               </h3>
               <div className="space-y-4 text-slate-300">
@@ -2121,8 +2121,8 @@ function ExtensionGallery({ theme }: { theme: PreviewTheme }) {
                 <X className="w-6 h-6" />
               </button>
               <div className="flex flex-col md:flex-row gap-6">
-                <div className={`w-20 h-20 md:w-24 md:h-24 rounded-2xl bg-gradient-to-br ${colorMap[selectedExtension.id] || "from-teal-500 to-emerald-500"} flex items-center justify-center text-4xl md:text-5xl shrink-0`}>
-                  {selectedExtension.icon}
+                <div className={`w-20 h-20 md:w-24 md:h-24 rounded-2xl bg-gradient-to-br ${colorMap[selectedExtension.id] || "from-teal-500 to-emerald-500"} flex items-center justify-center shrink-0`}>
+                  {getExtensionIcon(selectedExtension.id, "w-10 h-10 md:w-12 md:h-12 text-white")}
                 </div>
                 <div className="flex-1">
                   <h2 className="text-2xl md:text-3xl font-bold text-white mb-2">{selectedExtension.displayName}</h2>
