@@ -287,6 +287,16 @@ export function PreviewPanel({ fileName, content, theme = "modern" }: PreviewPan
     }
 
     if (previewType === "skills") {
+      const getRankColor = (rank: string) => {
+        switch (rank) {
+          case "S": return "from-amber-400 to-yellow-500"
+          case "A": return "from-rose-400 to-pink-500"
+          case "B": return "from-violet-400 to-purple-500"
+          case "C": return "from-blue-400 to-cyan-500"
+          default: return "from-gray-400 to-gray-500"
+        }
+      }
+
       return (
         <div className="min-h-full bg-black">
           <div className="max-w-7xl mx-auto px-8 py-20">
@@ -296,14 +306,14 @@ export function PreviewPanel({ fileName, content, theme = "modern" }: PreviewPan
 
             <div className="grid md:grid-cols-4 gap-8">
               {[
-                { name: "React", level: 95, color: "from-cyan-500 to-blue-500", icon: "⚛️" },
-                { name: "Next.js", level: 90, color: "from-blue-500 to-purple-500", icon: "▲" },
-                { name: "TypeScript", level: 90, color: "from-purple-500 to-pink-500", icon: "TS" },
-                { name: "Node.js", level: 85, color: "from-pink-500 to-red-500", icon: "🟢" },
-                { name: "Python", level: 80, color: "from-red-500 to-orange-500", icon: "🐍" },
-                { name: "PostgreSQL", level: 85, color: "from-orange-500 to-yellow-500", icon: "🗄️" },
-                { name: "Docker", level: 80, color: "from-cyan-500 to-teal-500", icon: "🐳" },
-                { name: "AWS", level: 75, color: "from-yellow-500 to-orange-500", icon: "☁️" },
+                { name: "React", years: 5, rank: "S", color: "from-cyan-500 to-blue-500", icon: "⚛️" },
+                { name: "Next.js", years: 4, rank: "S", color: "from-blue-500 to-purple-500", icon: "▲" },
+                { name: "TypeScript", years: 4, rank: "A", color: "from-purple-500 to-pink-500", icon: "TS" },
+                { name: "Node.js", years: 4, rank: "A", color: "from-pink-500 to-red-500", icon: "🟢" },
+                { name: "Python", years: 3, rank: "B", color: "from-red-500 to-orange-500", icon: "🐍" },
+                { name: "PostgreSQL", years: 3, rank: "A", color: "from-orange-500 to-yellow-500", icon: "🗄️" },
+                { name: "Docker", years: 2, rank: "B", color: "from-cyan-500 to-teal-500", icon: "🐳" },
+                { name: "AWS", years: 2, rank: "B", color: "from-yellow-500 to-orange-500", icon: "☁️" },
               ].map((skill, i) => (
                 <div key={i} className="group relative" style={{ animationDelay: `${i * 100}ms` }}>
                   <div
@@ -316,7 +326,12 @@ export function PreviewPanel({ fileName, content, theme = "modern" }: PreviewPan
                     >
                       {skill.name}
                     </div>
-                    <div className="text-4xl font-black text-white">{skill.level}%</div>
+                    <div className="flex items-center gap-3">
+                      <span className={`text-3xl font-black text-transparent bg-clip-text bg-gradient-to-r ${getRankColor(skill.rank)}`}>
+                        {skill.rank}
+                      </span>
+                      <span className="text-gray-500 text-lg">{skill.years}年</span>
+                    </div>
                   </div>
                 </div>
               ))}
@@ -815,6 +830,16 @@ export function PreviewPanel({ fileName, content, theme = "modern" }: PreviewPan
     }
 
     if (previewType === "skills") {
+      const getRankStyle = (rank: string) => {
+        switch (rank) {
+          case "S": return "bg-amber-100 text-amber-700 border-amber-300"
+          case "A": return "bg-rose-100 text-rose-700 border-rose-300"
+          case "B": return "bg-violet-100 text-violet-700 border-violet-300"
+          case "C": return "bg-blue-100 text-blue-700 border-blue-300"
+          default: return "bg-gray-100 text-gray-700 border-gray-300"
+        }
+      }
+
       return (
         <div className="min-h-full bg-white">
           <div className="max-w-5xl mx-auto px-8 py-24">
@@ -828,28 +853,28 @@ export function PreviewPanel({ fileName, content, theme = "modern" }: PreviewPan
                 {
                   category: "フロントエンド開発",
                   skills: [
-                    { name: "React / Next.js", level: 95 },
-                    { name: "TypeScript", level: 90 },
-                    { name: "Tailwind CSS", level: 95 },
-                    { name: "JavaScript ES6+", level: 95 },
+                    { name: "React / Next.js", years: 5, rank: "S" },
+                    { name: "TypeScript", years: 4, rank: "A" },
+                    { name: "Tailwind CSS", years: 3, rank: "S" },
+                    { name: "JavaScript ES6+", years: 6, rank: "S" },
                   ],
                 },
                 {
                   category: "バックエンド開発",
                   skills: [
-                    { name: "Node.js / Express", level: 90 },
-                    { name: "Python / Django", level: 80 },
-                    { name: "PostgreSQL", level: 85 },
-                    { name: "REST API設計", level: 90 },
+                    { name: "Node.js / Express", years: 4, rank: "A" },
+                    { name: "Python / Django", years: 3, rank: "B" },
+                    { name: "PostgreSQL", years: 3, rank: "A" },
+                    { name: "REST API設計", years: 4, rank: "A" },
                   ],
                 },
                 {
                   category: "開発ツール & DevOps",
                   skills: [
-                    { name: "Git / GitHub", level: 95 },
-                    { name: "Docker", level: 80 },
-                    { name: "CI/CD", level: 85 },
-                    { name: "AWS", level: 75 },
+                    { name: "Git / GitHub", years: 6, rank: "S" },
+                    { name: "Docker", years: 2, rank: "B" },
+                    { name: "CI/CD", years: 3, rank: "B" },
+                    { name: "AWS", years: 2, rank: "C" },
                   ],
                 },
               ].map((section) => (
@@ -857,18 +882,15 @@ export function PreviewPanel({ fileName, content, theme = "modern" }: PreviewPan
                   <h2 className="text-sm font-bold text-gray-500 uppercase tracking-wider mb-6 pb-3 border-b border-gray-200">
                     {section.category}
                   </h2>
-                  <div className="space-y-6">
+                  <div className="space-y-4">
                     {section.skills.map((skill) => (
-                      <div key={skill.name}>
-                        <div className="flex justify-between mb-2">
-                          <span className="text-gray-900 font-medium">{skill.name}</span>
-                          <span className="text-gray-600 font-mono text-sm">{skill.level}%</span>
-                        </div>
-                        <div className="h-2 bg-gray-100 rounded-full overflow-hidden">
-                          <div
-                            className="h-full bg-gray-900 transition-all duration-1000 ease-out"
-                            style={{ width: `${skill.level}%` }}
-                          />
+                      <div key={skill.name} className="flex items-center justify-between py-3 border-b border-gray-100">
+                        <span className="text-gray-900 font-medium">{skill.name}</span>
+                        <div className="flex items-center gap-3">
+                          <span className="text-gray-500 text-sm">{skill.years}年</span>
+                          <span className={`px-3 py-1 text-sm font-bold border rounded ${getRankStyle(skill.rank)}`}>
+                            {skill.rank}
+                          </span>
                         </div>
                       </div>
                     ))}
@@ -1248,18 +1270,28 @@ export function PreviewPanel({ fileName, content, theme = "modern" }: PreviewPan
 
     // スキル用プレビュー
     if (previewType === "skills") {
+      const getRankBadge = (rank: string) => {
+        switch (rank) {
+          case "S": return "bg-amber-500/20 text-amber-400 border-amber-500/50"
+          case "A": return "bg-rose-500/20 text-rose-400 border-rose-500/50"
+          case "B": return "bg-violet-500/20 text-violet-400 border-violet-500/50"
+          case "C": return "bg-blue-500/20 text-blue-400 border-blue-500/50"
+          default: return "bg-slate-500/20 text-slate-400 border-slate-500/50"
+        }
+      }
+
       const skills = {
         frontend: [
-          { name: "React", level: 95 },
-          { name: "Next.js", level: 90 },
-          { name: "TypeScript", level: 90 },
-          { name: "Tailwind CSS", level: 95 },
+          { name: "React", years: 5, rank: "S" },
+          { name: "Next.js", years: 4, rank: "S" },
+          { name: "TypeScript", years: 4, rank: "A" },
+          { name: "Tailwind CSS", years: 3, rank: "S" },
         ],
         backend: [
-          { name: "Node.js", level: 90 },
-          { name: "Python", level: 80 },
-          { name: "PostgreSQL", level: 85 },
-          { name: "MongoDB", level: 80 },
+          { name: "Node.js", years: 4, rank: "A" },
+          { name: "Python", years: 3, rank: "B" },
+          { name: "PostgreSQL", years: 3, rank: "A" },
+          { name: "MongoDB", years: 2, rank: "B" },
         ],
       }
 
@@ -1279,18 +1311,15 @@ export function PreviewPanel({ fileName, content, theme = "modern" }: PreviewPan
                   <span className="text-3xl">💻</span>
                   フロントエンド
                 </h3>
-                <div className="space-y-6">
+                <div className="space-y-4">
                   {skills.frontend.map((skill) => (
-                    <div key={skill.name}>
-                      <div className="flex justify-between mb-2">
-                        <span className="text-slate-300 font-medium">{skill.name}</span>
-                        <span className="text-blue-400 font-bold">{skill.level}%</span>
-                      </div>
-                      <div className="h-3 bg-slate-800 rounded-full overflow-hidden">
-                        <div
-                          className="h-full bg-gradient-to-r from-blue-500 to-purple-500 rounded-full transition-all duration-1000"
-                          style={{ width: `${skill.level}%` }}
-                        />
+                    <div key={skill.name} className="flex items-center justify-between p-3 rounded-lg bg-slate-800/50">
+                      <span className="text-slate-300 font-medium">{skill.name}</span>
+                      <div className="flex items-center gap-3">
+                        <span className="text-slate-500 text-sm">{skill.years}年</span>
+                        <span className={`px-3 py-1 text-sm font-bold border rounded-lg ${getRankBadge(skill.rank)}`}>
+                          {skill.rank}
+                        </span>
                       </div>
                     </div>
                   ))}
@@ -1302,18 +1331,15 @@ export function PreviewPanel({ fileName, content, theme = "modern" }: PreviewPan
                   <span className="text-3xl">⚙️</span>
                   バックエンド
                 </h3>
-                <div className="space-y-6">
+                <div className="space-y-4">
                   {skills.backend.map((skill) => (
-                    <div key={skill.name}>
-                      <div className="flex justify-between mb-2">
-                        <span className="text-slate-300 font-medium">{skill.name}</span>
-                        <span className="text-purple-400 font-bold">{skill.level}%</span>
-                      </div>
-                      <div className="h-3 bg-slate-800 rounded-full overflow-hidden">
-                        <div
-                          className="h-full bg-gradient-to-r from-purple-500 to-pink-500 rounded-full transition-all duration-1000"
-                          style={{ width: `${skill.level}%` }}
-                        />
+                    <div key={skill.name} className="flex items-center justify-between p-3 rounded-lg bg-slate-800/50">
+                      <span className="text-slate-300 font-medium">{skill.name}</span>
+                      <div className="flex items-center gap-3">
+                        <span className="text-slate-500 text-sm">{skill.years}年</span>
+                        <span className={`px-3 py-1 text-sm font-bold border rounded-lg ${getRankBadge(skill.rank)}`}>
+                          {skill.rank}
+                        </span>
                       </div>
                     </div>
                   ))}
