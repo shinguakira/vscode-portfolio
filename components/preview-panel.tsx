@@ -1,7 +1,13 @@
 "use client"
 
 import { useState } from "react"
-import { Mail, Github, Linkedin, Twitter, ExternalLink, ChevronRight, X, Star, Download } from "lucide-react"
+import { 
+  Mail, Github, Linkedin, Twitter, ExternalLink, ChevronRight, X, Star, Download,
+  Code2, Server, Database, Cloud, Container, Bot, Link2, BookOpen, Triangle, Braces,
+  Monitor, Cpu, Brain, HardDrive, Wrench, MessageSquare, Zap, Users, Rocket,
+  ShoppingCart, MessageCircle, LayoutDashboard, Palette, Sparkles, ImageIcon, GraduationCap
+} from "lucide-react"
+import type { LucideIcon } from "lucide-react"
 import { Badge } from "@/components/ui/badge"
 import { Card } from "@/components/ui/card"
 import type { PreviewTheme, Extension } from "@/types"
@@ -120,19 +126,19 @@ export function PreviewPanel({ fileName, content, theme = "modern" }: PreviewPan
                   title: "AI パワードEコマース",
                   desc: "機械学習を活用した次世代のショッピング体験",
                   gradient: "from-cyan-500 via-blue-500 to-purple-500",
-                  icon: "🤖",
+                  icon: Bot,
                 },
                 {
                   title: "リアルタイム3Dコラボレーション",
                   desc: "WebGLとWebSocketsによる革新的な共同作業空間",
                   gradient: "from-purple-500 via-pink-500 to-red-500",
-                  icon: "🎨",
+                  icon: Monitor,
                 },
                 {
                   title: "ブロックチェーンプラットフォーム",
                   desc: "分散型アプリケーションの未来を構築",
                   gradient: "from-pink-500 via-red-500 to-orange-500",
-                  icon: "⛓️",
+                  icon: Link2,
                 },
               ].map((project, i) => (
                 <div key={i} className="group relative">
@@ -142,9 +148,9 @@ export function PreviewPanel({ fileName, content, theme = "modern" }: PreviewPan
                   <div className="relative bg-black border border-gray-800 rounded-3xl overflow-hidden">
                     <div className="grid md:grid-cols-2">
                       <div
-                        className={`flex items-center justify-center text-[120px] bg-gradient-to-br ${project.gradient} p-20`}
+                        className={`flex items-center justify-center bg-gradient-to-br ${project.gradient} p-20`}
                       >
-                        {project.icon}
+                        <project.icon className="w-32 h-32 text-white" />
                       </div>
                       <div className="p-12 flex flex-col justify-center">
                         <h3
@@ -297,41 +303,50 @@ export function PreviewPanel({ fileName, content, theme = "modern" }: PreviewPan
         }
       }
 
-      const skillCategories = [
+      const skillCategories: {
+        title: string
+        gradient: string
+        icon: LucideIcon
+        skills: { name: string; years: number; rank: string; color: string; icon: LucideIcon }[]
+      }[] = [
         {
           title: "Frontend",
           gradient: "from-cyan-400 to-blue-500",
+          icon: Monitor,
           skills: [
-            { name: "React", years: 5, rank: "S", color: "from-cyan-500 to-blue-500", icon: "⚛️" },
-            { name: "Next.js", years: 4, rank: "S", color: "from-blue-500 to-purple-500", icon: "▲" },
-            { name: "TypeScript", years: 4, rank: "A", color: "from-purple-500 to-pink-500", icon: "TS" },
+            { name: "React", years: 5, rank: "S", color: "from-cyan-500 to-blue-500", icon: Code2 },
+            { name: "Next.js", years: 4, rank: "S", color: "from-blue-500 to-purple-500", icon: Triangle },
+            { name: "TypeScript", years: 4, rank: "A", color: "from-purple-500 to-pink-500", icon: Braces },
           ],
         },
         {
           title: "Backend",
           gradient: "from-green-400 to-emerald-500",
+          icon: Server,
           skills: [
-            { name: "Node.js", years: 4, rank: "A", color: "from-green-500 to-emerald-500", icon: "🟢" },
-            { name: "Python", years: 3, rank: "B", color: "from-emerald-500 to-teal-500", icon: "🐍" },
-            { name: "PostgreSQL", years: 3, rank: "A", color: "from-teal-500 to-cyan-500", icon: "🗄️" },
+            { name: "Node.js", years: 4, rank: "A", color: "from-green-500 to-emerald-500", icon: Server },
+            { name: "Python", years: 3, rank: "B", color: "from-emerald-500 to-teal-500", icon: Code2 },
+            { name: "PostgreSQL", years: 3, rank: "A", color: "from-teal-500 to-cyan-500", icon: Database },
           ],
         },
         {
           title: "AI / ML",
           gradient: "from-purple-400 to-pink-500",
+          icon: Brain,
           skills: [
-            { name: "OpenAI API", years: 2, rank: "A", color: "from-purple-500 to-pink-500", icon: "🤖" },
-            { name: "LangChain", years: 1, rank: "B", color: "from-pink-500 to-rose-500", icon: "🔗" },
-            { name: "RAG", years: 1, rank: "B", color: "from-rose-500 to-red-500", icon: "📚" },
+            { name: "OpenAI API", years: 2, rank: "A", color: "from-purple-500 to-pink-500", icon: Bot },
+            { name: "LangChain", years: 1, rank: "B", color: "from-pink-500 to-rose-500", icon: Link2 },
+            { name: "RAG", years: 1, rank: "B", color: "from-rose-500 to-red-500", icon: BookOpen },
           ],
         },
         {
           title: "Infrastructure",
           gradient: "from-orange-400 to-amber-500",
+          icon: Cloud,
           skills: [
-            { name: "AWS", years: 3, rank: "A", color: "from-orange-500 to-amber-500", icon: "☁️" },
-            { name: "Docker", years: 3, rank: "A", color: "from-amber-500 to-yellow-500", icon: "🐳" },
-            { name: "Terraform", years: 2, rank: "B", color: "from-yellow-500 to-lime-500", icon: "🏗️" },
+            { name: "AWS", years: 3, rank: "A", color: "from-orange-500 to-amber-500", icon: Cloud },
+            { name: "Docker", years: 3, rank: "A", color: "from-amber-500 to-yellow-500", icon: Container },
+            { name: "Terraform", years: 2, rank: "B", color: "from-yellow-500 to-lime-500", icon: HardDrive },
           ],
         },
       ]
@@ -346,7 +361,8 @@ export function PreviewPanel({ fileName, content, theme = "modern" }: PreviewPan
             <div className="space-y-16">
               {skillCategories.map((category, catIndex) => (
                 <div key={catIndex}>
-                  <h2 className={`text-3xl font-black mb-8 text-transparent bg-clip-text bg-gradient-to-r ${category.gradient}`}>
+                  <h2 className={`text-3xl font-black mb-8 text-transparent bg-clip-text bg-gradient-to-r ${category.gradient} flex items-center gap-3`}>
+                    <category.icon className="w-8 h-8" />
                     {category.title}
                   </h2>
                   <div className="grid md:grid-cols-3 gap-6">
@@ -356,7 +372,7 @@ export function PreviewPanel({ fileName, content, theme = "modern" }: PreviewPan
                           className={`absolute -inset-0.5 bg-gradient-to-br ${skill.color} rounded-2xl blur opacity-40 group-hover:opacity-100 transition duration-500`}
                         />
                         <div className="relative bg-black border border-gray-800 rounded-2xl p-6 text-center h-full flex flex-col items-center justify-center">
-                          <div className="text-5xl mb-4">{skill.icon}</div>
+                          <skill.icon className="w-12 h-12 mb-4 text-gray-400" />
                           <div
                             className={`text-2xl font-black mb-3 text-transparent bg-clip-text bg-gradient-to-r ${skill.color}`}
                           >
@@ -370,8 +386,8 @@ export function PreviewPanel({ fileName, content, theme = "modern" }: PreviewPan
                           </div>
                         </div>
                       </div>
-                    ))}
-                  </div>
+                    </div>
+                  ))}
                 </div>
               ))}
             </div>
@@ -397,30 +413,33 @@ export function PreviewPanel({ fileName, content, theme = "modern" }: PreviewPan
             </div>
 
             <div className="relative">
-              <div className="absolute left-1/2 top-0 bottom-0 w-px bg-gradient-to-b from-violet-500 via-indigo-500 to-blue-500" />
+              <div className="absolute left-1/2 top-0 bottom-0 w-px bg-gradient-to-b from-violet-500 via-indigo-500 to-blue-500"></div>
 
               {[
                 { year: "2021 - Now", title: "シニアフルスタックエンジニア", company: "Tech Startup Inc.", desc: "SaaSプロダクトの設計と開発をリード。ユーザー数150%増加に貢献。", color: "from-violet-500 to-indigo-500" },
                 { year: "2019 - 2021", title: "フロントエンドエンジニア", company: "Web Agency Co.", desc: "20以上のプロジェクトを納品。React/Next.jsへの技術スタック移行を主導。", color: "from-indigo-500 to-blue-500" },
                 { year: "2019", title: "情報工学学士", company: "○○大学", desc: "情報工学を専攻し、Web開発の基礎を習得。", color: "from-blue-500 to-cyan-500" },
-              ].map((item, i) => (
-                <div key={i} className={`relative flex ${i % 2 === 0 ? 'justify-start' : 'justify-end'} mb-16`}>
-                  <div className={`w-5/12 ${i % 2 === 0 ? 'pr-12 text-right' : 'pl-12 text-left'}`}>
-                    <div className="group relative">
-                      <div className={`absolute -inset-0.5 bg-gradient-to-r ${item.color} rounded-2xl blur opacity-30 group-hover:opacity-70 transition duration-500`} />
-                      <div className="relative bg-black border border-gray-800 rounded-2xl p-8">
-                        <div className={`text-sm font-bold mb-2 text-transparent bg-clip-text bg-gradient-to-r ${item.color}`}>
-                          {item.year}
+              ].map((item, i) => {
+                const isEven = i % 2 === 0
+                return (
+                  <div key={i} className={`relative flex ${isEven ? "justify-start" : "justify-end"} mb-16`}>
+                    <div className={`w-5/12 ${isEven ? "pr-12 text-right" : "pl-12 text-left"}`}>
+                      <div className="group relative">
+                        <div className={`absolute -inset-0.5 bg-gradient-to-r ${item.color} rounded-2xl blur opacity-30 group-hover:opacity-70 transition duration-500`}></div>
+                        <div className="relative bg-black border border-gray-800 rounded-2xl p-8">
+                          <div className={`text-sm font-bold mb-2 text-transparent bg-clip-text bg-gradient-to-r ${item.color}`}>
+                            {item.year}
+                          </div>
+                          <h3 className="text-2xl font-black text-white mb-2">{item.title}</h3>
+                          <div className="text-gray-500 mb-4">{item.company}</div>
+                          <p className="text-gray-400">{item.desc}</p>
                         </div>
-                        <h3 className="text-2xl font-black text-white mb-2">{item.title}</h3>
-                        <div className="text-gray-500 mb-4">{item.company}</div>
-                        <p className="text-gray-400">{item.desc}</p>
                       </div>
                     </div>
+                    <div className={`absolute left-1/2 top-8 w-4 h-4 rounded-full bg-gradient-to-r ${item.color} transform -translate-x-1/2`}></div>
                   </div>
-                  <div className={`absolute left-1/2 top-8 w-4 h-4 rounded-full bg-gradient-to-r ${item.color} transform -translate-x-1/2`} />
-                </div>
-              ))}
+                )
+              })}
             </div>
           </div>
         </div>
@@ -1043,14 +1062,14 @@ export function PreviewPanel({ fileName, content, theme = "modern" }: PreviewPan
 
             <div className="grid md:grid-cols-2 gap-8 mb-12">
               {[
-                { title: "フルスタック開発力", desc: "フロントエンドからバックエンド、インフラまで一貫して対応。プロジェクト全体を俯瞰した設計・実装が可能です。", icon: "🔧", color: "from-emerald-500 to-cyan-500" },
-                { title: "モダン技術への適応力", desc: "Next.js 14、TypeScript厳密モード、tRPCなど最新技術を積極採用。常に技術のアップデートを続けています。", icon: "🚀", color: "from-cyan-500 to-blue-500" },
-                { title: "パフォーマンス最適化", desc: "Core Web Vitalsを意識した実装、バンドルサイズ最適化、DBクエリ改善などの経験が豊富です。", icon: "⚡", color: "from-blue-500 to-purple-500" },
-                { title: "リーダーシップ", desc: "12名規模のチームリード経験。コードレビュー文化の醸成やメンバーの成長サポートを実践してきました。", icon: "👥", color: "from-purple-500 to-pink-500" },
+                { title: "フルスタック開発力", desc: "フロントエンドからバックエンド、インフラまで一貫して対応。プロジェクト全体を俯瞰した設計・実装が可能です。", icon: Wrench, color: "from-emerald-500 to-cyan-500" },
+                { title: "モダン技術への適応力", desc: "Next.js 14、TypeScript厳密モード、tRPCなど最新技術を積極採用。常に技術のアップデートを続けています。", icon: Rocket, color: "from-cyan-500 to-blue-500" },
+                { title: "パフォーマンス最適化", desc: "Core Web Vitalsを意識した実装、バンドルサイズ最適化、DBクエリ改善などの経験が豊富です。", icon: Zap, color: "from-blue-500 to-purple-500" },
+                { title: "リーダーシップ", desc: "12名規模のチームリード経験。コードレビュー文化の醸成やメンバーの成長サポートを実践してきました。", icon: Users, color: "from-purple-500 to-pink-500" },
               ].map((item, i) => (
                 <Card key={i} className="p-8 bg-slate-900/50 border-slate-800 backdrop-blur hover:border-slate-700 transition-all group">
-                  <div className={`w-16 h-16 rounded-2xl bg-gradient-to-br ${item.color} flex items-center justify-center text-3xl mb-6 group-hover:scale-110 transition-transform`}>
-                    {item.icon}
+                  <div className={`w-16 h-16 rounded-2xl bg-gradient-to-br ${item.color} flex items-center justify-center mb-6 group-hover:scale-110 transition-transform`}>
+                    <item.icon className="w-8 h-8 text-white" />
                   </div>
                   <h3 className={`text-2xl font-bold mb-3 text-transparent bg-clip-text bg-gradient-to-r ${item.color}`}>
                     {item.title}
@@ -1062,7 +1081,7 @@ export function PreviewPanel({ fileName, content, theme = "modern" }: PreviewPan
 
             <Card className="p-8 bg-slate-900/50 border-slate-800 backdrop-blur mb-8">
               <h3 className="text-2xl font-bold mb-6 text-white flex items-center gap-3">
-                <span className="text-3xl">💬</span>
+                <MessageSquare className="w-7 h-7 text-cyan-400" />
                 ソフトスキル
               </h3>
               <div className="grid md:grid-cols-3 gap-6">
@@ -1360,7 +1379,7 @@ export function PreviewPanel({ fileName, content, theme = "modern" }: PreviewPan
             <div className="grid md:grid-cols-2 gap-8">
               <Card className="p-6 bg-slate-900/50 border-slate-800 backdrop-blur">
                 <h3 className="text-xl font-bold mb-6 text-white flex items-center gap-3">
-                  <span className="text-2xl">💻</span>
+                  <Monitor className="w-6 h-6 text-blue-400" />
                   フロントエンド
                 </h3>
                 <div className="space-y-3">
@@ -1380,7 +1399,7 @@ export function PreviewPanel({ fileName, content, theme = "modern" }: PreviewPan
 
               <Card className="p-6 bg-slate-900/50 border-slate-800 backdrop-blur">
                 <h3 className="text-xl font-bold mb-6 text-white flex items-center gap-3">
-                  <span className="text-2xl">⚙️</span>
+                  <Server className="w-6 h-6 text-green-400" />
                   バックエンド
                 </h3>
                 <div className="space-y-3">
@@ -1400,7 +1419,7 @@ export function PreviewPanel({ fileName, content, theme = "modern" }: PreviewPan
 
               <Card className="p-6 bg-slate-900/50 border-slate-800 backdrop-blur">
                 <h3 className="text-xl font-bold mb-6 text-white flex items-center gap-3">
-                  <span className="text-2xl">🤖</span>
+                  <Brain className="w-6 h-6 text-purple-400" />
                   AI / ML
                 </h3>
                 <div className="space-y-3">
@@ -1420,7 +1439,7 @@ export function PreviewPanel({ fileName, content, theme = "modern" }: PreviewPan
 
               <Card className="p-6 bg-slate-900/50 border-slate-800 backdrop-blur">
                 <h3 className="text-xl font-bold mb-6 text-white flex items-center gap-3">
-                  <span className="text-2xl">☁️</span>
+                  <Cloud className="w-6 h-6 text-orange-400" />
                   インフラ
                 </h3>
                 <div className="space-y-3">
@@ -1441,7 +1460,7 @@ export function PreviewPanel({ fileName, content, theme = "modern" }: PreviewPan
 
             <Card className="mt-8 p-6 bg-slate-900/50 border-slate-800 backdrop-blur">
               <h3 className="text-xl font-bold mb-6 text-white flex items-center gap-3">
-                <span className="text-2xl">🛠️</span>
+                <Wrench className="w-6 h-6 text-slate-400" />
                 その他のツール & 技術
               </h3>
               <div className="flex flex-wrap gap-3">
@@ -1616,10 +1635,12 @@ export function PreviewPanel({ fileName, content, theme = "modern" }: PreviewPan
             <Card className="mt-8 p-8 bg-slate-900/50 border-slate-800 backdrop-blur">
               <h3 className="text-2xl font-bold text-white mb-4">学歴</h3>
               <div className="flex items-start gap-3">
-                <div className="w-12 h-12 rounded-lg bg-blue-600/20 flex items-center justify-center text-2xl">🎓</div>
+                <div className="w-12 h-12 rounded-lg bg-blue-600/20 flex items-center justify-center">
+                  <GraduationCap className="w-6 h-6 text-blue-400" />
+                </div>
                 <div>
                   <p className="text-white font-semibold">情報工学学士</p>
-                  <p className="text-slate-400">○○大学 • 2019年卒業</p>
+                  <div className="text-slate-400">{"○○大学 • 2019年卒業"}</div>
                 </div>
               </div>
             </Card>
@@ -1642,6 +1663,24 @@ export function PreviewPanel({ fileName, content, theme = "modern" }: PreviewPan
       </Card>
     </div>
   )
+}
+
+// Extension icon mapping
+const extensionIconMap: Record<string, LucideIcon> = {
+  "nextjs-ecommerce": ShoppingCart,
+  "realtime-chat": MessageCircle,
+  "project-management": LayoutDashboard,
+  "design-system": Palette,
+  "ai-content-generator": Sparkles,
+  "image-optimizer": ImageIcon,
+}
+
+function getExtensionIcon(extId: string, className?: string) {
+  const IconComponent = extensionIconMap[extId]
+  if (IconComponent) {
+    return <IconComponent className={className || "w-6 h-6"} />
+  }
+  return <Code2 className={className || "w-6 h-6"} />
 }
 
 // Extension Gallery Component with Modal
@@ -1674,7 +1713,9 @@ function ExtensionGallery({ theme }: { theme: PreviewTheme }) {
                 className="border border-gray-200 p-6 hover:border-gray-400 transition-colors cursor-pointer"
               >
                 <div className="flex items-start gap-4">
-                  <div className="text-3xl">{ext.icon}</div>
+                  <div className="w-10 h-10 flex items-center justify-center text-gray-600">
+                    {getExtensionIcon(ext.id, "w-8 h-8")}
+                  </div>
                   <div className="flex-1">
                     <div className="flex items-center justify-between mb-2">
                       <h3 className="text-xl font-bold text-gray-900">{ext.displayName}</h3>
@@ -1708,8 +1749,8 @@ function ExtensionGallery({ theme }: { theme: PreviewTheme }) {
                   <X className="w-6 h-6" />
                 </button>
                 <div className="flex flex-col md:flex-row gap-6">
-                  <div className="w-20 h-20 md:w-24 md:h-24 rounded-xl bg-gray-100 flex items-center justify-center text-4xl md:text-5xl shrink-0 border border-gray-200">
-                    {selectedExtension.icon}
+                  <div className="w-20 h-20 md:w-24 md:h-24 rounded-xl bg-gray-100 flex items-center justify-center shrink-0 border border-gray-200">
+                    {getExtensionIcon(selectedExtension.id, "w-10 h-10 md:w-12 md:h-12 text-gray-600")}
                   </div>
                   <div className="flex-1">
                     <h2 className="text-2xl md:text-3xl font-serif font-bold text-gray-900 mb-2">{selectedExtension.displayName}</h2>
@@ -1856,8 +1897,8 @@ function ExtensionGallery({ theme }: { theme: PreviewTheme }) {
                 <div className={`absolute -inset-0.5 bg-gradient-to-r ${colorMap[ext.id] || "from-teal-500 to-green-500"} rounded-3xl blur opacity-30 group-hover:opacity-70 transition duration-500`} />
                 <div className="relative bg-black border border-gray-800 rounded-3xl p-6 h-full">
                   <div className="flex items-center gap-4 mb-4">
-                    <div className={`w-14 h-14 rounded-2xl bg-gradient-to-br ${colorMap[ext.id] || "from-teal-500 to-green-500"} flex items-center justify-center text-2xl`}>
-                      {ext.icon}
+                    <div className={`w-14 h-14 rounded-2xl bg-gradient-to-br ${colorMap[ext.id] || "from-teal-500 to-green-500"} flex items-center justify-center`}>
+                      {getExtensionIcon(ext.id, "w-7 h-7 text-white")}
                     </div>
                     <div>
                       <h3 className="text-lg font-black text-white">{ext.displayName}</h3>
@@ -2038,8 +2079,8 @@ function ExtensionGallery({ theme }: { theme: PreviewTheme }) {
               className="p-6 bg-slate-900/50 border-slate-800 backdrop-blur hover:border-slate-600 transition-all cursor-pointer group"
             >
               <div className="flex items-start gap-5">
-                <div className={`w-16 h-16 rounded-2xl bg-gradient-to-br ${colorMap[ext.id] || "from-teal-500 to-emerald-500"} flex items-center justify-center text-3xl shrink-0 group-hover:scale-105 transition-transform`}>
-                  {ext.icon}
+                <div className={`w-16 h-16 rounded-2xl bg-gradient-to-br ${colorMap[ext.id] || "from-teal-500 to-emerald-500"} flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform`}>
+                  {getExtensionIcon(ext.id, "w-8 h-8 text-white")}
                 </div>
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-3 mb-2">
