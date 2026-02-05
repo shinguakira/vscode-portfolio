@@ -297,6 +297,45 @@ export function PreviewPanel({ fileName, content, theme = "modern" }: PreviewPan
         }
       }
 
+      const skillCategories = [
+        {
+          title: "Frontend",
+          gradient: "from-cyan-400 to-blue-500",
+          skills: [
+            { name: "React", years: 5, rank: "S", color: "from-cyan-500 to-blue-500", icon: "⚛️" },
+            { name: "Next.js", years: 4, rank: "S", color: "from-blue-500 to-purple-500", icon: "▲" },
+            { name: "TypeScript", years: 4, rank: "A", color: "from-purple-500 to-pink-500", icon: "TS" },
+          ],
+        },
+        {
+          title: "Backend",
+          gradient: "from-green-400 to-emerald-500",
+          skills: [
+            { name: "Node.js", years: 4, rank: "A", color: "from-green-500 to-emerald-500", icon: "🟢" },
+            { name: "Python", years: 3, rank: "B", color: "from-emerald-500 to-teal-500", icon: "🐍" },
+            { name: "PostgreSQL", years: 3, rank: "A", color: "from-teal-500 to-cyan-500", icon: "🗄️" },
+          ],
+        },
+        {
+          title: "AI / ML",
+          gradient: "from-purple-400 to-pink-500",
+          skills: [
+            { name: "OpenAI API", years: 2, rank: "A", color: "from-purple-500 to-pink-500", icon: "🤖" },
+            { name: "LangChain", years: 1, rank: "B", color: "from-pink-500 to-rose-500", icon: "🔗" },
+            { name: "RAG", years: 1, rank: "B", color: "from-rose-500 to-red-500", icon: "📚" },
+          ],
+        },
+        {
+          title: "Infrastructure",
+          gradient: "from-orange-400 to-amber-500",
+          skills: [
+            { name: "AWS", years: 3, rank: "A", color: "from-orange-500 to-amber-500", icon: "☁️" },
+            { name: "Docker", years: 3, rank: "A", color: "from-amber-500 to-yellow-500", icon: "🐳" },
+            { name: "Terraform", years: 2, rank: "B", color: "from-yellow-500 to-lime-500", icon: "🏗️" },
+          ],
+        },
+      ]
+
       return (
         <div className="min-h-full bg-black">
           <div className="max-w-7xl mx-auto px-8 py-20">
@@ -304,34 +343,34 @@ export function PreviewPanel({ fileName, content, theme = "modern" }: PreviewPan
               テクノロジースタック
             </h1>
 
-            <div className="grid md:grid-cols-4 gap-8">
-              {[
-                { name: "React", years: 5, rank: "S", color: "from-cyan-500 to-blue-500", icon: "⚛️" },
-                { name: "Next.js", years: 4, rank: "S", color: "from-blue-500 to-purple-500", icon: "▲" },
-                { name: "TypeScript", years: 4, rank: "A", color: "from-purple-500 to-pink-500", icon: "TS" },
-                { name: "Node.js", years: 4, rank: "A", color: "from-pink-500 to-red-500", icon: "🟢" },
-                { name: "Python", years: 3, rank: "B", color: "from-red-500 to-orange-500", icon: "🐍" },
-                { name: "PostgreSQL", years: 3, rank: "A", color: "from-orange-500 to-yellow-500", icon: "🗄️" },
-                { name: "Docker", years: 2, rank: "B", color: "from-cyan-500 to-teal-500", icon: "🐳" },
-                { name: "AWS", years: 2, rank: "B", color: "from-yellow-500 to-orange-500", icon: "☁️" },
-              ].map((skill, i) => (
-                <div key={i} className="group relative" style={{ animationDelay: `${i * 100}ms` }}>
-                  <div
-                    className={`absolute -inset-0.5 bg-gradient-to-br ${skill.color} rounded-2xl blur opacity-40 group-hover:opacity-100 transition duration-500`}
-                  />
-                  <div className="relative bg-black border border-gray-800 rounded-2xl p-6 text-center h-full flex flex-col items-center justify-center">
-                    <div className="text-5xl mb-4">{skill.icon}</div>
-                    <div
-                      className={`text-2xl font-black mb-3 text-transparent bg-clip-text bg-gradient-to-r ${skill.color}`}
-                    >
-                      {skill.name}
-                    </div>
-                    <div className="flex items-center gap-3">
-                      <span className={`text-3xl font-black text-transparent bg-clip-text bg-gradient-to-r ${getRankColor(skill.rank)}`}>
-                        {skill.rank}
-                      </span>
-                      <span className="text-gray-500 text-lg">{skill.years}年</span>
-                    </div>
+            <div className="space-y-16">
+              {skillCategories.map((category, catIndex) => (
+                <div key={catIndex}>
+                  <h2 className={`text-3xl font-black mb-8 text-transparent bg-clip-text bg-gradient-to-r ${category.gradient}`}>
+                    {category.title}
+                  </h2>
+                  <div className="grid md:grid-cols-3 gap-6">
+                    {category.skills.map((skill, i) => (
+                      <div key={i} className="group relative">
+                        <div
+                          className={`absolute -inset-0.5 bg-gradient-to-br ${skill.color} rounded-2xl blur opacity-40 group-hover:opacity-100 transition duration-500`}
+                        />
+                        <div className="relative bg-black border border-gray-800 rounded-2xl p-6 text-center h-full flex flex-col items-center justify-center">
+                          <div className="text-5xl mb-4">{skill.icon}</div>
+                          <div
+                            className={`text-2xl font-black mb-3 text-transparent bg-clip-text bg-gradient-to-r ${skill.color}`}
+                          >
+                            {skill.name}
+                          </div>
+                          <div className="flex items-center gap-3">
+                            <span className={`text-3xl font-black text-transparent bg-clip-text bg-gradient-to-r ${getRankColor(skill.rank)}`}>
+                              {skill.rank}
+                            </span>
+                            <span className="text-gray-500 text-lg">{skill.years}年</span>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
                   </div>
                 </div>
               ))}
@@ -856,25 +895,30 @@ export function PreviewPanel({ fileName, content, theme = "modern" }: PreviewPan
                     { name: "React / Next.js", years: 5, rank: "S" },
                     { name: "TypeScript", years: 4, rank: "A" },
                     { name: "Tailwind CSS", years: 3, rank: "S" },
-                    { name: "JavaScript ES6+", years: 6, rank: "S" },
                   ],
                 },
                 {
                   category: "バックエンド開発",
                   skills: [
                     { name: "Node.js / Express", years: 4, rank: "A" },
-                    { name: "Python / Django", years: 3, rank: "B" },
+                    { name: "Python / FastAPI", years: 3, rank: "B" },
                     { name: "PostgreSQL", years: 3, rank: "A" },
-                    { name: "REST API設計", years: 4, rank: "A" },
                   ],
                 },
                 {
-                  category: "開発ツール & DevOps",
+                  category: "AI / 機械学習",
                   skills: [
-                    { name: "Git / GitHub", years: 6, rank: "S" },
-                    { name: "Docker", years: 2, rank: "B" },
-                    { name: "CI/CD", years: 3, rank: "B" },
-                    { name: "AWS", years: 2, rank: "C" },
+                    { name: "OpenAI API / GPT", years: 2, rank: "A" },
+                    { name: "LangChain", years: 1, rank: "B" },
+                    { name: "RAG / Embedding", years: 1, rank: "B" },
+                  ],
+                },
+                {
+                  category: "インフラストラクチャ",
+                  skills: [
+                    { name: "AWS (EC2, Lambda, S3)", years: 3, rank: "A" },
+                    { name: "Docker / Kubernetes", years: 3, rank: "A" },
+                    { name: "Terraform / IaC", years: 2, rank: "B" },
                   ],
                 },
               ].map((section) => (
@@ -1285,13 +1329,21 @@ export function PreviewPanel({ fileName, content, theme = "modern" }: PreviewPan
           { name: "React", years: 5, rank: "S" },
           { name: "Next.js", years: 4, rank: "S" },
           { name: "TypeScript", years: 4, rank: "A" },
-          { name: "Tailwind CSS", years: 3, rank: "S" },
         ],
         backend: [
           { name: "Node.js", years: 4, rank: "A" },
           { name: "Python", years: 3, rank: "B" },
           { name: "PostgreSQL", years: 3, rank: "A" },
-          { name: "MongoDB", years: 2, rank: "B" },
+        ],
+        ai: [
+          { name: "OpenAI API", years: 2, rank: "A" },
+          { name: "LangChain", years: 1, rank: "B" },
+          { name: "RAG", years: 1, rank: "B" },
+        ],
+        infra: [
+          { name: "AWS", years: 3, rank: "A" },
+          { name: "Docker", years: 3, rank: "A" },
+          { name: "Terraform", years: 2, rank: "B" },
         ],
       }
 
@@ -1306,12 +1358,12 @@ export function PreviewPanel({ fileName, content, theme = "modern" }: PreviewPan
             </div>
 
             <div className="grid md:grid-cols-2 gap-8">
-              <Card className="p-8 bg-slate-900/50 border-slate-800 backdrop-blur">
-                <h3 className="text-2xl font-bold mb-8 text-white flex items-center gap-3">
-                  <span className="text-3xl">💻</span>
+              <Card className="p-6 bg-slate-900/50 border-slate-800 backdrop-blur">
+                <h3 className="text-xl font-bold mb-6 text-white flex items-center gap-3">
+                  <span className="text-2xl">💻</span>
                   フロントエンド
                 </h3>
-                <div className="space-y-4">
+                <div className="space-y-3">
                   {skills.frontend.map((skill) => (
                     <div key={skill.name} className="flex items-center justify-between p-3 rounded-lg bg-slate-800/50">
                       <span className="text-slate-300 font-medium">{skill.name}</span>
@@ -1326,13 +1378,53 @@ export function PreviewPanel({ fileName, content, theme = "modern" }: PreviewPan
                 </div>
               </Card>
 
-              <Card className="p-8 bg-slate-900/50 border-slate-800 backdrop-blur">
-                <h3 className="text-2xl font-bold mb-8 text-white flex items-center gap-3">
-                  <span className="text-3xl">⚙️</span>
+              <Card className="p-6 bg-slate-900/50 border-slate-800 backdrop-blur">
+                <h3 className="text-xl font-bold mb-6 text-white flex items-center gap-3">
+                  <span className="text-2xl">⚙️</span>
                   バックエンド
                 </h3>
-                <div className="space-y-4">
+                <div className="space-y-3">
                   {skills.backend.map((skill) => (
+                    <div key={skill.name} className="flex items-center justify-between p-3 rounded-lg bg-slate-800/50">
+                      <span className="text-slate-300 font-medium">{skill.name}</span>
+                      <div className="flex items-center gap-3">
+                        <span className="text-slate-500 text-sm">{skill.years}年</span>
+                        <span className={`px-3 py-1 text-sm font-bold border rounded-lg ${getRankBadge(skill.rank)}`}>
+                          {skill.rank}
+                        </span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </Card>
+
+              <Card className="p-6 bg-slate-900/50 border-slate-800 backdrop-blur">
+                <h3 className="text-xl font-bold mb-6 text-white flex items-center gap-3">
+                  <span className="text-2xl">🤖</span>
+                  AI / ML
+                </h3>
+                <div className="space-y-3">
+                  {skills.ai.map((skill) => (
+                    <div key={skill.name} className="flex items-center justify-between p-3 rounded-lg bg-slate-800/50">
+                      <span className="text-slate-300 font-medium">{skill.name}</span>
+                      <div className="flex items-center gap-3">
+                        <span className="text-slate-500 text-sm">{skill.years}年</span>
+                        <span className={`px-3 py-1 text-sm font-bold border rounded-lg ${getRankBadge(skill.rank)}`}>
+                          {skill.rank}
+                        </span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </Card>
+
+              <Card className="p-6 bg-slate-900/50 border-slate-800 backdrop-blur">
+                <h3 className="text-xl font-bold mb-6 text-white flex items-center gap-3">
+                  <span className="text-2xl">☁️</span>
+                  インフラ
+                </h3>
+                <div className="space-y-3">
+                  {skills.infra.map((skill) => (
                     <div key={skill.name} className="flex items-center justify-between p-3 rounded-lg bg-slate-800/50">
                       <span className="text-slate-300 font-medium">{skill.name}</span>
                       <div className="flex items-center gap-3">
@@ -1347,23 +1439,21 @@ export function PreviewPanel({ fileName, content, theme = "modern" }: PreviewPan
               </Card>
             </div>
 
-            <Card className="mt-8 p-8 bg-slate-900/50 border-slate-800 backdrop-blur">
-              <h3 className="text-2xl font-bold mb-6 text-white flex items-center gap-3">
-                <span className="text-3xl">🛠️</span>
+            <Card className="mt-8 p-6 bg-slate-900/50 border-slate-800 backdrop-blur">
+              <h3 className="text-xl font-bold mb-6 text-white flex items-center gap-3">
+                <span className="text-2xl">🛠️</span>
                 その他のツール & 技術
               </h3>
               <div className="flex flex-wrap gap-3">
                 {[
-                  "Docker",
-                  "Kubernetes",
-                  "AWS",
                   "Git",
                   "GitHub Actions",
+                  "Vercel",
                   "Figma",
                   "Agile",
                   "TDD",
                   "Redis",
-                  "Vercel",
+                  "Kubernetes",
                 ].map((tool) => (
                   <Badge key={tool} className="px-4 py-2 bg-slate-800 text-slate-300 border-slate-700 text-sm">
                     {tool}
