@@ -7,7 +7,7 @@ import {
   Monitor, Cpu, Brain, HardDrive, Wrench, MessageSquare, Zap, Users, Rocket,
   ShoppingCart, MessageCircle, LayoutDashboard, Palette, Sparkles, ImageIcon, GraduationCap
 } from "lucide-react"
-import type { LucideIcon } from "lucide-react"
+
 import { Badge } from "@/components/ui/badge"
 import { Card } from "@/components/ui/card"
 import type { PreviewTheme, Extension } from "@/types"
@@ -303,12 +303,7 @@ export function PreviewPanel({ fileName, content, theme = "modern" }: PreviewPan
         }
       }
 
-      const skillCategories: {
-        title: string
-        gradient: string
-        icon: LucideIcon
-        skills: { name: string; years: number; rank: string; color: string; icon: LucideIcon }[]
-      }[] = [
+      const skillCategories = [
         {
           title: "Frontend",
           gradient: "from-cyan-400 to-blue-500",
@@ -1666,7 +1661,7 @@ export function PreviewPanel({ fileName, content, theme = "modern" }: PreviewPan
 }
 
 // Extension icon mapping
-const extensionIconMap: Record<string, LucideIcon> = {
+const extensionIconMap: Record<string, typeof Mail> = {
   "nextjs-ecommerce": ShoppingCart,
   "realtime-chat": MessageCircle,
   "project-management": LayoutDashboard,
@@ -1931,8 +1926,8 @@ function ExtensionGallery({ theme }: { theme: PreviewTheme }) {
                     <X className="w-6 h-6" />
                   </button>
                   <div className="flex flex-col md:flex-row gap-6">
-                    <div className={`w-20 h-20 md:w-24 md:h-24 rounded-2xl bg-gradient-to-br ${colorMap[selectedExtension.id] || "from-teal-500 to-green-500"} flex items-center justify-center text-4xl md:text-5xl shrink-0`}>
-                      {selectedExtension.icon}
+                    <div className={`w-20 h-20 md:w-24 md:h-24 rounded-2xl bg-gradient-to-br ${colorMap[selectedExtension.id] || "from-teal-500 to-green-500"} flex items-center justify-center shrink-0`}>
+                      {getExtensionIcon(selectedExtension.id, "w-10 h-10 md:w-12 md:h-12 text-white")}
                     </div>
                     <div className="flex-1">
                       <h2 className={`text-2xl md:text-3xl font-black mb-2 text-transparent bg-clip-text bg-gradient-to-r ${colorMap[selectedExtension.id] || "from-teal-500 to-green-500"}`}>
