@@ -282,30 +282,68 @@ export const fileTree: FileItem[] = [
     {
       "company": "Tech Startup Inc.",
       "position": "シニアフルスタックエンジニア",
-      "period": "2021年 - 現在",
-      "description": "SaaSプロダクトの設計と開発をリード",
+      "period": "2021年4月 - 現在",
+      "startYear": 2021,
+      "startMonth": 4,
+      "endYear": null,
+      "description": "SaaSプロダクトの設計と開発をリード。プロダクトのアーキテクチャ設計から実装、チームマネジメントまで一貫して担当。",
+      "techStack": ["Next.js", "TypeScript", "PostgreSQL", "AWS", "Docker", "Terraform", "tRPC", "Prisma"],
+      "role": "テックリード / フルスタック",
+      "teamSize": 12,
       "achievements": [
         "新機能開発により、ユーザー数を150%増加",
         "パフォーマンス最適化により、読み込み時間を40%短縮",
-        "CI/CDパイプラインの構築と改善"
-      ]
+        "CI/CDパイプラインの構築と改善",
+        "マイクロサービスアーキテクチャへの段階的移行を設計・実行"
+      ],
+      "details": "入社時はフロントエンドエンジニアとして参画。半年後にテックリードに昇格し、バックエンドを含むプロダクト全体の技術的意思決定を担当。特にNext.js App Routerへの移行とtRPCの導入により、開発生産性を大幅に向上させた。"
     },
     {
       "company": "Web Agency Co.",
       "position": "フロントエンドエンジニア",
-      "period": "2019年 - 2021年",
-      "description": "クライアントのWebサイトとアプリケーション開発",
+      "period": "2019年4月 - 2021年3月",
+      "startYear": 2019,
+      "startMonth": 4,
+      "endYear": 2021,
+      "endMonth": 3,
+      "description": "クライアントのWebサイトとアプリケーション開発を担当。受託開発を中心に幅広い業界のプロジェクトに従事。",
+      "techStack": ["React", "Next.js", "Vue.js", "SCSS", "Node.js", "Firebase"],
+      "role": "フロントエンドエンジニア",
+      "teamSize": 5,
       "achievements": [
         "20以上のプロジェクトを納品",
         "React/Next.jsへの技術スタック移行を主導",
         "コードレビュー文化の確立"
-      ]
+      ],
+      "details": "新卒入社後、HTML/CSS/jQueryベースの開発からスタートし、React/Next.jsへの技術移行を提案・主導。社内の技術基盤をモダン化し、開発効率を2倍以上に改善。コードレビューのガイドライン策定やJr.エンジニアの育成にも注力。"
+    },
+    {
+      "company": "フリーランス",
+      "position": "Webデベロッパー",
+      "period": "2020年10月 - 2021年6月",
+      "startYear": 2020,
+      "startMonth": 10,
+      "endYear": 2021,
+      "endMonth": 6,
+      "description": "本業と並行して個人でWeb開発案件を受注。副業としてスタートアップのMVP開発を支援。",
+      "techStack": ["Next.js", "Tailwind CSS", "Supabase", "Vercel", "Stripe"],
+      "role": "フルスタックエンジニア",
+      "teamSize": 1,
+      "achievements": [
+        "3つのMVPを短期間で開発・リリース",
+        "Stripe決済統合の実装",
+        "Supabaseを活用したリアルタイム機能の構築"
+      ],
+      "details": "Web Agency Co.在籍中に副業として開始。スタートアップのMVP開発を中心に、企画段階から技術選定・実装・デプロイまでワンストップで対応。この経験がフルスタックエンジニアへの転向のきっかけとなった。"
     }
   ],
   "education": {
     "degree": "情報工学学士",
     "university": "○○大学",
-    "year": "2019年卒業"
+    "year": "2019年卒業",
+    "startYear": 2015,
+    "endYear": 2019,
+    "details": "情報工学を専攻。卒業研究ではWebアクセシビリティに関する研究を実施。在学中にインターンシップでWeb開発の実務経験を積む。"
   }
 }`,
       },

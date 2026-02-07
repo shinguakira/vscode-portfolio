@@ -1,12 +1,89 @@
 "use client"
 
 import { useState } from "react"
-import { Mail, Github, Linkedin, Twitter, ExternalLink, ChevronRight, X, Star, Download } from "lucide-react"
+import { Mail, Github, Linkedin, Twitter, ExternalLink, ChevronRight, X, Star, Download, Briefcase, GraduationCap, Users, Calendar } from "lucide-react"
 import { Badge } from "@/components/ui/badge"
 import { Card } from "@/components/ui/card"
 import type { PreviewTheme, Extension } from "@/types"
 import { IconFromKey } from "@/lib/icon-map"
 import { extensions } from "@/constants/portfolio-data"
+
+interface ExperienceItem {
+  company: string
+  position: string
+  period: string
+  startYear: number
+  startMonth: number
+  endYear: number | null
+  endMonth?: number
+  description: string
+  techStack: string[]
+  role: string
+  teamSize: number
+  achievements: string[]
+  details: string
+}
+
+const experienceData: ExperienceItem[] = [
+  {
+    company: "Tech Startup Inc.",
+    position: "シニアフルスタックエンジニア",
+    period: "2021/04 - 現在",
+    startYear: 2021, startMonth: 4, endYear: null,
+    description: "SaaSプロダクトの設計と開発をリード",
+    techStack: ["Next.js", "TypeScript", "PostgreSQL", "AWS", "Docker", "Terraform", "tRPC", "Prisma"],
+    role: "テックリード / フルスタック",
+    teamSize: 12,
+    achievements: ["ユーザー数150%増加", "読み込み時間40%短縮", "CI/CD構築", "マイクロサービス移行"],
+    details: "入社時はフロントエンドエンジニアとして参画。半年後にテックリードに昇格し、バックエンドを含むプロダクト全体の技術的意思決定を担当。特にNext.js App Routerへの移行とtRPCの導入により、開発生産性を大幅に向上させた。",
+  },
+  {
+    company: "Web Agency Co.",
+    position: "フロントエンドエンジニア",
+    period: "2019/04 - 2021/03",
+    startYear: 2019, startMonth: 4, endYear: 2021, endMonth: 3,
+    description: "クライアントのWebサイトとアプリケーション開発",
+    techStack: ["React", "Next.js", "Vue.js", "SCSS", "Node.js", "Firebase"],
+    role: "フロントエンドエンジニア",
+    teamSize: 5,
+    achievements: ["20以上のプロジェクト納品", "React/Next.js移行を主導", "コードレビュー文化確立"],
+    details: "新卒入社後、HTML/CSS/jQueryベースの開発からスタートし、React/Next.jsへの技術移行を提案・主導。社内の技術基盤をモダン化し、開発効率を2倍以上に改善。コードレビューのガイドライン策定やJr.エンジニアの育成にも注力。",
+  },
+  {
+    company: "フリーランス",
+    position: "Webデベロッパー",
+    period: "2020/10 - 2021/06",
+    startYear: 2020, startMonth: 10, endYear: 2021, endMonth: 6,
+    description: "副業でスタートアップのMVP開発を支援",
+    techStack: ["Next.js", "Tailwind CSS", "Supabase", "Vercel", "Stripe"],
+    role: "フルスタックエンジニア",
+    teamSize: 1,
+    achievements: ["3つのMVPを開発・リリース", "Stripe決済統合", "リアルタイム機能構築"],
+    details: "Web Agency Co.在籍中に副業として開始。スタートアップのMVP開発を中心に、企画段階から技術選定・実装・デプロイまでワンストップで対応。この経験がフルスタックエンジニアへの転向のきっかけとなった。",
+  },
+]
+
+const educationData = {
+  degree: "情報工学学士",
+  university: "○○大学",
+  year: "2019年卒業",
+  startYear: 2015,
+  endYear: 2019,
+  details: "情報工学を専攻。卒業研究ではWebアクセシビリティに関する研究を実施。在学中にインターンシップでWeb開発の実務経験を積む。",
+}
+
+// Timeline helper: get the range for the Gantt-like bar
+const TIMELINE_START = 2019
+const TIMELINE_END = 2026
+const TIMELINE_YEARS = TIMELINE_END - TIMELINE_START
+
+function getTimelineBar(item: ExperienceItem) {
+  const start = item.startYear + (item.startMonth - 1) / 12
+  const end = item.endYear ? item.endYear + ((item.endMonth || 12) - 1) / 12 : TIMELINE_END
+  const left = ((start - TIMELINE_START) / TIMELINE_YEARS) * 100
+  const width = ((end - start) / TIMELINE_YEARS) * 100
+  return { left: `${Math.max(0, left)}%`, width: `${Math.min(100 - left, width)}%` }
+}
 
 interface PreviewPanelProps {
   fileName: string
@@ -382,6 +459,9 @@ export function PreviewPanel({ fileName, content, theme = "modern" }: PreviewPan
     }
 
     if (previewType === "experience") {
+      const [selectedExp, setSelectedExp] = useState<ExperienceItem | null>(null)
+      const colors = ["from-violet-500 to-indigo-500", "from-indigo-500 to-blue-500", "from-cyan-500 to-teal-500"]
+
       return (
         <div className="min-h-full bg-black relative overflow-hidden">
           <div className="absolute inset-0">
@@ -397,33 +477,124 @@ export function PreviewPanel({ fileName, content, theme = "modern" }: PreviewPan
               <p className="text-2xl text-gray-400 font-light">Professional Journey</p>
             </div>
 
-            <div className="relative">
-              <div className="absolute left-1/2 top-0 bottom-0 w-px bg-gradient-to-b from-violet-500 via-indigo-500 to-blue-500" />
-
-              {[
-                { year: "2021 - Now", title: "シニアフルスタックエンジニア", company: "Tech Startup Inc.", desc: "SaaSプロダクトの設計と開発をリード。ユーザー数150%増加に貢献。", color: "from-violet-500 to-indigo-500" },
-                { year: "2019 - 2021", title: "フロントエンドエンジニア", company: "Web Agency Co.", desc: "20以上のプロジェクトを納品。React/Next.jsへの技術スタック移行を主導。", color: "from-indigo-500 to-blue-500" },
-                { year: "2019", title: "情報工学学士", company: "○○大学", desc: "情報工学を専攻し、Web開発の基礎を習得。", color: "from-blue-500 to-cyan-500" },
-              ].map((item, i) => (
-                <div key={i} className={`relative flex ${i % 2 === 0 ? 'justify-start' : 'justify-end'} mb-16`}>
-                  <div className={`w-5/12 ${i % 2 === 0 ? 'pr-12 text-right' : 'pl-12 text-left'}`}>
-                    <div className="group relative">
-                      <div className={`absolute -inset-0.5 bg-gradient-to-r ${item.color} rounded-2xl blur opacity-30 group-hover:opacity-70 transition duration-500`} />
-                      <div className="relative bg-black border border-gray-800 rounded-2xl p-8">
-                        <div className={`text-sm font-bold mb-2 text-transparent bg-clip-text bg-gradient-to-r ${item.color}`}>
-                          {item.year}
-                        </div>
-                        <h3 className="text-2xl font-black text-white mb-2">{item.title}</h3>
-                        <div className="text-gray-500 mb-4">{item.company}</div>
-                        <p className="text-gray-400">{item.desc}</p>
+            {/* Gantt-like timeline */}
+            <div className="mb-16">
+              <div className="flex justify-between mb-2 text-xs text-gray-600 px-1">
+                {Array.from({ length: TIMELINE_YEARS + 1 }, (_, i) => (
+                  <span key={i}>{TIMELINE_START + i}</span>
+                ))}
+              </div>
+              <div className="relative space-y-3">
+                {experienceData.map((item, i) => {
+                  const bar = getTimelineBar(item)
+                  return (
+                    <div key={i} className="relative h-8 cursor-pointer group" onClick={() => setSelectedExp(item)}>
+                      <div className="absolute inset-0 bg-gray-900 rounded-lg" />
+                      <div
+                        className={`absolute top-0 bottom-0 bg-gradient-to-r ${colors[i % colors.length]} rounded-lg opacity-80 group-hover:opacity-100 transition-opacity`}
+                        style={{ left: bar.left, width: bar.width }}
+                      />
+                      <div className="absolute inset-0 flex items-center px-3">
+                        <span className="text-xs text-white font-medium truncate relative z-10">{item.company} - {item.position}</span>
                       </div>
                     </div>
+                  )
+                })}
+              </div>
+              <p className="text-xs text-gray-600 mt-2 text-center">* 並行している期間があります（副業期間）</p>
+            </div>
+
+            {/* Cards */}
+            <div className="space-y-6">
+              {experienceData.map((item, i) => (
+                <div key={i} className="group relative cursor-pointer" onClick={() => setSelectedExp(item)}>
+                  <div className={`absolute -inset-0.5 bg-gradient-to-r ${colors[i % colors.length]} rounded-2xl blur opacity-20 group-hover:opacity-60 transition duration-500`} />
+                  <div className="relative bg-black border border-gray-800 rounded-2xl p-6 flex items-start gap-6">
+                    <div className={`w-12 h-12 rounded-xl bg-gradient-to-r ${colors[i % colors.length]} flex items-center justify-center shrink-0`}>
+                      <Briefcase className="w-6 h-6 text-white" />
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <div className="flex items-center justify-between mb-1">
+                        <h3 className="text-xl font-black text-white">{item.position}</h3>
+                        <span className={`text-xs font-bold text-transparent bg-clip-text bg-gradient-to-r ${colors[i % colors.length]}`}>{item.period}</span>
+                      </div>
+                      <div className="text-gray-500 mb-3">{item.company} / {item.role}</div>
+                      <div className="flex flex-wrap gap-1.5">
+                        {item.techStack.slice(0, 5).map((tech) => (
+                          <span key={tech} className="px-2 py-0.5 text-[10px] font-medium rounded-full bg-gray-800 text-gray-400 border border-gray-700">{tech}</span>
+                        ))}
+                        {item.techStack.length > 5 && (
+                          <span className="px-2 py-0.5 text-[10px] font-medium rounded-full bg-gray-800 text-gray-500">+{item.techStack.length - 5}</span>
+                        )}
+                      </div>
+                    </div>
+                    <ChevronRight className="w-5 h-5 text-gray-600 group-hover:text-white transition-colors shrink-0 mt-1" />
                   </div>
-                  <div className={`absolute left-1/2 top-8 w-4 h-4 rounded-full bg-gradient-to-r ${item.color} transform -translate-x-1/2`} />
                 </div>
               ))}
             </div>
+
+            {/* Education */}
+            <div className="mt-8 group relative">
+              <div className="absolute -inset-0.5 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-2xl blur opacity-20" />
+              <div className="relative bg-black border border-gray-800 rounded-2xl p-6 flex items-center gap-6">
+                <div className="w-12 h-12 rounded-xl bg-gradient-to-r from-blue-500 to-cyan-500 flex items-center justify-center shrink-0">
+                  <GraduationCap className="w-6 h-6 text-white" />
+                </div>
+                <div>
+                  <h3 className="text-xl font-black text-white">{educationData.degree}</h3>
+                  <div className="text-gray-500">{educationData.university} / {educationData.year}</div>
+                </div>
+              </div>
+            </div>
           </div>
+
+          {/* Modal */}
+          {selectedExp && (
+            <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4" onClick={() => setSelectedExp(null)}>
+              <div className="bg-gray-950 border border-gray-800 rounded-2xl max-w-2xl w-full max-h-[85vh] overflow-y-auto" onClick={(e) => e.stopPropagation()}>
+                <div className="p-6 border-b border-gray-800 flex items-center justify-between">
+                  <div>
+                    <h2 className="text-2xl font-black text-white">{selectedExp.position}</h2>
+                    <p className="text-gray-400">{selectedExp.company}</p>
+                  </div>
+                  <button onClick={() => setSelectedExp(null)} className="text-gray-500 hover:text-white transition-colors">
+                    <X className="w-6 h-6" />
+                  </button>
+                </div>
+                <div className="p-6 space-y-6">
+                  <div className="flex flex-wrap gap-4 text-sm">
+                    <div className="flex items-center gap-2 text-gray-400"><Calendar className="w-4 h-4" /> {selectedExp.period}</div>
+                    <div className="flex items-center gap-2 text-gray-400"><Briefcase className="w-4 h-4" /> {selectedExp.role}</div>
+                    <div className="flex items-center gap-2 text-gray-400"><Users className="w-4 h-4" /> {selectedExp.teamSize}名</div>
+                  </div>
+                  <div>
+                    <h4 className="text-sm font-bold text-gray-500 uppercase tracking-wider mb-3">概要</h4>
+                    <p className="text-gray-300 leading-relaxed">{selectedExp.details}</p>
+                  </div>
+                  <div>
+                    <h4 className="text-sm font-bold text-gray-500 uppercase tracking-wider mb-3">技術スタック</h4>
+                    <div className="flex flex-wrap gap-2">
+                      {selectedExp.techStack.map((tech) => (
+                        <span key={tech} className="px-3 py-1 text-sm rounded-full bg-gray-800 text-gray-300 border border-gray-700">{tech}</span>
+                      ))}
+                    </div>
+                  </div>
+                  <div>
+                    <h4 className="text-sm font-bold text-gray-500 uppercase tracking-wider mb-3">主な実績</h4>
+                    <ul className="space-y-2">
+                      {selectedExp.achievements.map((a, j) => (
+                        <li key={j} className="flex items-start gap-3 text-gray-300">
+                          <div className="w-1.5 h-1.5 bg-violet-500 rounded-full mt-2 shrink-0" />
+                          {a}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
       )
     }
@@ -754,6 +925,8 @@ export function PreviewPanel({ fileName, content, theme = "modern" }: PreviewPan
     }
 
     if (previewType === "experience") {
+      const [selectedExp, setSelectedExp] = useState<ExperienceItem | null>(null)
+
       return (
         <div className="min-h-full bg-white">
           <div className="max-w-4xl mx-auto px-8 py-24">
@@ -762,27 +935,60 @@ export function PreviewPanel({ fileName, content, theme = "modern" }: PreviewPan
               <p className="text-xl text-gray-600">Professional Experience</p>
             </div>
 
+            {/* Gantt-like timeline */}
+            <div className="mb-16">
+              <h2 className="text-sm font-bold text-gray-500 uppercase tracking-wider mb-6 pb-3 border-b border-gray-200">
+                タイムライン
+              </h2>
+              <div className="flex justify-between mb-2 text-xs text-gray-400">
+                {Array.from({ length: TIMELINE_YEARS + 1 }, (_, i) => (
+                  <span key={i}>{TIMELINE_START + i}</span>
+                ))}
+              </div>
+              <div className="space-y-2">
+                {experienceData.map((item, i) => {
+                  const bar = getTimelineBar(item)
+                  return (
+                    <div key={i} className="relative h-7 cursor-pointer group" onClick={() => setSelectedExp(item)}>
+                      <div className="absolute inset-0 bg-gray-100 rounded" />
+                      <div
+                        className="absolute top-0 bottom-0 bg-gray-900 rounded group-hover:bg-gray-700 transition-colors"
+                        style={{ left: bar.left, width: bar.width }}
+                      />
+                      <div className="absolute inset-0 flex items-center px-2">
+                        <span className="text-[10px] text-white font-medium truncate relative z-10 mix-blend-difference">{item.company}</span>
+                      </div>
+                    </div>
+                  )
+                })}
+              </div>
+              <p className="text-xs text-gray-400 mt-2">クリックして詳細を表示 / 並行期間は副業を示します</p>
+            </div>
+
+            {/* Job list */}
             <div className="space-y-12 mb-16">
               <div>
                 <h2 className="text-sm font-bold text-gray-500 uppercase tracking-wider mb-8 pb-3 border-b border-gray-200">
                   職務経歴
                 </h2>
-                {[
-                  { period: "2021 - 現在", title: "シニアフルスタックエンジニア", company: "Tech Startup Inc.", achievements: ["SaaSプロダクトの設計と開発をリード", "ユーザー数150%増加に貢献", "パフォーマンス40%改善", "CI/CDパイプラインの構築"] },
-                  { period: "2019 - 2021", title: "フロントエンドエンジニア", company: "Web Agency Co.", achievements: ["20以上のプロジェクトを納品", "React/Next.jsへの技術移行を主導", "コードレビュー文化の確立"] },
-                ].map((job) => (
-                  <div key={job.period} className="grid md:grid-cols-12 gap-6 mb-10 pb-10 border-b border-gray-100 last:border-0">
+                {experienceData.map((job) => (
+                  <div key={job.period} className="grid md:grid-cols-12 gap-6 mb-10 pb-10 border-b border-gray-100 last:border-0 cursor-pointer group" onClick={() => setSelectedExp(job)}>
                     <div className="md:col-span-3">
                       <div className="text-sm text-gray-500">{job.period}</div>
+                      <div className="text-xs text-gray-400 mt-1">{job.role}</div>
                     </div>
                     <div className="md:col-span-9">
-                      <h3 className="text-xl font-bold text-gray-900 mb-1">{job.title}</h3>
-                      <div className="text-gray-600 mb-4">{job.company}</div>
-                      <ul className="space-y-2">
-                        {job.achievements.map((a) => (
-                          <li key={a} className="text-sm text-gray-600 pl-4 border-l-2 border-gray-300">{a}</li>
+                      <div className="flex items-center justify-between">
+                        <h3 className="text-xl font-bold text-gray-900 mb-1">{job.position}</h3>
+                        <ChevronRight className="w-4 h-4 text-gray-400 group-hover:text-gray-900 transition-colors" />
+                      </div>
+                      <div className="text-gray-600 mb-3">{job.company}</div>
+                      <div className="flex flex-wrap gap-1.5 mb-3">
+                        {job.techStack.map((tech) => (
+                          <span key={tech} className="px-2 py-0.5 text-[10px] font-medium rounded bg-gray-100 text-gray-600 border border-gray-200">{tech}</span>
                         ))}
-                      </ul>
+                      </div>
+                      <p className="text-sm text-gray-500">{job.description}</p>
                     </div>
                   </div>
                 ))}
@@ -794,16 +1000,60 @@ export function PreviewPanel({ fileName, content, theme = "modern" }: PreviewPan
                 </h2>
                 <div className="grid md:grid-cols-12 gap-6">
                   <div className="md:col-span-3">
-                    <div className="text-sm text-gray-500">2019年卒業</div>
+                    <div className="text-sm text-gray-500">{educationData.year}</div>
                   </div>
                   <div className="md:col-span-9">
-                    <h3 className="text-xl font-bold text-gray-900 mb-1">情報工学学士</h3>
-                    <div className="text-gray-600">○○大学</div>
+                    <h3 className="text-xl font-bold text-gray-900 mb-1">{educationData.degree}</h3>
+                    <div className="text-gray-600">{educationData.university}</div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
+
+          {/* Modal */}
+          {selectedExp && (
+            <div className="fixed inset-0 bg-black/40 z-50 flex items-center justify-center p-4" onClick={() => setSelectedExp(null)}>
+              <div className="bg-white border border-gray-200 rounded-lg shadow-2xl max-w-2xl w-full max-h-[85vh] overflow-y-auto" onClick={(e) => e.stopPropagation()}>
+                <div className="p-6 border-b border-gray-200 flex items-center justify-between">
+                  <div>
+                    <h2 className="text-2xl font-bold text-gray-900">{selectedExp.position}</h2>
+                    <p className="text-gray-600">{selectedExp.company}</p>
+                  </div>
+                  <button onClick={() => setSelectedExp(null)} className="text-gray-400 hover:text-gray-900 transition-colors">
+                    <X className="w-5 h-5" />
+                  </button>
+                </div>
+                <div className="p-6 space-y-6">
+                  <div className="flex flex-wrap gap-4 text-sm text-gray-600">
+                    <div className="flex items-center gap-1.5"><Calendar className="w-4 h-4" /> {selectedExp.period}</div>
+                    <div className="flex items-center gap-1.5"><Briefcase className="w-4 h-4" /> {selectedExp.role}</div>
+                    <div className="flex items-center gap-1.5"><Users className="w-4 h-4" /> {selectedExp.teamSize}名</div>
+                  </div>
+                  <div>
+                    <h4 className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">概要</h4>
+                    <p className="text-gray-700 leading-relaxed">{selectedExp.details}</p>
+                  </div>
+                  <div>
+                    <h4 className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">技術スタック</h4>
+                    <div className="flex flex-wrap gap-1.5">
+                      {selectedExp.techStack.map((tech) => (
+                        <span key={tech} className="px-2.5 py-1 text-xs rounded bg-gray-100 text-gray-700 border border-gray-200">{tech}</span>
+                      ))}
+                    </div>
+                  </div>
+                  <div>
+                    <h4 className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">主な実績</h4>
+                    <ul className="space-y-2">
+                      {selectedExp.achievements.map((a, j) => (
+                        <li key={j} className="text-sm text-gray-700 pl-4 border-l-2 border-gray-900">{a}</li>
+                      ))}
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
       )
     }
@@ -1561,6 +1811,8 @@ export function PreviewPanel({ fileName, content, theme = "modern" }: PreviewPan
 
     // 経験用プレビュー
     if (previewType === "experience") {
+      const [selectedExp, setSelectedExp] = useState<ExperienceItem | null>(null)
+
       return (
         <div className="min-h-full bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950">
           <div className="max-w-5xl mx-auto px-8 py-16">
@@ -1571,60 +1823,124 @@ export function PreviewPanel({ fileName, content, theme = "modern" }: PreviewPan
               <p className="text-xl text-slate-400">これまでのキャリアと実績</p>
             </div>
 
-            <div className="space-y-8">
-              {[
-                {
-                  company: "Tech Startup Inc.",
-                  position: "シニアフルスタックエンジニア",
-                  period: "2021年 - 現在",
-                  achievements: [
-                    "新機能開発により、ユーザー数を150%増加",
-                    "パフォーマンス最適化により、読み込み時間を40%短縮",
-                    "CI/CDパイプラインの構築と改善",
-                  ],
-                },
-                {
-                  company: "Web Agency Co.",
-                  position: "フロントエンドエンジニア",
-                  period: "2019年 - 2021年",
-                  achievements: [
-                    "20以上のプロジェクトを納品",
-                    "React/Next.jsへの技術スタック移行を主導",
-                    "コードレビュー文化の確立",
-                  ],
-                },
-              ].map((job, i) => (
-                <Card key={i} className="p-8 bg-slate-900/50 border-slate-800 backdrop-blur">
-                  <div className="flex items-start justify-between mb-4">
-                    <div>
-                      <h3 className="text-2xl font-bold text-white mb-1">{job.position}</h3>
-                      <p className="text-blue-400 font-medium">{job.company}</p>
-                    </div>
-                    <Badge className="bg-slate-800 text-slate-300 border-slate-700">{job.period}</Badge>
-                  </div>
-                  <div className="space-y-3">
-                    {job.achievements.map((achievement, j) => (
-                      <div key={j} className="flex items-start gap-3">
-                        <div className="w-2 h-2 bg-purple-500 rounded-full mt-2" />
-                        <p className="text-slate-300">{achievement}</p>
+            {/* Gantt-like timeline */}
+            <Card className="p-6 bg-slate-900/50 border-slate-800 backdrop-blur mb-10">
+              <h3 className="text-sm font-bold text-slate-500 uppercase tracking-wider mb-4">キャリアタイムライン</h3>
+              <div className="flex justify-between mb-2 text-xs text-slate-600">
+                {Array.from({ length: TIMELINE_YEARS + 1 }, (_, i) => (
+                  <span key={i}>{TIMELINE_START + i}</span>
+                ))}
+              </div>
+              <div className="space-y-2">
+                {experienceData.map((item, i) => {
+                  const bar = getTimelineBar(item)
+                  const barColors = ["bg-blue-500", "bg-purple-500", "bg-teal-500"]
+                  return (
+                    <div key={i} className="relative h-8 cursor-pointer group" onClick={() => setSelectedExp(item)}>
+                      <div className="absolute inset-0 bg-slate-800/50 rounded-lg" />
+                      <div
+                        className={`absolute top-0 bottom-0 ${barColors[i % barColors.length]} rounded-lg opacity-70 group-hover:opacity-100 transition-opacity`}
+                        style={{ left: bar.left, width: bar.width }}
+                      />
+                      <div className="absolute inset-0 flex items-center px-3">
+                        <span className="text-xs text-white font-medium truncate relative z-10">{item.company}</span>
                       </div>
+                    </div>
+                  )
+                })}
+              </div>
+              <p className="text-xs text-slate-600 mt-2">クリックで詳細表示 / 副業の並行期間あり</p>
+            </Card>
+
+            {/* Job cards */}
+            <div className="space-y-6">
+              {experienceData.map((job, i) => (
+                <Card key={i} className="p-6 bg-slate-900/50 border-slate-800 backdrop-blur hover:border-slate-700 transition-colors cursor-pointer group" onClick={() => setSelectedExp(job)}>
+                  <div className="flex items-start justify-between mb-3">
+                    <div className="flex items-start gap-4">
+                      <div className="w-10 h-10 rounded-lg bg-blue-600/20 flex items-center justify-center shrink-0">
+                        <Briefcase className="w-5 h-5 text-blue-400" />
+                      </div>
+                      <div>
+                        <h3 className="text-xl font-bold text-white mb-0.5">{job.position}</h3>
+                        <p className="text-blue-400 font-medium text-sm">{job.company} / {job.role}</p>
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <Badge className="bg-slate-800 text-slate-300 border-slate-700 whitespace-nowrap">{job.period}</Badge>
+                      <ChevronRight className="w-4 h-4 text-slate-600 group-hover:text-white transition-colors shrink-0" />
+                    </div>
+                  </div>
+                  <div className="flex flex-wrap gap-1.5 ml-14">
+                    {job.techStack.map((tech) => (
+                      <span key={tech} className="px-2 py-0.5 text-[10px] font-medium rounded-full bg-slate-800 text-slate-400 border border-slate-700">{tech}</span>
                     ))}
                   </div>
                 </Card>
               ))}
             </div>
 
-            <Card className="mt-8 p-8 bg-slate-900/50 border-slate-800 backdrop-blur">
-              <h3 className="text-2xl font-bold text-white mb-4">学歴</h3>
+            {/* Education */}
+            <Card className="mt-8 p-6 bg-slate-900/50 border-slate-800 backdrop-blur">
+              <h3 className="text-lg font-bold text-white mb-3">学歴</h3>
               <div className="flex items-start gap-3">
-                <div className="w-12 h-12 rounded-lg bg-blue-600/20 flex items-center justify-center text-2xl">🎓</div>
+                <div className="w-10 h-10 rounded-lg bg-blue-600/20 flex items-center justify-center shrink-0">
+                  <GraduationCap className="w-5 h-5 text-blue-400" />
+                </div>
                 <div>
-                  <p className="text-white font-semibold">情報工学学士</p>
-                  <p className="text-slate-400">○○大学 • 2019年卒業</p>
+                  <p className="text-white font-semibold">{educationData.degree}</p>
+                  <p className="text-slate-400">{educationData.university} / {educationData.year}</p>
                 </div>
               </div>
             </Card>
           </div>
+
+          {/* Modal */}
+          {selectedExp && (
+            <div className="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 flex items-center justify-center p-4" onClick={() => setSelectedExp(null)}>
+              <div className="bg-slate-950 border border-slate-800 rounded-2xl max-w-2xl w-full max-h-[85vh] overflow-y-auto shadow-2xl" onClick={(e) => e.stopPropagation()}>
+                <div className="p-6 border-b border-slate-800 flex items-center justify-between">
+                  <div>
+                    <h2 className="text-2xl font-bold text-white">{selectedExp.position}</h2>
+                    <p className="text-blue-400">{selectedExp.company}</p>
+                  </div>
+                  <button onClick={() => setSelectedExp(null)} className="text-slate-500 hover:text-white transition-colors">
+                    <X className="w-5 h-5" />
+                  </button>
+                </div>
+                <div className="p-6 space-y-6">
+                  <div className="flex flex-wrap gap-4 text-sm text-slate-400">
+                    <div className="flex items-center gap-1.5"><Calendar className="w-4 h-4" /> {selectedExp.period}</div>
+                    <div className="flex items-center gap-1.5"><Briefcase className="w-4 h-4" /> {selectedExp.role}</div>
+                    <div className="flex items-center gap-1.5"><Users className="w-4 h-4" /> {selectedExp.teamSize}名</div>
+                  </div>
+                  <div>
+                    <h4 className="text-sm font-bold text-slate-500 uppercase tracking-wider mb-2">概要</h4>
+                    <p className="text-slate-300 leading-relaxed">{selectedExp.details}</p>
+                  </div>
+                  <div>
+                    <h4 className="text-sm font-bold text-slate-500 uppercase tracking-wider mb-2">技術スタック</h4>
+                    <div className="flex flex-wrap gap-2">
+                      {selectedExp.techStack.map((tech) => (
+                        <span key={tech} className="px-3 py-1 text-sm rounded-full bg-slate-800 text-slate-300 border border-slate-700">{tech}</span>
+                      ))}
+                    </div>
+                  </div>
+                  <div>
+                    <h4 className="text-sm font-bold text-slate-500 uppercase tracking-wider mb-2">主な実績</h4>
+                    <ul className="space-y-2">
+                      {selectedExp.achievements.map((a, j) => (
+                        <li key={j} className="flex items-start gap-3 text-slate-300">
+                          <div className="w-2 h-2 bg-purple-500 rounded-full mt-2 shrink-0" />
+                          {a}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
       )
     }
