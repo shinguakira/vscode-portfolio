@@ -341,8 +341,8 @@ export function VSCodeLayout() {
 
     const newTab: Tab = {
       id: tabId,
-      name: `${extension.icon} ${extension.displayName}`,
-      icon: "📦",
+      name: extension.displayName,
+      icon: extension.icon,
       content: "",
       isDirty: false,
     }

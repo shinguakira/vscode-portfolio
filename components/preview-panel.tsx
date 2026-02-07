@@ -5,6 +5,7 @@ import { Mail, Github, Linkedin, Twitter, ExternalLink, ChevronRight, X, Star, D
 import { Badge } from "@/components/ui/badge"
 import { Card } from "@/components/ui/card"
 import type { PreviewTheme, Extension } from "@/types"
+import { IconFromKey } from "@/lib/icon-map"
 import { extensions } from "@/constants/portfolio-data"
 
 interface PreviewPanelProps {
@@ -1674,7 +1675,7 @@ function ExtensionGallery({ theme }: { theme: PreviewTheme }) {
                 className="border border-gray-200 p-6 hover:border-gray-400 transition-colors cursor-pointer"
               >
                 <div className="flex items-start gap-4">
-                  <div className="text-3xl">{ext.icon}</div>
+                  <div><IconFromKey iconKey={ext.icon} className="w-8 h-8 text-gray-600" /></div>
                   <div className="flex-1">
                     <div className="flex items-center justify-between mb-2">
                       <h3 className="text-xl font-bold text-gray-900">{ext.displayName}</h3>
@@ -1708,8 +1709,8 @@ function ExtensionGallery({ theme }: { theme: PreviewTheme }) {
                   <X className="w-6 h-6" />
                 </button>
                 <div className="flex flex-col md:flex-row gap-6">
-                  <div className="w-20 h-20 md:w-24 md:h-24 rounded-xl bg-gray-100 flex items-center justify-center text-4xl md:text-5xl shrink-0 border border-gray-200">
-                    {selectedExtension.icon}
+                  <div className="w-20 h-20 md:w-24 md:h-24 rounded-xl bg-gray-100 flex items-center justify-center shrink-0 border border-gray-200">
+                    <IconFromKey iconKey={selectedExtension.icon} className="w-10 h-10 md:w-12 md:h-12 text-gray-600" />
                   </div>
                   <div className="flex-1">
                     <h2 className="text-2xl md:text-3xl font-serif font-bold text-gray-900 mb-2">{selectedExtension.displayName}</h2>
@@ -1856,8 +1857,8 @@ function ExtensionGallery({ theme }: { theme: PreviewTheme }) {
                 <div className={`absolute -inset-0.5 bg-gradient-to-r ${colorMap[ext.id] || "from-teal-500 to-green-500"} rounded-3xl blur opacity-30 group-hover:opacity-70 transition duration-500`} />
                 <div className="relative bg-black border border-gray-800 rounded-3xl p-6 h-full">
                   <div className="flex items-center gap-4 mb-4">
-                    <div className={`w-14 h-14 rounded-2xl bg-gradient-to-br ${colorMap[ext.id] || "from-teal-500 to-green-500"} flex items-center justify-center text-2xl`}>
-                      {ext.icon}
+                    <div className={`w-14 h-14 rounded-2xl bg-gradient-to-br ${colorMap[ext.id] || "from-teal-500 to-green-500"} flex items-center justify-center`}>
+                      <IconFromKey iconKey={ext.icon} className="w-7 h-7 text-white" />
                     </div>
                     <div>
                       <h3 className="text-lg font-black text-white">{ext.displayName}</h3>
@@ -1890,8 +1891,8 @@ function ExtensionGallery({ theme }: { theme: PreviewTheme }) {
                     <X className="w-6 h-6" />
                   </button>
                   <div className="flex flex-col md:flex-row gap-6">
-                    <div className={`w-20 h-20 md:w-24 md:h-24 rounded-2xl bg-gradient-to-br ${colorMap[selectedExtension.id] || "from-teal-500 to-green-500"} flex items-center justify-center text-4xl md:text-5xl shrink-0`}>
-                      {selectedExtension.icon}
+                    <div className={`w-20 h-20 md:w-24 md:h-24 rounded-2xl bg-gradient-to-br ${colorMap[selectedExtension.id] || "from-teal-500 to-green-500"} flex items-center justify-center shrink-0`}>
+                      <IconFromKey iconKey={selectedExtension.icon} className="w-10 h-10 md:w-12 md:h-12 text-white" />
                     </div>
                     <div className="flex-1">
                       <h2 className={`text-2xl md:text-3xl font-black mb-2 text-transparent bg-clip-text bg-gradient-to-r ${colorMap[selectedExtension.id] || "from-teal-500 to-green-500"}`}>
@@ -2038,8 +2039,8 @@ function ExtensionGallery({ theme }: { theme: PreviewTheme }) {
               className="p-6 bg-slate-900/50 border-slate-800 backdrop-blur hover:border-slate-600 transition-all cursor-pointer group"
             >
               <div className="flex items-start gap-5">
-                <div className={`w-16 h-16 rounded-2xl bg-gradient-to-br ${colorMap[ext.id] || "from-teal-500 to-emerald-500"} flex items-center justify-center text-3xl shrink-0 group-hover:scale-105 transition-transform`}>
-                  {ext.icon}
+                <div className={`w-16 h-16 rounded-2xl bg-gradient-to-br ${colorMap[ext.id] || "from-teal-500 to-emerald-500"} flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform`}>
+                  <IconFromKey iconKey={ext.icon} className="w-8 h-8 text-white" />
                 </div>
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-3 mb-2">
@@ -2080,8 +2081,8 @@ function ExtensionGallery({ theme }: { theme: PreviewTheme }) {
                 <X className="w-6 h-6" />
               </button>
               <div className="flex flex-col md:flex-row gap-6">
-                <div className={`w-20 h-20 md:w-24 md:h-24 rounded-2xl bg-gradient-to-br ${colorMap[selectedExtension.id] || "from-teal-500 to-emerald-500"} flex items-center justify-center text-4xl md:text-5xl shrink-0`}>
-                  {selectedExtension.icon}
+                <div className={`w-20 h-20 md:w-24 md:h-24 rounded-2xl bg-gradient-to-br ${colorMap[selectedExtension.id] || "from-teal-500 to-emerald-500"} flex items-center justify-center shrink-0`}>
+                  <IconFromKey iconKey={selectedExtension.icon} className="w-10 h-10 md:w-12 md:h-12 text-white" />
                 </div>
                 <div className="flex-1">
                   <h2 className="text-2xl md:text-3xl font-bold text-white mb-2">{selectedExtension.displayName}</h2>

@@ -13,18 +13,11 @@ import {
   Download,
   ExternalLink,
   Github,
-  Folder,
-  FileText,
-  Zap,
-  HelpCircle,
-  Braces,
-  BookOpen,
-  Mail,
-  Settings,
 } from "lucide-react"
 import { cn } from "@/lib/utils"
 import type { VSCodeSettings, FileItem, SearchResult } from "@/types"
 import { adjustBrightness } from "@/lib/color-utils"
+import { IconFromKey } from "@/lib/icon-map"
 import { gitHistory, changelog, extensions } from "@/constants/portfolio-data"
 
 interface SideBarProps {
@@ -76,21 +69,6 @@ export function SideBar({
   textSecondary,
   textMuted,
 }: SideBarProps) {
-  const fileIconMap: Record<string, React.ReactNode> = {
-    "folder": <Folder className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-yellow-500" />,
-    "file-text": <FileText className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-blue-400" />,
-    "zap": <Zap className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-amber-400" />,
-    "help-circle": <HelpCircle className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-purple-400" />,
-    "braces": <Braces className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-yellow-300" />,
-    "book-open": <BookOpen className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-green-400" />,
-    "mail": <Mail className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-sky-400" />,
-    "settings": <Settings className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-gray-400" />,
-  }
-
-  const getFileIcon = (iconKey: string) => {
-    return fileIconMap[iconKey] || <FileText className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-gray-400" />
-  }
-
   const renderFileTree = (items: FileItem[], level = 0, path: string[] = []) => {
     return items.map((item) => {
       const itemPath = [...path, item.name]
@@ -114,7 +92,7 @@ export function SideBar({
               }}
             >
               {isOpen ? <ChevronDown className="w-2.5 h-2.5 sm:w-3 sm:h-3 shrink-0" /> : <ChevronRight className="w-2.5 h-2.5 sm:w-3 sm:h-3 shrink-0" />}
-              <span className="mr-0.5 sm:mr-1 shrink-0">{getFileIcon(item.icon)}</span>
+              <span className="mr-0.5 sm:mr-1 shrink-0"><IconFromKey iconKey={item.icon} className="w-3 h-3 sm:w-3.5 sm:h-3.5" /></span>
               <span className="truncate">{item.name}</span>
             </button>
             {isOpen && item.children && <div>{renderFileTree(item.children, level + 1, itemPath)}</div>}
@@ -139,7 +117,7 @@ export function SideBar({
             e.currentTarget.style.backgroundColor = "transparent"
           }}
         >
-          <span className="mr-0.5 sm:mr-1 shrink-0">{getFileIcon(item.icon)}</span>
+          <span className="mr-0.5 sm:mr-1 shrink-0"><IconFromKey iconKey={item.icon} className="w-3 h-3 sm:w-3.5 sm:h-3.5" /></span>
           <span className="truncate">{item.name}</span>
         </button>
       )
@@ -205,7 +183,7 @@ export function SideBar({
                     }}
                   >
                     <div className="flex items-start gap-2 md:gap-3">
-                      <div className="text-xl md:text-2xl shrink-0">{ext.icon}</div>
+                      <div className="shrink-0"><IconFromKey iconKey={ext.icon} className="w-6 h-6 md:w-7 md:h-7" style={{ color: accentColor }} /></div>
                       <div className="flex-1 min-w-0">
                         <div className="font-semibold text-[11px] md:text-sm truncate" style={{ color: textPrimary }}>
                           {ext.displayName}
