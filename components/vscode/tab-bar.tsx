@@ -1,7 +1,7 @@
 "use client"
 
 import type React from "react"
-import { X, Play } from "lucide-react"
+import { X, Play, Folder, FileText, Zap, HelpCircle, Braces, BookOpen, Mail, Settings } from "lucide-react"
 import { cn } from "@/lib/utils"
 import type { Tab, VSCodeSettings } from "@/types"
 
@@ -32,6 +32,21 @@ export function TabBar({
   textPrimary,
   textSecondary,
 }: TabBarProps) {
+  const iconMap: Record<string, React.ReactNode> = {
+    "folder": <Folder className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-yellow-500" />,
+    "file-text": <FileText className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-blue-400" />,
+    "zap": <Zap className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-amber-400" />,
+    "help-circle": <HelpCircle className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-purple-400" />,
+    "braces": <Braces className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-yellow-300" />,
+    "book-open": <BookOpen className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-green-400" />,
+    "mail": <Mail className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-sky-400" />,
+    "settings": <Settings className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-gray-400" />,
+  }
+
+  const getTabIcon = (iconKey: string) => {
+    return iconMap[iconKey] || <FileText className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-gray-400" />
+  }
+
   if (tabs.length === 0) return null
 
   return (
@@ -50,7 +65,7 @@ export function TabBar({
             borderTop: activeTab === tab.id ? `1px solid ${settings.accentColor}` : "1px solid transparent",
           }}
         >
-          <span className="text-[8px] sm:text-[10px] md:text-[13px]">{tab.icon}</span>
+          <span className="shrink-0">{getTabIcon(tab.icon)}</span>
           <span className="truncate flex-1">{tab.name}</span>
           <button
             onClick={(e) => closeTab(tab.id, e)}
