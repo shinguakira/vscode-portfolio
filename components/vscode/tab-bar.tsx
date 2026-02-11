@@ -3,6 +3,7 @@
 import type React from "react"
 import { X, Play } from "lucide-react"
 import { cn } from "@/lib/utils"
+import { IconFromKey } from "@/lib/icon-map"
 import type { Tab, VSCodeSettings } from "@/types"
 
 interface TabBarProps {
@@ -50,7 +51,7 @@ export function TabBar({
             borderTop: activeTab === tab.id ? `1px solid ${settings.accentColor}` : "1px solid transparent",
           }}
         >
-          <span className="text-[8px] sm:text-[10px] md:text-[13px]">{tab.icon}</span>
+          <span className="shrink-0"><IconFromKey iconKey={tab.icon} className="w-3 h-3 sm:w-3.5 sm:h-3.5" /></span>
           <span className="truncate flex-1">{tab.name}</span>
           <button
             onClick={(e) => closeTab(tab.id, e)}

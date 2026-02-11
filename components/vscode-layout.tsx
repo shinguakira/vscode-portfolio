@@ -17,7 +17,7 @@ import { SettingsPanel } from "@/components/vscode/settings-panel"
 import { LandscapePrompt } from "@/components/landscape-prompt"
 import { ResizableDivider } from "@/components/resizable-divider"
 import { TutorialOverlay } from "@/components/tutorial-overlay"
-import type { Tab, VSCodeSettings, SearchResult, Extension } from "@/types"
+import type { Tab, VSCodeSettings, SearchResult, Extension, PreviewTheme } from "@/types"
 
 export function VSCodeLayout() {
   const [openFolders, setOpenFolders] = useState<string[]>(["about", "projects"])
@@ -34,6 +34,7 @@ export function VSCodeLayout() {
   const [extensionsMode, setExtensionsMode] = useState(false)
   const [terminalOpen, setTerminalOpen] = useState(false)
   const [activeExtension, setActiveExtension] = useState<Extension | null>(null)
+  const [isMobile, setIsMobile] = useState(false)
 
   const [sidebarWidth, setSidebarWidth] = useState(240)
   const [terminalHeight, setTerminalHeight] = useState(200)
@@ -126,6 +127,14 @@ export function VSCodeLayout() {
     }
   }, [])
 
+  const handleTutorialChangePreviewTheme = useCallback((themeId: string) => {
+    setSettings((prev) => {
+      const newSettings = { ...prev, previewTheme: themeId as PreviewTheme }
+      localStorage.setItem("vscode-settings", JSON.stringify(newSettings))
+      return newSettings
+    })
+  }, [])
+
   const handleHelpClick = useCallback(() => {
     if (tutorialRestartRef.current) {
       tutorialRestartRef.current()
@@ -136,14 +145,16 @@ export function VSCodeLayout() {
     const handleResize = () => {
       const width = window.innerWidth
       const isSmallMobile = width < 640 // iPhone SE landscape ~568px
-      const isMobile = width < 1024
+      const isMobileScreen = width < 1024
+
+      setIsMobile(isMobileScreen)
 
       if (isSmallMobile) {
         setSidebarCollapsed(true)
         setTerminalOpen(false)
         setSidebarWidth(Math.min(160, width - 60))
         setTerminalHeight(120)
-      } else if (isMobile) {
+      } else if (isMobileScreen) {
         setSidebarCollapsed(true)
         setTerminalOpen(false)
         setSidebarWidth(Math.min(200, width - 80))
@@ -159,6 +170,12 @@ export function VSCodeLayout() {
     window.addEventListener("resize", handleResize)
     return () => window.removeEventListener("resize", handleResize)
   }, [])
+
+  const handleMainAreaClick = useCallback(() => {
+    if (isMobile && !sidebarCollapsed) {
+      setSidebarCollapsed(true)
+    }
+  }, [isMobile, sidebarCollapsed])
 
   useEffect(() => {
     const saved = localStorage.getItem("vscode-settings")
@@ -324,8 +341,8 @@ export function VSCodeLayout() {
 
     const newTab: Tab = {
       id: tabId,
-      name: `${extension.icon} ${extension.displayName}`,
-      icon: "📦",
+      name: extension.displayName,
+      icon: extension.icon,
       content: "",
       isDirty: false,
     }
@@ -353,6 +370,7 @@ export function VSCodeLayout() {
         onOpenExtension={handleTutorialOpenExtension}
         onTogglePreview={handleTutorialTogglePreview}
         onRunCommand={handleTutorialRunCommand}
+        onChangePreviewTheme={handleTutorialChangePreviewTheme}
         accentColor={settings.accentColor}
         backgroundColor={bgSidebar}
         textColor={textPrimary}
@@ -435,7 +453,16 @@ export function VSCodeLayout() {
             </>
           )}
 
-          <div className="flex-1 flex flex-col min-w-0" style={{ backgroundColor: bgMain }}>
+          <div
+              className="flex-1 flex flex-col min-w-0"
+              style={{ backgroundColor: bgMain }}
+              onClick={handleMainAreaClick}
+              onKeyDown={(e) => {
+                if (e.key === "Escape" && isMobile) {
+                  setSidebarCollapsed(true)
+                }
+              }}
+            >
             <TabBar
               tabs={tabs}
               activeTab={activeTab}
@@ -459,7 +486,7 @@ export function VSCodeLayout() {
                     <PreviewPanel
                       content={activeTabContent.content}
                       fileName={activeTabContent.name}
-                      settings={settings}
+                      theme={settings.previewTheme}
                     />
                   </div>
                 ) : (

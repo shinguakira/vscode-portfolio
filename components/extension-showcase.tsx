@@ -3,6 +3,7 @@
 import { useState } from "react"
 import type { Extension, VSCodeSettings } from "@/types"
 import { adjustBrightness } from "@/lib/color-utils"
+import { IconFromKey } from "@/lib/icon-map"
 import {
   Star,
   Download,
@@ -58,13 +59,13 @@ export function ExtensionShowcase({ extension, settings }: ExtensionShowcaseProp
         <div className="flex flex-col md:flex-row gap-6">
           {/* アイコン */}
           <div
-            className="w-20 h-20 md:w-28 md:h-28 rounded-2xl flex items-center justify-center text-4xl md:text-5xl shrink-0"
+            className="w-20 h-20 md:w-28 md:h-28 rounded-2xl flex items-center justify-center shrink-0"
             style={{
               background: `linear-gradient(135deg, ${accentColor}20, ${accentColor}40)`,
               border: `2px solid ${accentColor}50`,
             }}
           >
-            {extension.icon}
+            <IconFromKey iconKey={extension.icon} className="w-10 h-10 md:w-14 md:h-14" style={{ color: accentColor }} />
           </div>
 
           {/* メタ情報 */}
@@ -180,7 +181,7 @@ export function ExtensionShowcase({ extension, settings }: ExtensionShowcaseProp
                   />
                 ) : (
                   <div className="text-center z-10 p-6">
-                    <div className="text-6xl mb-4">{extension.icon}</div>
+                    <div className="mb-4"><IconFromKey iconKey={extension.icon} className="w-16 h-16" style={{ color: accentColor }} /></div>
                     <p className="text-sm" style={{ color: textSecondary }}>
                       スクリーンショットはありません
                     </p>

@@ -29,6 +29,19 @@ export interface SkillDiff {
   changes: SkillChange[]
 }
 
+export interface ChangelogChange {
+  type: "added" | "improved" | "fixed" | "removed"
+  description: string
+}
+
+export interface ChangelogEntry {
+  version: string
+  date: string
+  type: "major" | "minor" | "patch"
+  title: string
+  changes: ChangelogChange[]
+}
+
 export interface Tab {
   id: string
   name: string
@@ -37,12 +50,14 @@ export interface Tab {
   isDirty: boolean
 }
 
+export type PreviewTheme = "modern" | "innovative" | "professional"
+
 export interface VSCodeSettings {
   backgroundColor: string
   textColor: string
   accentColor: string
   fontSize: number
-  previewTheme: "modern" | "innovative" | "professional"
+  previewTheme: PreviewTheme
 }
 
 export interface SearchResult {

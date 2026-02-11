@@ -17,7 +17,8 @@ import {
 import { cn } from "@/lib/utils"
 import type { VSCodeSettings, FileItem, SearchResult } from "@/types"
 import { adjustBrightness } from "@/lib/color-utils"
-import { gitHistory, skillDiffs, extensions } from "@/constants/portfolio-data"
+import { IconFromKey } from "@/lib/icon-map"
+import { gitHistory, changelog, extensions } from "@/constants/portfolio-data"
 
 interface SideBarProps {
   settings: VSCodeSettings
@@ -90,8 +91,8 @@ export function SideBar({
                 e.currentTarget.style.backgroundColor = "transparent"
               }}
             >
-              {isOpen ? <ChevronDown className="w-2.5 h-2.5 sm:w-3 sm:h-3" /> : <ChevronRight className="w-2.5 h-2.5 sm:w-3 sm:h-3" />}
-              <span className="mr-0.5 sm:mr-1 text-[8px] sm:text-[11px]">{item.icon}</span>
+              {isOpen ? <ChevronDown className="w-2.5 h-2.5 sm:w-3 sm:h-3 shrink-0" /> : <ChevronRight className="w-2.5 h-2.5 sm:w-3 sm:h-3 shrink-0" />}
+              <span className="mr-0.5 sm:mr-1 shrink-0"><IconFromKey iconKey={item.icon} className="w-3 h-3 sm:w-3.5 sm:h-3.5" /></span>
               <span className="truncate">{item.name}</span>
             </button>
             {isOpen && item.children && <div>{renderFileTree(item.children, level + 1, itemPath)}</div>}
@@ -116,7 +117,7 @@ export function SideBar({
             e.currentTarget.style.backgroundColor = "transparent"
           }}
         >
-          <span className="mr-0.5 sm:mr-1 text-[8px] sm:text-[11px]">{item.icon}</span>
+          <span className="mr-0.5 sm:mr-1 shrink-0"><IconFromKey iconKey={item.icon} className="w-3 h-3 sm:w-3.5 sm:h-3.5" /></span>
           <span className="truncate">{item.name}</span>
         </button>
       )
@@ -143,7 +144,7 @@ export function SideBar({
                 : historyMode
                   ? "History"
                   : diffMode
-                    ? "Diff"
+                    ? "Changelog"
                     : extensionsMode
                       ? "Extensions"
                       : "Explorer"}
@@ -182,7 +183,7 @@ export function SideBar({
                     }}
                   >
                     <div className="flex items-start gap-2 md:gap-3">
-                      <div className="text-xl md:text-2xl shrink-0">{ext.icon}</div>
+                      <div className="shrink-0"><IconFromKey iconKey={ext.icon} className="w-6 h-6 md:w-7 md:h-7" style={{ color: accentColor }} /></div>
                       <div className="flex-1 min-w-0">
                         <div className="font-semibold text-[11px] md:text-sm truncate" style={{ color: textPrimary }}>
                           {ext.displayName}
@@ -425,51 +426,69 @@ export function SideBar({
 
             {diffMode && !searchMode && !historyMode && !extensionsMode && (
               <div className="py-2">
-                {skillDiffs.map((diff, idx) => (
-                  <div key={idx} className="mb-4 md:mb-6 px-2 md:px-3">
-                    <div
-                      className="text-[10px] md:text-xs font-semibold uppercase tracking-wider mb-2 px-1 flex items-center gap-2"
-                      style={{ color: textSecondary }}
-                    >
-                      <ChevronDown className="w-3 h-3" />
-                      {diff.category}
-                    </div>
-                    <div className="space-y-1">
-                      {diff.changes.map((change, i) => (
+                <div className="px-2 md:px-3 mb-3">
+                  <div
+                    className="text-[10px] md:text-[11px] font-semibold uppercase tracking-wider mb-1"
+                    style={{ color: textSecondary }}
+                  >
+                    Changelog
+                  </div>
+                  <div className="text-[10px] md:text-xs" style={{ color: textMuted }}>
+                    アプリの変更履歴
+                  </div>
+                </div>
+
+                {changelog.map((entry, idx) => (
+                  <div key={entry.version} className="px-2 md:px-3 py-2 md:py-3 border-b relative" style={{ borderColor: bgMain }}>
+                    {idx < changelog.length - 1 && (
+                      <div className="absolute left-[15px] md:left-[19px] top-10 bottom-[-12px] w-[2px] bg-gray-700 opacity-30" />
+                    )}
+                    <div className="flex gap-2 md:gap-3">
+                      <div className="flex flex-col items-center mt-1">
                         <div
-                          key={i}
-                          className="rounded p-1.5 md:p-2 text-[10px] md:text-xs border border-transparent hover:border-opacity-20 transition-all"
+                          className="w-2.5 h-2.5 md:w-3 md:h-3 rounded-full z-10"
                           style={{
                             backgroundColor:
-                              change.type === "added"
-                                ? "rgba(34, 197, 94, 0.05)"
-                                : change.type === "removed"
-                                  ? "rgba(239, 68, 68, 0.05)"
-                                  : "rgba(59, 130, 246, 0.05)",
+                              entry.type === "major"
+                                ? "#22c55e"
+                                : entry.type === "minor"
+                                  ? settings.accentColor
+                                  : "#6b7280",
                           }}
-                        >
-                          <div className="flex items-center gap-2 font-medium" style={{ color: textPrimary }}>
-                            {change.type === "added" && <Plus className="w-2.5 h-2.5 md:w-3 md:h-3 text-green-500" />}
-                            {change.type === "removed" && <Minus className="w-2.5 h-2.5 md:w-3 md:h-3 text-red-500" />}
-                            {change.type === "improved" && (
-                              <div className="w-2.5 h-2.5 md:w-3 md:h-3 text-blue-500 font-mono">~</div>
-                            )}
-                            <span className="truncate">{change.skill}</span>
-                          </div>
-                          <div className="ml-4 md:ml-5 mt-1 opacity-80 line-clamp-2" style={{ color: textSecondary }}>
-                            {change.description}
-                          </div>
-                          {(change.before || change.after) && (
-                            <div className="ml-4 md:ml-5 mt-1.5 flex items-center gap-2 font-mono text-[9px] md:text-[10px] opacity-70 bg-black/20 w-fit px-1.5 py-0.5 rounded">
-                              {change.before && (
-                                <span className="text-red-400 line-through decoration-red-400/50">{change.before}</span>
-                              )}
-                              {change.before && change.after && <MoveRight className="w-2 h-2 opacity-50" />}
-                              {change.after && <span className="text-green-400">{change.after}</span>}
+                        />
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center justify-between gap-2">
+                          <span
+                            className="text-[10px] md:text-xs font-mono font-semibold"
+                            style={{ color: entry.type === "major" ? "#22c55e" : settings.accentColor }}
+                          >
+                            v{entry.version}
+                          </span>
+                          <span className="text-[9px] md:text-[10px] opacity-50 shrink-0" style={{ color: textSecondary }}>
+                            {entry.date}
+                          </span>
+                        </div>
+                        <div className="font-semibold text-[11px] md:text-sm mt-0.5 truncate" style={{ color: textPrimary }}>
+                          {entry.title}
+                        </div>
+                        <div className="mt-2 space-y-1">
+                          {entry.changes.slice(0, 3).map((change, i) => (
+                            <div key={i} className="flex items-start gap-1.5 text-[10px] md:text-xs" style={{ color: textMuted }}>
+                              {change.type === "added" && <Plus className="w-2.5 h-2.5 md:w-3 md:h-3 text-green-500 shrink-0 mt-0.5" />}
+                              {change.type === "improved" && <MoveRight className="w-2.5 h-2.5 md:w-3 md:h-3 text-blue-500 shrink-0 mt-0.5" />}
+                              {change.type === "fixed" && <div className="w-2.5 h-2.5 md:w-3 md:h-3 text-yellow-500 shrink-0 mt-0.5 font-bold text-center">!</div>}
+                              {change.type === "removed" && <Minus className="w-2.5 h-2.5 md:w-3 md:h-3 text-red-500 shrink-0 mt-0.5" />}
+                              <span className="line-clamp-1">{change.description}</span>
+                            </div>
+                          ))}
+                          {entry.changes.length > 3 && (
+                            <div className="text-[9px] md:text-[10px] pl-4" style={{ color: textMuted }}>
+                              +{entry.changes.length - 3} more
                             </div>
                           )}
                         </div>
-                      ))}
+                      </div>
                     </div>
                   </div>
                 ))}

@@ -1,6 +1,6 @@
 "use client"
 
-import React from "react"
+import React, { useState, useEffect } from "react"
 
 import { X } from "lucide-react"
 import type { VSCodeSettings } from "@/types"
@@ -26,7 +26,17 @@ export function SettingsPanel({
   textPrimary,
   textSecondary,
 }: SettingsPanelProps) {
-  const [localSettings, setLocalSettings] = React.useState(settings)
+  const [localSettings, setLocalSettings] = useState(settings)
+  const [isSmallScreen, setIsSmallScreen] = useState(false)
+
+  useEffect(() => {
+    const checkScreen = () => {
+      setIsSmallScreen(window.innerWidth < 640 || window.innerHeight < 400)
+    }
+    checkScreen()
+    window.addEventListener("resize", checkScreen)
+    return () => window.removeEventListener("resize", checkScreen)
+  }, [])
 
   const handleSave = () => {
     onSave(localSettings)
@@ -34,17 +44,24 @@ export function SettingsPanel({
   }
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-1 sm:p-2 md:p-4">
       <div
-        className="w-[600px] max-h-[80vh] rounded-lg shadow-2xl overflow-hidden flex flex-col border"
+        className={`rounded-lg shadow-2xl overflow-hidden flex flex-col border ${
+          isSmallScreen 
+            ? "w-[95vw] max-h-[95vh]" 
+            : "w-full max-w-[95vw] sm:max-w-[500px] md:max-w-[600px] max-h-[90vh] sm:max-h-[85vh] md:max-h-[80vh]"
+        }`}
         style={{ backgroundColor: bgMain, borderColor: bgActivityBar, color: textPrimary }}
       >
         {/* ヘッダー */}
-        <div className="flex items-center justify-between px-6 py-4 border-b" style={{ borderColor: bgActivityBar }}>
-          <h2 className="text-lg font-semibold">設定</h2>
+        <div 
+          className={`flex items-center justify-between border-b shrink-0 ${isSmallScreen ? "px-2 py-1.5" : "px-3 sm:px-4 md:px-6 py-2 sm:py-3 md:py-4"}`} 
+          style={{ borderColor: bgActivityBar }}
+        >
+          <h2 className={`font-semibold ${isSmallScreen ? "text-xs" : "text-sm sm:text-base md:text-lg"}`}>設定</h2>
           <button
             onClick={onClose}
-            className="p-1 rounded transition-colors"
+            className="p-0.5 sm:p-1 rounded transition-colors"
             style={{ color: textSecondary }}
             onMouseEnter={(e) => {
               e.currentTarget.style.backgroundColor = adjustBrightness(bgMain, 20)
@@ -53,19 +70,22 @@ export function SettingsPanel({
               e.currentTarget.style.backgroundColor = "transparent"
             }}
           >
-            <X className="w-5 h-5" />
+            <X className={isSmallScreen ? "w-3.5 h-3.5" : "w-4 h-4 sm:w-5 sm:h-5"} />
           </button>
         </div>
 
         {/* コンテンツ */}
-        <div className="p-6 overflow-y-auto flex-1">
-          <div className="space-y-6">
+        <div className={`overflow-y-auto flex-1 ${isSmallScreen ? "p-2" : "p-2 sm:p-4 md:p-6"}`}>
+          <div className={isSmallScreen ? "space-y-2" : "space-y-3 sm:space-y-4 md:space-y-6"}>
             {/* テーマプリセット */}
             <div>
-              <label className="block text-sm font-medium mb-3" style={{ color: textPrimary }}>
+              <label 
+                className={`block font-medium ${isSmallScreen ? "text-[10px] mb-1" : "text-xs sm:text-sm mb-1.5 sm:mb-2 md:mb-3"}`} 
+                style={{ color: textPrimary }}
+              >
                 テーマプリセット
               </label>
-              <div className="grid grid-cols-3 gap-3">
+              <div className={`grid grid-cols-3 ${isSmallScreen ? "gap-1" : "gap-1.5 sm:gap-2 md:gap-3"}`}>
                 {THEME_PRESETS.map((theme) => (
                   <button
                     key={theme.name}
@@ -77,7 +97,7 @@ export function SettingsPanel({
                         accentColor: theme.accentColor,
                       })
                     }
-                    className="p-3 rounded border-2 transition-all text-left"
+                    className={`rounded border-2 transition-all text-left ${isSmallScreen ? "p-1" : "p-1.5 sm:p-2 md:p-3"}`}
                     style={{
                       backgroundColor: theme.backgroundColor,
                       borderColor:
@@ -87,117 +107,107 @@ export function SettingsPanel({
                       color: theme.textColor,
                     }}
                   >
-                    <div className="font-medium text-sm">{theme.name}</div>
-                    <div className="flex gap-1 mt-2">
-                      <div className="w-4 h-4 rounded-full" style={{ backgroundColor: theme.accentColor }}></div>
+                    <div className={`font-medium ${isSmallScreen ? "text-[8px]" : "text-[10px] sm:text-xs md:text-sm"}`}>{theme.name}</div>
+                    <div className={`flex gap-0.5 ${isSmallScreen ? "mt-0.5" : "mt-1 sm:mt-1.5 md:mt-2"}`}>
+                      <div className={`rounded-full ${isSmallScreen ? "w-2 h-2" : "w-2.5 h-2.5 sm:w-3 sm:h-3 md:w-4 md:h-4"}`} style={{ backgroundColor: theme.accentColor }}></div>
                     </div>
                   </button>
                 ))}
               </div>
             </div>
 
-            {/* 背景色 */}
-            <div>
-              <label className="block text-sm font-medium mb-2" style={{ color: textPrimary }}>
-                背景色
-              </label>
-              <div className="flex gap-3 items-center">
-                <input
-                  type="color"
-                  value={localSettings.backgroundColor}
-                  onChange={(e) => setLocalSettings({ ...localSettings, backgroundColor: e.target.value })}
-                  className="w-20 h-10 rounded cursor-pointer border"
-                  style={{ borderColor: bgActivityBar }}
-                />
-                <input
-                  type="text"
-                  value={localSettings.backgroundColor}
-                  onChange={(e) => setLocalSettings({ ...localSettings, backgroundColor: e.target.value })}
-                  className="flex-1 px-3 py-2 rounded border font-mono text-sm outline-none focus:ring-2"
-                  style={{
-                    backgroundColor: adjustBrightness(bgMain, 10),
-                    borderColor: bgActivityBar,
-                    color: textPrimary,
-                  }}
-                  onFocus={(e) => {
-                    e.currentTarget.style.borderColor = localSettings.accentColor
-                  }}
-                  onBlur={(e) => {
-                    e.currentTarget.style.borderColor = bgActivityBar
-                  }}
-                />
-              </div>
-            </div>
+            {/* カラー設定（スマホ時は折りたたみ表示） */}
+            {!isSmallScreen && (
+              <>
+                {/* 背景色 */}
+                <div>
+                  <label className="block text-xs sm:text-sm font-medium mb-1 sm:mb-2" style={{ color: textPrimary }}>
+                    背景色
+                  </label>
+                  <div className="flex gap-2 sm:gap-3 items-center">
+                    <input
+                      type="color"
+                      value={localSettings.backgroundColor}
+                      onChange={(e) => setLocalSettings({ ...localSettings, backgroundColor: e.target.value })}
+                      className="w-12 h-8 sm:w-16 sm:h-9 md:w-20 md:h-10 rounded cursor-pointer border"
+                      style={{ borderColor: bgActivityBar }}
+                    />
+                    <input
+                      type="text"
+                      value={localSettings.backgroundColor}
+                      onChange={(e) => setLocalSettings({ ...localSettings, backgroundColor: e.target.value })}
+                      className="flex-1 px-2 py-1 sm:px-3 sm:py-2 rounded border font-mono text-xs sm:text-sm outline-none"
+                      style={{
+                        backgroundColor: adjustBrightness(bgMain, 10),
+                        borderColor: bgActivityBar,
+                        color: textPrimary,
+                      }}
+                    />
+                  </div>
+                </div>
 
-            {/* 文字色 */}
-            <div>
-              <label className="block text-sm font-medium mb-2" style={{ color: textPrimary }}>
-                文字色
-              </label>
-              <div className="flex gap-3 items-center">
-                <input
-                  type="color"
-                  value={localSettings.textColor}
-                  onChange={(e) => setLocalSettings({ ...localSettings, textColor: e.target.value })}
-                  className="w-20 h-10 rounded cursor-pointer border"
-                  style={{ borderColor: bgActivityBar }}
-                />
-                <input
-                  type="text"
-                  value={localSettings.textColor}
-                  onChange={(e) => setLocalSettings({ ...localSettings, textColor: e.target.value })}
-                  className="flex-1 px-3 py-2 rounded border font-mono text-sm outline-none focus:ring-2"
-                  style={{
-                    backgroundColor: adjustBrightness(bgMain, 10),
-                    borderColor: bgActivityBar,
-                    color: textPrimary,
-                  }}
-                  onFocus={(e) => {
-                    e.currentTarget.style.borderColor = localSettings.accentColor
-                  }}
-                  onBlur={(e) => {
-                    e.currentTarget.style.borderColor = bgActivityBar
-                  }}
-                />
-              </div>
-            </div>
+                {/* 文字色 */}
+                <div>
+                  <label className="block text-xs sm:text-sm font-medium mb-1 sm:mb-2" style={{ color: textPrimary }}>
+                    文字色
+                  </label>
+                  <div className="flex gap-2 sm:gap-3 items-center">
+                    <input
+                      type="color"
+                      value={localSettings.textColor}
+                      onChange={(e) => setLocalSettings({ ...localSettings, textColor: e.target.value })}
+                      className="w-12 h-8 sm:w-16 sm:h-9 md:w-20 md:h-10 rounded cursor-pointer border"
+                      style={{ borderColor: bgActivityBar }}
+                    />
+                    <input
+                      type="text"
+                      value={localSettings.textColor}
+                      onChange={(e) => setLocalSettings({ ...localSettings, textColor: e.target.value })}
+                      className="flex-1 px-2 py-1 sm:px-3 sm:py-2 rounded border font-mono text-xs sm:text-sm outline-none"
+                      style={{
+                        backgroundColor: adjustBrightness(bgMain, 10),
+                        borderColor: bgActivityBar,
+                        color: textPrimary,
+                      }}
+                    />
+                  </div>
+                </div>
 
-            {/* アクセントカラー */}
-            <div>
-              <label className="block text-sm font-medium mb-2" style={{ color: textPrimary }}>
-                アクセントカラー
-              </label>
-              <div className="flex gap-3 items-center">
-                <input
-                  type="color"
-                  value={localSettings.accentColor}
-                  onChange={(e) => setLocalSettings({ ...localSettings, accentColor: e.target.value })}
-                  className="w-20 h-10 rounded cursor-pointer border"
-                  style={{ borderColor: bgActivityBar }}
-                />
-                <input
-                  type="text"
-                  value={localSettings.accentColor}
-                  onChange={(e) => setLocalSettings({ ...localSettings, accentColor: e.target.value })}
-                  className="flex-1 px-3 py-2 rounded border font-mono text-sm outline-none focus:ring-2"
-                  style={{
-                    backgroundColor: adjustBrightness(bgMain, 10),
-                    borderColor: bgActivityBar,
-                    color: textPrimary,
-                  }}
-                  onFocus={(e) => {
-                    e.currentTarget.style.borderColor = localSettings.accentColor
-                  }}
-                  onBlur={(e) => {
-                    e.currentTarget.style.borderColor = bgActivityBar
-                  }}
-                />
-              </div>
-            </div>
+                {/* アクセントカラー */}
+                <div>
+                  <label className="block text-xs sm:text-sm font-medium mb-1 sm:mb-2" style={{ color: textPrimary }}>
+                    アクセントカラー
+                  </label>
+                  <div className="flex gap-2 sm:gap-3 items-center">
+                    <input
+                      type="color"
+                      value={localSettings.accentColor}
+                      onChange={(e) => setLocalSettings({ ...localSettings, accentColor: e.target.value })}
+                      className="w-12 h-8 sm:w-16 sm:h-9 md:w-20 md:h-10 rounded cursor-pointer border"
+                      style={{ borderColor: bgActivityBar }}
+                    />
+                    <input
+                      type="text"
+                      value={localSettings.accentColor}
+                      onChange={(e) => setLocalSettings({ ...localSettings, accentColor: e.target.value })}
+                      className="flex-1 px-2 py-1 sm:px-3 sm:py-2 rounded border font-mono text-xs sm:text-sm outline-none"
+                      style={{
+                        backgroundColor: adjustBrightness(bgMain, 10),
+                        borderColor: bgActivityBar,
+                        color: textPrimary,
+                      }}
+                    />
+                  </div>
+                </div>
+              </>
+            )}
 
             {/* フォントサイズ */}
             <div>
-              <label className="block text-sm font-medium mb-2" style={{ color: textPrimary }}>
+              <label 
+                className={`block font-medium ${isSmallScreen ? "text-[10px] mb-0.5" : "text-xs sm:text-sm mb-1 sm:mb-2"}`} 
+                style={{ color: textPrimary }}
+              >
                 フォントサイズ: {localSettings.fontSize}px
               </label>
               <input
@@ -214,26 +224,31 @@ export function SettingsPanel({
             </div>
 
             {/* プレビューテーマ */}
-            <div>
-              <label className="block text-sm font-medium mb-3" style={{ color: textPrimary }}>
+            <div data-tutorial="preview-theme-selector">
+              <label 
+                className={`block font-medium ${isSmallScreen ? "text-[10px] mb-1" : "text-xs sm:text-sm mb-1.5 sm:mb-2 md:mb-3"}`} 
+                style={{ color: textPrimary }}
+              >
                 プレビューテーマ
               </label>
-              <div className="grid grid-cols-3 gap-3">
+              <div className={`grid grid-cols-3 ${isSmallScreen ? "gap-1" : "gap-1.5 sm:gap-2 md:gap-3"}`}>
                 {PREVIEW_THEMES.map((theme) => (
                   <button
                     key={theme.id}
                     onClick={() => setLocalSettings({ ...localSettings, previewTheme: theme.id })}
-                    className="p-4 rounded border-2 transition-all text-left"
+                    className={`rounded border-2 transition-all text-left ${isSmallScreen ? "p-1" : "p-1.5 sm:p-2 md:p-4"}`}
                     style={{
                       backgroundColor: adjustBrightness(bgMain, 10),
                       borderColor: localSettings.previewTheme === theme.id ? localSettings.accentColor : bgActivityBar,
                       color: textPrimary,
                     }}
                   >
-                    <div className="font-medium text-sm mb-1">{theme.name}</div>
-                    <div className="text-xs opacity-60" style={{ color: textSecondary }}>
-                      {theme.description}
-                    </div>
+                    <div className={`font-medium ${isSmallScreen ? "text-[8px]" : "text-[10px] sm:text-xs md:text-sm mb-0.5 sm:mb-1"}`}>{theme.name}</div>
+                    {!isSmallScreen && (
+                      <div className="text-[9px] sm:text-xs opacity-60" style={{ color: textSecondary }}>
+                        {theme.description}
+                      </div>
+                    )}
                   </button>
                 ))}
               </div>
@@ -242,10 +257,13 @@ export function SettingsPanel({
         </div>
 
         {/* フッター */}
-        <div className="flex items-center justify-end gap-3 px-6 py-4 border-t" style={{ borderColor: bgActivityBar }}>
+        <div 
+          className={`flex items-center justify-end border-t shrink-0 ${isSmallScreen ? "gap-1.5 px-2 py-1.5" : "gap-2 sm:gap-3 px-3 sm:px-4 md:px-6 py-2 sm:py-3 md:py-4"}`} 
+          style={{ borderColor: bgActivityBar }}
+        >
           <button
             onClick={onClose}
-            className="px-4 py-2 rounded transition-colors"
+            className={`rounded transition-colors ${isSmallScreen ? "px-2 py-1 text-[10px]" : "px-2 py-1 sm:px-3 sm:py-1.5 md:px-4 md:py-2 text-xs sm:text-sm"}`}
             style={{ color: textSecondary }}
             onMouseEnter={(e) => {
               e.currentTarget.style.backgroundColor = adjustBrightness(bgMain, 20)
@@ -258,7 +276,7 @@ export function SettingsPanel({
           </button>
           <button
             onClick={handleSave}
-            className="px-4 py-2 rounded transition-colors font-medium"
+            className={`rounded transition-colors font-medium ${isSmallScreen ? "px-2 py-1 text-[10px]" : "px-2 py-1 sm:px-3 sm:py-1.5 md:px-4 md:py-2 text-xs sm:text-sm"}`}
             style={{ backgroundColor: localSettings.accentColor, color: "#ffffff" }}
             onMouseEnter={(e) => {
               e.currentTarget.style.opacity = "0.9"
