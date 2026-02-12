@@ -1,9 +1,10 @@
 "use client"
 
+import { Play, X } from "lucide-react"
 import type React from "react"
-import { X, Play } from "lucide-react"
-import { cn } from "@/lib/utils"
+
 import { IconFromKey } from "@/lib/icon-map"
+import { cn } from "@/lib/utils"
 import type { Tab, VSCodeSettings } from "@/types"
 
 interface TabBarProps {
@@ -48,10 +49,13 @@ export function TabBar({
           style={{
             backgroundColor: activeTab === tab.id ? bgMain : bgTab,
             color: activeTab === tab.id ? textPrimary : textSecondary,
-            borderTop: activeTab === tab.id ? `1px solid ${settings.accentColor}` : "1px solid transparent",
+            borderTop:
+              activeTab === tab.id ? `1px solid ${settings.accentColor}` : "1px solid transparent",
           }}
         >
-          <span className="shrink-0"><IconFromKey iconKey={tab.icon} className="w-3 h-3 sm:w-3.5 sm:h-3.5" /></span>
+          <span className="shrink-0">
+            <IconFromKey iconKey={tab.icon} className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
+          </span>
           <span className="truncate flex-1">{tab.name}</span>
           <button
             onClick={(e) => closeTab(tab.id, e)}
@@ -64,7 +68,10 @@ export function TabBar({
       <div className="flex-1 border-b" style={{ borderColor: bgMain, backgroundColor: bgTab }} />
 
       {activeTab && (
-        <div className="flex items-center px-1 sm:px-2 border-b" style={{ borderColor: bgMain, backgroundColor: bgTab }}>
+        <div
+          className="flex items-center px-1 sm:px-2 border-b"
+          style={{ borderColor: bgMain, backgroundColor: bgTab }}
+        >
           <button
             onClick={() => setPreviewMode(!previewMode)}
             className="flex items-center gap-0.5 sm:gap-1 px-1 sm:px-2 py-0.5 sm:py-1 text-[8px] sm:text-[10px] md:text-xs rounded hover:bg-white/10 transition-colors"

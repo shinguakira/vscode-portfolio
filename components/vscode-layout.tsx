@@ -1,23 +1,24 @@
 "use client"
 
 import type React from "react"
-import { useState, useEffect, useCallback, useRef } from "react"
-import { fileTree, type FileItem, extensions } from "@/constants/portfolio-data"
-import { DEFAULT_SETTINGS } from "@/constants/vscode-config"
-import { PreviewPanel } from "@/components/preview-panel"
-import { TerminalPanel } from "@/components/terminal-panel"
+import { useCallback, useEffect, useMemo, useRef, useState } from "react"
+
 import { ExtensionShowcase } from "@/components/extension-showcase"
-import { adjustBrightness } from "@/lib/color-utils"
-import { TitleBar } from "@/components/vscode/title-bar"
-import { ActivityBar } from "@/components/vscode/activity-bar"
-import { SideBar } from "@/components/vscode/side-bar"
-import { TabBar } from "@/components/vscode/tab-bar"
-import { StatusBar } from "@/components/vscode/status-bar"
-import { SettingsPanel } from "@/components/vscode/settings-panel"
 import { LandscapePrompt } from "@/components/landscape-prompt"
+import { PreviewPanel } from "@/components/preview-panel"
 import { ResizableDivider } from "@/components/resizable-divider"
+import { TerminalPanel } from "@/components/terminal-panel"
 import { TutorialOverlay } from "@/components/tutorial-overlay"
-import type { Tab, VSCodeSettings, SearchResult, Extension, PreviewTheme } from "@/types"
+import { ActivityBar } from "@/components/vscode/activity-bar"
+import { SettingsPanel } from "@/components/vscode/settings-panel"
+import { SideBar } from "@/components/vscode/side-bar"
+import { StatusBar } from "@/components/vscode/status-bar"
+import { TabBar } from "@/components/vscode/tab-bar"
+import { TitleBar } from "@/components/vscode/title-bar"
+import { extensions, type FileItem, fileTree } from "@/constants/portfolio-data"
+import { DEFAULT_SETTINGS } from "@/constants/vscode-config"
+import { adjustBrightness } from "@/lib/color-utils"
+import type { PreviewTheme, SearchResult, Tab, VSCodeSettings } from "@/types"
 
 export function VSCodeLayout() {
   const [openFolders, setOpenFolders] = useState<string[]>(["about", "projects"])
@@ -33,7 +34,13 @@ export function VSCodeLayout() {
   const [diffMode, setDiffMode] = useState(false)
   const [extensionsMode, setExtensionsMode] = useState(false)
   const [terminalOpen, setTerminalOpen] = useState(false)
-  const [activeExtension, setActiveExtension] = useState<Extension | null>(null)
+  const activeExtension = useMemo(() => {
+    if (activeTab?.startsWith("extensions/")) {
+      const extId = activeTab.replace("extensions/", "")
+      return extensions.find((e) => e.id === extId) || null
+    }
+    return null
+  }, [activeTab])
   const [isMobile, setIsMobile] = useState(false)
 
   const [sidebarWidth, setSidebarWidth] = useState(240)
@@ -42,12 +49,31 @@ export function VSCodeLayout() {
   const terminalCommandRef = useRef<((command: string) => void) | null>(null)
   const tutorialRestartRef = useRef<(() => void) | null>(null)
 
-  const [settings, setSettings] = useState<VSCodeSettings>({
-    backgroundColor: DEFAULT_SETTINGS.backgroundColor || "#0d0d0d",
-    textColor: DEFAULT_SETTINGS.textColor || "#cccccc",
-    accentColor: DEFAULT_SETTINGS.accentColor || "#007acc",
-    fontSize: DEFAULT_SETTINGS.fontSize || 14,
-    previewTheme: DEFAULT_SETTINGS.previewTheme || "modern",
+  const [settings, setSettings] = useState<VSCodeSettings>(() => {
+    if (typeof window !== "undefined") {
+      const saved = localStorage.getItem("vscode-settings")
+      if (saved) {
+        try {
+          const parsed = JSON.parse(saved)
+          return {
+            backgroundColor: parsed.backgroundColor || "#0d0d0d",
+            textColor: parsed.textColor || "#cccccc",
+            accentColor: parsed.accentColor || "#007acc",
+            fontSize: parsed.fontSize || 14,
+            previewTheme: parsed.previewTheme || "modern",
+          }
+        } catch {
+          // fall through to defaults
+        }
+      }
+    }
+    return {
+      backgroundColor: DEFAULT_SETTINGS.backgroundColor || "#0d0d0d",
+      textColor: DEFAULT_SETTINGS.textColor || "#cccccc",
+      accentColor: DEFAULT_SETTINGS.accentColor || "#007acc",
+      fontSize: DEFAULT_SETTINGS.fontSize || 14,
+      previewTheme: DEFAULT_SETTINGS.previewTheme || "modern",
+    }
   })
 
   const handleTutorialUIChange = useCallback(
@@ -93,29 +119,87 @@ export function VSCodeLayout() {
     [],
   )
 
-  const handleTutorialOpenFile = useCallback((fileName: string) => {
-    const findFile = (items: FileItem[], path: string[] = []): { file: FileItem; path: string[] } | null => {
-      for (const item of items) {
-        if (item.type === "file" && item.name === fileName) {
-          return { file: item, path }
-        }
-        if (item.type === "folder" && item.children) {
-          const found = findFile(item.children, [...path, item.name])
-          if (found) return found
-        }
+  const openFile = useCallback(
+    (file: FileItem, path: string[] = []) => {
+      const fileId = [...path, file.name].join("/")
+
+      if (tabs.find((tab) => tab.id === fileId)) {
+        setActiveTab(fileId)
+        return
       }
-      return null
-    }
 
-    const result = findFile(fileTree)
-    if (result) {
-      openFile(result.file, result.path)
-    }
-  }, [])
+      const newTab: Tab = {
+        id: fileId,
+        name: file.name,
+        icon: file.icon,
+        content: file.content || "",
+        isDirty: false,
+      }
 
-  const handleTutorialOpenExtension = useCallback((extensionId: string) => {
-    openExtension(extensionId)
-  }, [])
+      setTabs((prev) => [...prev, newTab])
+      setActiveTab(fileId)
+    },
+    [tabs],
+  )
+
+  const openExtension = useCallback(
+    (extensionId: string) => {
+      const extension = extensions.find((ext) => ext.id === extensionId)
+      if (!extension) return
+
+      const tabId = `extensions/${extensionId}`
+
+      if (tabs.find((tab) => tab.id === tabId)) {
+        setActiveTab(tabId)
+        return
+      }
+
+      const newTab: Tab = {
+        id: tabId,
+        name: extension.displayName,
+        icon: extension.icon,
+        content: "",
+        isDirty: false,
+      }
+
+      setTabs((prev) => [...prev, newTab])
+      setActiveTab(tabId)
+    },
+    [tabs],
+  )
+
+  const handleTutorialOpenFile = useCallback(
+    (fileName: string) => {
+      const findFile = (
+        items: FileItem[],
+        path: string[] = [],
+      ): { file: FileItem; path: string[] } | null => {
+        for (const item of items) {
+          if (item.type === "file" && item.name === fileName) {
+            return { file: item, path }
+          }
+          if (item.type === "folder" && item.children) {
+            const found = findFile(item.children, [...path, item.name])
+            if (found) return found
+          }
+        }
+        return null
+      }
+
+      const result = findFile(fileTree)
+      if (result) {
+        openFile(result.file, result.path)
+      }
+    },
+    [openFile],
+  )
+
+  const handleTutorialOpenExtension = useCallback(
+    (extensionId: string) => {
+      openExtension(extensionId)
+    },
+    [openExtension],
+  )
 
   const handleTutorialTogglePreview = useCallback((on: boolean) => {
     setPreviewMode(on)
@@ -177,24 +261,6 @@ export function VSCodeLayout() {
     }
   }, [isMobile, sidebarCollapsed])
 
-  useEffect(() => {
-    const saved = localStorage.getItem("vscode-settings")
-    if (saved) {
-      try {
-        const parsed = JSON.parse(saved)
-        setSettings({
-          backgroundColor: parsed.backgroundColor || "#0d0d0d",
-          textColor: parsed.textColor || "#cccccc",
-          accentColor: parsed.accentColor || "#007acc",
-          fontSize: parsed.fontSize || 14,
-          previewTheme: parsed.previewTheme || "modern",
-        })
-      } catch (e) {
-        console.error("Failed to parse settings:", e)
-      }
-    }
-  }, [])
-
   const saveSettings = (newSettings: VSCodeSettings) => {
     setSettings(newSettings)
     localStorage.setItem("vscode-settings", JSON.stringify(newSettings))
@@ -211,28 +277,9 @@ export function VSCodeLayout() {
   const textMuted = adjustBrightness(textPrimary, -80)
 
   const toggleFolder = (folderName: string) => {
-    setOpenFolders((prev) => (prev.includes(folderName) ? prev.filter((f) => f !== folderName) : [...prev, folderName]))
-  }
-
-  const openFile = (file: FileItem, path: string[] = []) => {
-    const fileId = [...path, file.name].join("/")
-    setActiveExtension(null)
-
-    if (tabs.find((tab) => tab.id === fileId)) {
-      setActiveTab(fileId)
-      return
-    }
-
-    const newTab: Tab = {
-      id: fileId,
-      name: file.name,
-      icon: file.icon,
-      content: file.content || "",
-      isDirty: false,
-    }
-
-    setTabs((prev) => [...prev, newTab])
-    setActiveTab(fileId)
+    setOpenFolders((prev) =>
+      prev.includes(folderName) ? prev.filter((f) => f !== folderName) : [...prev, folderName],
+    )
   }
 
   const closeTab = (tabId: string, e: React.MouseEvent) => {
@@ -245,24 +292,11 @@ export function VSCodeLayout() {
         const closedIndex = prev.findIndex((tab) => tab.id === tabId)
         const nextTab = filtered[closedIndex] || filtered[closedIndex - 1] || null
         setActiveTab(nextTab?.id || null)
-        if (tabId.startsWith("extensions/")) {
-          setActiveExtension(null)
-        }
       }
 
       return filtered
     })
   }
-
-  useEffect(() => {
-    if (activeTab?.startsWith("extensions/")) {
-      const extId = activeTab.replace("extensions/", "")
-      const ext = extensions.find((e) => e.id === extId)
-      setActiveExtension(ext || null)
-    } else {
-      setActiveExtension(null)
-    }
-  }, [activeTab])
 
   const activeTabContent = tabs.find((tab) => tab.id === activeTab)
 
@@ -327,31 +361,6 @@ export function VSCodeLayout() {
     setSearchMode(false)
   }
 
-  const openExtension = (extensionId: string) => {
-    const extension = extensions.find((ext) => ext.id === extensionId)
-    if (!extension) return
-
-    const tabId = `extensions/${extensionId}`
-
-    if (tabs.find((tab) => tab.id === tabId)) {
-      setActiveTab(tabId)
-      setActiveExtension(extension)
-      return
-    }
-
-    const newTab: Tab = {
-      id: tabId,
-      name: extension.displayName,
-      icon: extension.icon,
-      content: "",
-      isDirty: false,
-    }
-
-    setTabs((prev) => [...prev, newTab])
-    setActiveTab(tabId)
-    setActiveExtension(extension)
-  }
-
   const handleSidebarResize = (delta: number) => {
     setSidebarWidth((prev) => Math.max(200, Math.min(600, prev + delta)))
   }
@@ -362,7 +371,11 @@ export function VSCodeLayout() {
 
   return (
     <>
-      <LandscapePrompt bgColor={bgMain} textColor={textPrimary} accentColor={settings.accentColor} />
+      <LandscapePrompt
+        bgColor={bgMain}
+        textColor={textPrimary}
+        accentColor={settings.accentColor}
+      />
 
       <TutorialOverlay
         onUIStateChange={handleTutorialUIChange}
@@ -379,7 +392,10 @@ export function VSCodeLayout() {
         }}
       />
 
-      <div className="h-screen w-full flex flex-col font-mono overflow-hidden" style={{ backgroundColor: bgMain }}>
+      <div
+        className="h-screen w-full flex flex-col font-mono overflow-hidden"
+        style={{ backgroundColor: bgMain }}
+      >
         <TitleBar
           settings={settings}
           terminalOpen={terminalOpen}
@@ -417,7 +433,11 @@ export function VSCodeLayout() {
 
           {!sidebarCollapsed && (
             <>
-              <div style={{ width: `${sidebarWidth}px` }} className="shrink-0 flex flex-col" data-tutorial="sidebar">
+              <div
+                style={{ width: `${sidebarWidth}px` }}
+                className="shrink-0 flex flex-col"
+                data-tutorial="sidebar"
+              >
                 <SideBar
                   settings={settings}
                   sidebarCollapsed={sidebarCollapsed}
@@ -454,15 +474,15 @@ export function VSCodeLayout() {
           )}
 
           <div
-              className="flex-1 flex flex-col min-w-0"
-              style={{ backgroundColor: bgMain }}
-              onClick={handleMainAreaClick}
-              onKeyDown={(e) => {
-                if (e.key === "Escape" && isMobile) {
-                  setSidebarCollapsed(true)
-                }
-              }}
-            >
+            className="flex-1 flex flex-col min-w-0"
+            style={{ backgroundColor: bgMain }}
+            onClick={handleMainAreaClick}
+            onKeyDown={(e) => {
+              if (e.key === "Escape" && isMobile) {
+                setSidebarCollapsed(true)
+              }
+            }}
+          >
             <TabBar
               tabs={tabs}
               activeTab={activeTab}
@@ -497,7 +517,10 @@ export function VSCodeLayout() {
                         style={{ color: textSecondary }}
                       >
                         {activeTabContent.content.split("\n").map((_, i) => (
-                          <div key={i} className="h-4 md:h-5 lg:h-6 leading-4 md:leading-5 lg:leading-6">
+                          <div
+                            key={i}
+                            className="h-4 md:h-5 lg:h-6 leading-4 md:leading-5 lg:leading-6"
+                          >
                             {i + 1}
                           </div>
                         ))}
@@ -508,12 +531,17 @@ export function VSCodeLayout() {
                           const newContent = e.target.value
                           setTabs((prev) =>
                             prev.map((tab) =>
-                              tab.id === activeTabContent.id ? { ...tab, content: newContent, isDirty: true } : tab,
+                              tab.id === activeTabContent.id
+                                ? { ...tab, content: newContent, isDirty: true }
+                                : tab,
                             ),
                           )
                         }}
                         className="flex-1 bg-transparent border-none outline-none resize-none p-1 md:p-2 lg:p-4 font-mono text-[10px] md:text-[11px] lg:text-sm leading-4 md:leading-5 lg:leading-6 whitespace-pre min-w-0"
-                        style={{ color: textPrimary, fontSize: `${Math.max(settings.fontSize - 3, 9)}px` }}
+                        style={{
+                          color: textPrimary,
+                          fontSize: `${Math.max(settings.fontSize - 3, 9)}px`,
+                        }}
                         spellCheck={false}
                       />
                     </div>
@@ -530,8 +558,12 @@ export function VSCodeLayout() {
                       <polyline points="14 2 14 8 20 8" />
                     </svg>
                   </div>
-                  <p className="text-[10px] md:text-xs lg:text-sm text-center">ファイルを選択して開く</p>
-                  <p className="text-[8px] md:text-[10px] lg:text-xs mt-1 md:mt-2 opacity-50">⌘P でファイルを検索</p>
+                  <p className="text-[10px] md:text-xs lg:text-sm text-center">
+                    ファイルを選択して開く
+                  </p>
+                  <p className="text-[8px] md:text-[10px] lg:text-xs mt-1 md:mt-2 opacity-50">
+                    ⌘P でファイルを検索
+                  </p>
                 </div>
               )}
             </div>
@@ -552,7 +584,6 @@ export function VSCodeLayout() {
                   <TerminalPanel
                     settings={settings}
                     isOpen={true}
-                    onClose={() => setTerminalOpen(false)}
                     onCommandRef={(fn) => {
                       terminalCommandRef.current = fn
                     }}
@@ -567,9 +598,6 @@ export function VSCodeLayout() {
           settings={settings}
           terminalOpen={terminalOpen}
           setTerminalOpen={setTerminalOpen}
-          accentColor={settings.accentColor}
-          bgMain={bgMain}
-          textSecondary={textSecondary}
         />
 
         {settingsOpen && (

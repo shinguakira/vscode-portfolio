@@ -1,0 +1,13 @@
+{
+  "permissions": {
+    "allow": [
+      "WebFetch(domain:oxc.rs)",
+      "Bash(pnpm add:*)",
+      "Bash(npx eslint:*)",
+      "Bash(npx oxfmt:*)",
+      "Bash(pnpm approve-builds:*)",
+      "Bash(pnpm install:*)",
+      "Bash(node -e:*)"
+    ]
+  }
+}

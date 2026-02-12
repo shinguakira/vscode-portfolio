@@ -1,21 +1,23 @@
 "use client"
 
-import { useState } from "react"
-import type { Extension, VSCodeSettings } from "@/types"
-import { adjustBrightness } from "@/lib/color-utils"
-import { IconFromKey } from "@/lib/icon-map"
 import {
-  Star,
+  Check,
+  ChevronLeft,
+  ChevronRight,
   Download,
   ExternalLink,
   Github,
-  Check,
+  Package,
+  Star,
   Tag,
   User,
-  Package,
-  ChevronLeft,
-  ChevronRight,
 } from "lucide-react"
+import Image from "next/image"
+import { useState } from "react"
+
+import { adjustBrightness } from "@/lib/color-utils"
+import { IconFromKey } from "@/lib/icon-map"
+import type { Extension, VSCodeSettings } from "@/types"
 
 interface ExtensionShowcaseProps {
   extension: Extension
@@ -65,16 +67,26 @@ export function ExtensionShowcase({ extension, settings }: ExtensionShowcaseProp
               border: `2px solid ${accentColor}50`,
             }}
           >
-            <IconFromKey iconKey={extension.icon} className="w-10 h-10 md:w-14 md:h-14" style={{ color: accentColor }} />
+            <IconFromKey
+              iconKey={extension.icon}
+              className="w-10 h-10 md:w-14 md:h-14"
+              style={{ color: accentColor }}
+            />
           </div>
 
           {/* メタ情報 */}
           <div className="flex-1 min-w-0">
-            <h1 className="text-2xl md:text-3xl font-bold mb-2 truncate" style={{ color: textPrimary }}>
+            <h1
+              className="text-2xl md:text-3xl font-bold mb-2 truncate"
+              style={{ color: textPrimary }}
+            >
               {extension.displayName}
             </h1>
 
-            <div className="flex flex-wrap items-center gap-3 mb-4 text-sm" style={{ color: textSecondary }}>
+            <div
+              className="flex flex-wrap items-center gap-3 mb-4 text-sm"
+              style={{ color: textSecondary }}
+            >
               <span className="flex items-center gap-1">
                 <User className="w-4 h-4" />
                 {extension.publisher}
@@ -84,7 +96,10 @@ export function ExtensionShowcase({ extension, settings }: ExtensionShowcaseProp
               </span>
             </div>
 
-            <p className="text-sm md:text-base mb-4 leading-relaxed" style={{ color: textSecondary }}>
+            <p
+              className="text-sm md:text-base mb-4 leading-relaxed"
+              style={{ color: textSecondary }}
+            >
               {extension.description}
             </p>
 
@@ -157,7 +172,10 @@ export function ExtensionShowcase({ extension, settings }: ExtensionShowcaseProp
               border: `1px solid ${borderColor}`,
             }}
           >
-            <h2 className="text-lg font-semibold mb-4 flex items-center gap-2" style={{ color: textPrimary }}>
+            <h2
+              className="text-lg font-semibold mb-4 flex items-center gap-2"
+              style={{ color: textPrimary }}
+            >
               <span style={{ color: accentColor }}>▎</span>
               スクリーンショット
             </h2>
@@ -174,14 +192,21 @@ export function ExtensionShowcase({ extension, settings }: ExtensionShowcaseProp
                 }}
               >
                 {hasScreenshots ? (
-                  <img
+                  <Image
                     src={screenshots[selectedImageIndex] || "/placeholder.svg"}
                     alt={`${extension.displayName} screenshot ${selectedImageIndex + 1}`}
                     className="w-full h-full object-cover"
+                    fill
                   />
                 ) : (
                   <div className="text-center z-10 p-6">
-                    <div className="mb-4"><IconFromKey iconKey={extension.icon} className="w-16 h-16" style={{ color: accentColor }} /></div>
+                    <div className="mb-4">
+                      <IconFromKey
+                        iconKey={extension.icon}
+                        className="w-16 h-16"
+                        style={{ color: accentColor }}
+                      />
+                    </div>
                     <p className="text-sm" style={{ color: textSecondary }}>
                       スクリーンショットはありません
                     </p>
@@ -235,18 +260,22 @@ export function ExtensionShowcase({ extension, settings }: ExtensionShowcaseProp
                     <button
                       key={index}
                       onClick={() => setSelectedImageIndex(index)}
-                      className="shrink-0 rounded-md overflow-hidden transition-all hover:scale-105"
+                      className="shrink-0 rounded-md overflow-hidden transition-all hover:scale-105 relative"
                       style={{
                         width: "120px",
                         height: "68px",
-                        border: selectedImageIndex === index ? `2px solid ${accentColor}` : `2px solid ${borderColor}`,
+                        border:
+                          selectedImageIndex === index
+                            ? `2px solid ${accentColor}`
+                            : `2px solid ${borderColor}`,
                         opacity: selectedImageIndex === index ? 1 : 0.6,
                       }}
                     >
-                      <img
+                      <Image
                         src={screenshot || "/placeholder.svg"}
                         alt={`Thumbnail ${index + 1}`}
                         className="w-full h-full object-cover"
+                        fill
                       />
                     </button>
                   ))}
@@ -263,7 +292,10 @@ export function ExtensionShowcase({ extension, settings }: ExtensionShowcaseProp
               border: `1px solid ${borderColor}`,
             }}
           >
-            <h2 className="text-lg font-semibold mb-4 flex items-center gap-2" style={{ color: textPrimary }}>
+            <h2
+              className="text-lg font-semibold mb-4 flex items-center gap-2"
+              style={{ color: textPrimary }}
+            >
               <span style={{ color: accentColor }}>▎</span>
               主な機能
             </h2>
@@ -299,7 +331,10 @@ export function ExtensionShowcase({ extension, settings }: ExtensionShowcaseProp
               border: `1px solid ${borderColor}`,
             }}
           >
-            <h2 className="text-lg font-semibold mb-4 flex items-center gap-2" style={{ color: textPrimary }}>
+            <h2
+              className="text-lg font-semibold mb-4 flex items-center gap-2"
+              style={{ color: textPrimary }}
+            >
               <span style={{ color: accentColor }}>▎</span>
               技術スタック
             </h2>
@@ -329,7 +364,10 @@ export function ExtensionShowcase({ extension, settings }: ExtensionShowcaseProp
               border: `1px solid ${borderColor}`,
             }}
           >
-            <h2 className="text-lg font-semibold mb-4 flex items-center gap-2" style={{ color: textPrimary }}>
+            <h2
+              className="text-lg font-semibold mb-4 flex items-center gap-2"
+              style={{ color: textPrimary }}
+            >
               <span style={{ color: accentColor }}>▎</span>
               カテゴリ
             </h2>
@@ -357,20 +395,32 @@ export function ExtensionShowcase({ extension, settings }: ExtensionShowcaseProp
               border: `1px solid ${borderColor}`,
             }}
           >
-            <h2 className="text-lg font-semibold mb-4 flex items-center gap-2" style={{ color: textPrimary }}>
+            <h2
+              className="text-lg font-semibold mb-4 flex items-center gap-2"
+              style={{ color: textPrimary }}
+            >
               <span style={{ color: accentColor }}>▎</span>
               プロジェクト情報
             </h2>
             <div className="space-y-3 text-sm">
-              <div className="flex justify-between items-center py-2 border-b" style={{ borderColor }}>
+              <div
+                className="flex justify-between items-center py-2 border-b"
+                style={{ borderColor }}
+              >
                 <span style={{ color: textMuted }}>バージョン</span>
                 <span style={{ color: textPrimary }}>{extension.version}</span>
               </div>
-              <div className="flex justify-between items-center py-2 border-b" style={{ borderColor }}>
+              <div
+                className="flex justify-between items-center py-2 border-b"
+                style={{ borderColor }}
+              >
                 <span style={{ color: textMuted }}>公開者</span>
                 <span style={{ color: textPrimary }}>{extension.publisher}</span>
               </div>
-              <div className="flex justify-between items-center py-2 border-b" style={{ borderColor }}>
+              <div
+                className="flex justify-between items-center py-2 border-b"
+                style={{ borderColor }}
+              >
                 <span style={{ color: textMuted }}>ダウンロード</span>
                 <span style={{ color: textPrimary }}>{extension.downloads.toLocaleString()}</span>
               </div>
@@ -403,7 +453,10 @@ export function ExtensionShowcase({ extension, settings }: ExtensionShowcaseProp
               border: `1px solid ${borderColor}`,
             }}
           >
-            <h2 className="text-lg font-semibold mb-4 flex items-center gap-2" style={{ color: textPrimary }}>
+            <h2
+              className="text-lg font-semibold mb-4 flex items-center gap-2"
+              style={{ color: textPrimary }}
+            >
               <span style={{ color: accentColor }}>▎</span>
               リンク
             </h2>

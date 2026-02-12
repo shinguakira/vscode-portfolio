@@ -1,8 +1,9 @@
 "use client"
 
+import { ChevronLeft, ChevronRight, HelpCircle, X } from "lucide-react"
 import type React from "react"
-import { useState, useEffect, useCallback } from "react"
-import { X, ChevronLeft, ChevronRight, HelpCircle } from "lucide-react"
+import { useCallback, useEffect, useState } from "react"
+
 import { Button } from "@/components/ui/button"
 
 export interface TutorialStep {
@@ -18,7 +19,13 @@ export interface TutorialStep {
     sidebarCollapsed?: boolean
   }
   action?: {
-    type: "openFile" | "openExtension" | "togglePreview" | "runCommand" | "changePreviewTheme" | "showPreviewWithTheme"
+    type:
+      | "openFile"
+      | "openExtension"
+      | "togglePreview"
+      | "runCommand"
+      | "changePreviewTheme"
+      | "showPreviewWithTheme"
     payload?: string
   }
 }
@@ -159,7 +166,8 @@ const TUTORIAL_STEPS: TutorialStep[] = [
     id: "preview-theme-change",
     targetSelector: "[data-tutorial='editor-area']",
     title: "プレビューテーマ変更",
-    description: "設定からプレビューテーマを変更できます。モダン、革新的、プロフェッショナルの3種類から選べます。",
+    description:
+      "設定からプレビューテーマを変更できます。モダン、革新的、プロフェッショナルの3種類から選べます。",
     position: "left",
     mobilePosition: "top",
     uiState: { sidebarMode: "settings", sidebarCollapsed: false, terminalOpen: false },
@@ -279,7 +287,9 @@ export function TutorialOverlay({
           }
           // Scroll to preview theme selector in settings panel
           setTimeout(() => {
-            const previewThemeSection = document.querySelector("[data-tutorial='preview-theme-selector']")
+            const previewThemeSection = document.querySelector(
+              "[data-tutorial='preview-theme-selector']",
+            )
             if (previewThemeSection) {
               previewThemeSection.scrollIntoView({ behavior: "smooth", block: "center" })
             }
@@ -450,7 +460,8 @@ export function TutorialOverlay({
     const gap = isSmallScreen ? 8 : 16
 
     // For small screens, use mobilePosition or fallback logic
-    const effectivePosition = isSmallScreen && step.mobilePosition ? step.mobilePosition : step.position
+    const effectivePosition =
+      isSmallScreen && step.mobilePosition ? step.mobilePosition : step.position
 
     let style: React.CSSProperties = {}
 
@@ -491,7 +502,10 @@ export function TutorialOverlay({
         style = {
           left: Math.max(
             10,
-            Math.min(targetRect.left + targetRect.width / 2 - tooltipWidth / 2, window.innerWidth - tooltipWidth - 10),
+            Math.min(
+              targetRect.left + targetRect.width / 2 - tooltipWidth / 2,
+              window.innerWidth - tooltipWidth - 10,
+            ),
           ),
           top: Math.max(10, targetRect.top - tooltipHeight - gap),
         }
@@ -501,7 +515,10 @@ export function TutorialOverlay({
         style = {
           left: Math.max(
             10,
-            Math.min(targetRect.left + targetRect.width / 2 - tooltipWidth / 2, window.innerWidth - tooltipWidth - 10),
+            Math.min(
+              targetRect.left + targetRect.width / 2 - tooltipWidth / 2,
+              window.innerWidth - tooltipWidth - 10,
+            ),
           ),
           top: Math.min(targetRect.bottom + gap, window.innerHeight - tooltipHeight - 10),
         }
@@ -528,7 +545,14 @@ export function TutorialOverlay({
             />
           </mask>
         </defs>
-        <rect x="0" y="0" width="100%" height="100%" fill="rgba(0,0,0,0.75)" mask="url(#tutorial-mask)" />
+        <rect
+          x="0"
+          y="0"
+          width="100%"
+          height="100%"
+          fill="rgba(0,0,0,0.75)"
+          mask="url(#tutorial-mask)"
+        />
       </svg>
 
       {/* Highlight border */}
@@ -572,7 +596,9 @@ export function TutorialOverlay({
           {step.title}
         </h3>
 
-        <p className={`opacity-80 leading-relaxed ${isSmallScreen ? "text-[10px] mb-2" : "text-sm mb-4"}`}>
+        <p
+          className={`opacity-80 leading-relaxed ${isSmallScreen ? "text-[10px] mb-2" : "text-sm mb-4"}`}
+        >
           {step.description}
         </p>
 
@@ -594,7 +620,11 @@ export function TutorialOverlay({
             style={{ backgroundColor: accentColor, color: "#fff" }}
           >
             {currentStep === TUTORIAL_STEPS.length - 1 ? (
-              isSmallScreen ? "完了" : "閉じる"
+              isSmallScreen ? (
+                "完了"
+              ) : (
+                "閉じる"
+              )
             ) : (
               <>
                 {!isSmallScreen && "次へ"}

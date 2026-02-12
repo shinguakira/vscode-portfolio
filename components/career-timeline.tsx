@@ -1,141 +1,123 @@
-"use client";
+"use client"
 
-import { useState, useMemo, useCallback, useEffect, useRef } from "react";
-import { cn } from "@/lib/utils";
-import { Briefcase, GraduationCap, Calendar, Users, X } from "lucide-react";
+import { Calendar, GraduationCap, Users, X } from "lucide-react"
+import { useCallback, useEffect, useMemo, useRef, useState } from "react"
+
+import { cn } from "@/lib/utils"
 
 /* ─── Public types ─── */
 
 export interface CareerProject {
-  id: string;
-  name: string;
-  company: string;
-  role: string;
-  startDate: string; // YYYY-MM
-  endDate: string | "present"; // YYYY-MM or "present"
-  color: string; // hex e.g. "#3ecfb0"
-  tags: string[];
-  description: string;
-  highlights: string[];
-  teamSize?: number;
+  id: string
+  name: string
+  company: string
+  role: string
+  startDate: string // YYYY-MM
+  endDate: string | "present" // YYYY-MM or "present"
+  color: string // hex e.g. "#3ecfb0"
+  tags: string[]
+  description: string
+  highlights: string[]
+  teamSize?: number
 }
 
-export type TimelineVariant = "innovative" | "professional" | "modern";
+export type TimelineVariant = "innovative" | "professional" | "modern"
 
 /* ─── Internal helpers ─── */
 
 function parseDate(d: string): Date {
-  if (d === "present") return new Date();
-  const [y, m] = d.split("-").map(Number);
-  return new Date(y, m - 1);
+  if (d === "present") return new Date()
+  const [y, m] = d.split("-").map(Number)
+  return new Date(y, m - 1)
 }
 
 function fmtShort(d: string) {
-  if (d === "present") return "Now";
-  const dt = parseDate(d);
-  return dt.toLocaleDateString("en-US", { month: "short", year: "2-digit" });
+  if (d === "present") return "Now"
+  const dt = parseDate(d)
+  return dt.toLocaleDateString("en-US", { month: "short", year: "2-digit" })
 }
 
 function fmtLong(d: string) {
-  if (d === "present") return "Present";
-  const dt = parseDate(d);
-  return dt.toLocaleDateString("en-US", { month: "short", year: "numeric" });
-}
-
-function duration(s: string, e: string) {
-  const a = parseDate(s);
-  const b = parseDate(e);
-  const mo =
-    (b.getFullYear() - a.getFullYear()) * 12 +
-    (b.getMonth() - a.getMonth());
-  const y = Math.floor(mo / 12);
-  const m = mo % 12;
-  if (y === 0) return `${m}mo`;
-  if (m === 0) return `${y}yr`;
-  return `${y}yr ${m}mo`;
+  if (d === "present") return "Present"
+  const dt = parseDate(d)
+  return dt.toLocaleDateString("en-US", { month: "short", year: "numeric" })
 }
 
 function durationJa(s: string, e: string) {
-  const a = parseDate(s);
-  const b = parseDate(e);
-  const mo =
-    (b.getFullYear() - a.getFullYear()) * 12 +
-    (b.getMonth() - a.getMonth());
-  const y = Math.floor(mo / 12);
-  const m = mo % 12;
-  if (y === 0) return `${m}ヶ月`;
-  if (m === 0) return `${y}年`;
-  return `${y}年${m}ヶ月`;
+  const a = parseDate(s)
+  const b = parseDate(e)
+  const mo = (b.getFullYear() - a.getFullYear()) * 12 + (b.getMonth() - a.getMonth())
+  const y = Math.floor(mo / 12)
+  const m = mo % 12
+  if (y === 0) return `${m}ヶ月`
+  if (m === 0) return `${y}年`
+  return `${y}年${m}ヶ月`
 }
 
 function monthsBetween(a: Date, b: Date) {
-  return (
-    (b.getFullYear() - a.getFullYear()) * 12 +
-    (b.getMonth() - a.getMonth())
-  );
+  return (b.getFullYear() - a.getFullYear()) * 12 + (b.getMonth() - a.getMonth())
 }
 
 function getRange(items: CareerProject[]) {
-  let minD = new Date();
-  let maxD = new Date(0);
+  let minD = new Date()
+  let maxD = new Date(0)
   for (const p of items) {
-    const s = parseDate(p.startDate);
-    const e = parseDate(p.endDate);
-    if (s < minD) minD = s;
-    if (e > maxD) maxD = e;
+    const s = parseDate(p.startDate)
+    const e = parseDate(p.endDate)
+    if (s < minD) minD = s
+    if (e > maxD) maxD = e
   }
-  minD = new Date(minD.getFullYear(), 0);
-  maxD = new Date(maxD.getFullYear() + 1, 0);
-  return { minD, maxD };
+  minD = new Date(minD.getFullYear(), 0)
+  maxD = new Date(maxD.getFullYear() + 1, 0)
+  return { minD, maxD }
 }
 
 function findOverlaps(items: CareerProject[]) {
-  const map = new Map<string, string[]>();
+  const map = new Map<string, string[]>()
   for (let i = 0; i < items.length; i++) {
-    const a = items[i];
-    const aS = parseDate(a.startDate);
-    const aE = parseDate(a.endDate);
-    const ids: string[] = [];
+    const a = items[i]
+    const aS = parseDate(a.startDate)
+    const aE = parseDate(a.endDate)
+    const ids: string[] = []
     for (let j = 0; j < items.length; j++) {
-      if (i === j) continue;
-      const b = items[j];
-      if (aS < parseDate(b.endDate) && aE > parseDate(b.startDate))
-        ids.push(b.id);
+      if (i === j) continue
+      const b = items[j]
+      if (aS < parseDate(b.endDate) && aE > parseDate(b.startDate)) ids.push(b.id)
     }
-    map.set(a.id, ids);
+    map.set(a.id, ids)
   }
-  return map;
+  return map
 }
 
 function packColumns(items: CareerProject[]) {
   const sorted = [...items].sort(
-    (a, b) => parseDate(a.startDate).getTime() - parseDate(b.startDate).getTime()
-  );
-  const cols: CareerProject[][] = [];
+    (a, b) => parseDate(a.startDate).getTime() - parseDate(b.startDate).getTime(),
+  )
+  const cols: CareerProject[][] = []
   for (const p of sorted) {
-    const pS = parseDate(p.startDate);
-    let placed = false;
+    const pS = parseDate(p.startDate)
+    let placed = false
     for (const col of cols) {
-      const last = col[col.length - 1];
+      const last = col[col.length - 1]
       if (parseDate(last.endDate) <= pS) {
-        col.push(p);
-        placed = true;
-        break;
+        col.push(p)
+        placed = true
+        break
       }
     }
-    if (!placed) cols.push([p]);
+    if (!placed) cols.push([p])
   }
-  const map = new Map<string, number>();
-  cols.forEach((col, ci) => col.forEach((p) => map.set(p.id, ci)));
-  return { map, count: cols.length };
+  const map = new Map<string, number>()
+  cols.forEach((col, ci) => col.forEach((p) => map.set(p.id, ci)))
+  return { map, count: cols.length }
 }
 
 /* ─── Config ─── */
 
-const PX = 16;
-const COL_W = 164;
-const GAP = 6;
-const RULER_W = 48;
+const PX = 16
+const COL_W = 164
+const GAP = 6
+const RULER_W = 48
 
 /* ─── Variant style maps ─── */
 
@@ -145,7 +127,8 @@ const variantStyles = {
     bg1: "absolute top-1/3 right-0 w-[500px] h-[500px] bg-violet-500/10 rounded-full blur-3xl",
     bg2: "absolute bottom-0 left-1/4 w-[500px] h-[500px] bg-indigo-500/10 rounded-full blur-3xl",
     inner: "relative max-w-5xl mx-auto px-8 py-20",
-    title: "text-8xl font-black mb-6 text-transparent bg-clip-text bg-gradient-to-r from-violet-400 via-indigo-400 to-blue-400 text-center",
+    title:
+      "text-8xl font-black mb-6 text-transparent bg-clip-text bg-gradient-to-r from-violet-400 via-indigo-400 to-blue-400 text-center",
     subtitle: "text-2xl text-gray-400 font-light text-center mb-16",
     rulerText: "text-muted-foreground/70",
     gridLine: "border-border/15",
@@ -220,7 +203,8 @@ const variantStyles = {
     bg1: "",
     bg2: "",
     inner: "max-w-5xl mx-auto px-8 py-16",
-    title: "text-5xl font-bold mb-4 bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent text-center",
+    title:
+      "text-5xl font-bold mb-4 bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent text-center",
     subtitle: "text-xl text-slate-400 text-center mb-12",
     rulerText: "text-slate-500",
     gridLine: "border-slate-800/50",
@@ -252,7 +236,7 @@ const variantStyles = {
     parallelName: (color: string) => color,
     parallelCompany: "text-slate-500",
   },
-};
+}
 
 /* ─── Modal sub-component ─── */
 
@@ -263,72 +247,76 @@ function DetailModal({
   onClose,
   variant = "modern",
 }: {
-  project: CareerProject | null;
-  allProjects: CareerProject[];
-  overlaps: Map<string, string[]>;
-  onClose: () => void;
-  variant?: TimelineVariant;
+  project: CareerProject | null
+  allProjects: CareerProject[]
+  overlaps: Map<string, string[]>
+  onClose: () => void
+  variant?: TimelineVariant
 }) {
-  const overlayRef = useRef<HTMLDivElement>(null);
-  const s = variantStyles[variant];
+  const overlayRef = useRef<HTMLDivElement>(null)
+  const s = variantStyles[variant]
 
   const handleKey = useCallback(
     (e: KeyboardEvent) => {
-      if (e.key === "Escape") onClose();
+      if (e.key === "Escape") onClose()
     },
-    [onClose]
-  );
+    [onClose],
+  )
 
   useEffect(() => {
     if (project) {
-      document.addEventListener("keydown", handleKey);
-      document.body.style.overflow = "hidden";
+      document.addEventListener("keydown", handleKey)
+      document.body.style.overflow = "hidden"
     }
     return () => {
-      document.removeEventListener("keydown", handleKey);
-      document.body.style.overflow = "";
-    };
-  }, [project, handleKey]);
+      document.removeEventListener("keydown", handleKey)
+      document.body.style.overflow = ""
+    }
+  }, [project, handleKey])
 
-  if (!project) return null;
+  if (!project) return null
 
-  const parallelIds = overlaps.get(project.id) ?? [];
-  const parallel = allProjects.filter((p) => parallelIds.includes(p.id));
+  const parallelIds = overlaps.get(project.id) ?? []
+  const parallel = allProjects.filter((p) => parallelIds.includes(p.id))
 
   return (
     <div
       ref={overlayRef}
       className={cn("fixed inset-0 z-50 flex items-center justify-center p-4", s.overlayBg)}
       onClick={(e) => {
-        if (e.target === overlayRef.current) onClose();
+        if (e.target === overlayRef.current) onClose()
       }}
       role="dialog"
       aria-modal="true"
       aria-label={`${project.name} details`}
     >
-      <div className={cn("relative w-full max-w-lg rounded-xl overflow-hidden animate-in fade-in zoom-in-95 duration-200", s.modalBg)}>
+      <div
+        className={cn(
+          "relative w-full max-w-lg rounded-xl overflow-hidden animate-in fade-in zoom-in-95 duration-200",
+          s.modalBg,
+        )}
+      >
         <div className="h-1 w-full" style={{ backgroundColor: project.color }} />
 
         <div className="p-6 max-h-[80vh] overflow-y-auto">
           {/* Header */}
           <div className="flex items-start justify-between gap-4">
             <div className="min-w-0 flex-1">
-              <h3
-                className="text-lg font-semibold tracking-tight"
-                style={{ color: project.color }}
-              >
+              <h3 className="text-lg font-semibold tracking-tight" style={{ color: project.color }}>
                 {project.name}
               </h3>
               <p className="text-sm mt-0.5" style={{ color: s.modalCompany(project.color) }}>
                 {project.company}
               </p>
-              <p className={cn("text-xs mt-0.5", s.modalMeta)}>
-                {project.role}
-              </p>
+              <p className={cn("text-xs mt-0.5", s.modalMeta)}>{project.role}</p>
             </div>
             <button
               onClick={onClose}
-              className={cn("shrink-0 w-8 h-8 rounded-md flex items-center justify-center transition-colors", s.modalMeta, "hover:opacity-80")}
+              className={cn(
+                "shrink-0 w-8 h-8 rounded-md flex items-center justify-center transition-colors",
+                s.modalMeta,
+                "hover:opacity-80",
+              )}
               aria-label="Close modal"
             >
               <X className="w-4 h-4" />
@@ -355,14 +343,17 @@ function DetailModal({
           </div>
 
           {/* Description */}
-          <p className={cn("mt-4 text-sm leading-relaxed", s.modalText)}>
-            {project.description}
-          </p>
+          <p className={cn("mt-4 text-sm leading-relaxed", s.modalText)}>{project.description}</p>
 
           {/* Highlights */}
           {project.highlights.length > 0 && (
             <div className="mt-5">
-              <p className={cn("text-[10px] font-mono uppercase tracking-wider mb-2", s.modalSectionTitle)}>
+              <p
+                className={cn(
+                  "text-[10px] font-mono uppercase tracking-wider mb-2",
+                  s.modalSectionTitle,
+                )}
+              >
                 Highlights
               </p>
               <ul className="space-y-1.5">
@@ -385,7 +376,10 @@ function DetailModal({
               <span
                 key={tag}
                 className="text-[10px] font-mono px-2 py-1 rounded-md"
-                style={{ backgroundColor: s.modalTagBg(project.color), color: s.modalTagText(project.color) }}
+                style={{
+                  backgroundColor: s.modalTagBg(project.color),
+                  color: s.modalTagText(project.color),
+                }}
               >
                 {tag}
               </span>
@@ -395,7 +389,12 @@ function DetailModal({
           {/* Parallel projects */}
           {parallel.length > 0 && (
             <div className="mt-6 pt-4 border-t border-current/10">
-              <p className={cn("text-[10px] font-mono uppercase tracking-wider mb-3", s.modalSectionTitle)}>
+              <p
+                className={cn(
+                  "text-[10px] font-mono uppercase tracking-wider mb-3",
+                  s.modalSectionTitle,
+                )}
+              >
                 並行プロジェクト
               </p>
               <div className="space-y-2">
@@ -413,9 +412,7 @@ function DetailModal({
                       <p className="text-xs font-medium truncate" style={{ color: pp.color }}>
                         {pp.name}
                       </p>
-                      <p className={cn("text-[10px] truncate", s.parallelCompany)}>
-                        {pp.company}
-                      </p>
+                      <p className={cn("text-[10px] truncate", s.parallelCompany)}>{pp.company}</p>
                     </div>
                     <span className={cn("shrink-0 text-[9px] font-mono", s.modalMeta)}>
                       {durationJa(pp.startDate, pp.endDate)}
@@ -428,7 +425,7 @@ function DetailModal({
         </div>
       </div>
     </div>
-  );
+  )
 }
 
 /* ─── Education data (shared) ─── */
@@ -437,7 +434,7 @@ const educationData = {
   degree: "情報工学学士",
   university: "○○大学",
   year: "2019年卒業",
-};
+}
 
 /* ─── Main exported component ─── */
 
@@ -445,36 +442,36 @@ export function CareerTimeline({
   projects,
   variant = "modern",
 }: {
-  projects: CareerProject[];
-  variant?: TimelineVariant;
+  projects: CareerProject[]
+  variant?: TimelineVariant
 }) {
-  const s = variantStyles[variant];
-  const { minD, maxD } = useMemo(() => getRange(projects), [projects]);
-  const totalH = useMemo(() => monthsBetween(minD, maxD) * PX, [minD, maxD]);
-  const columns = useMemo(() => packColumns(projects), [projects]);
-  const overlaps = useMemo(() => findOverlaps(projects), [projects]);
+  const s = variantStyles[variant]
+  const { minD, maxD } = useMemo(() => getRange(projects), [projects])
+  const totalH = useMemo(() => monthsBetween(minD, maxD) * PX, [minD, maxD])
+  const columns = useMemo(() => packColumns(projects), [projects])
+  const overlaps = useMemo(() => findOverlaps(projects), [projects])
 
   const years = useMemo(() => {
-    const arr: { year: number; top: number }[] = [];
+    const arr: { year: number; top: number }[] = []
     for (let y = minD.getFullYear(); y <= maxD.getFullYear(); y++) {
-      arr.push({ year: y, top: monthsBetween(minD, new Date(y, 0)) * PX });
+      arr.push({ year: y, top: monthsBetween(minD, new Date(y, 0)) * PX })
     }
-    return arr;
-  }, [minD, maxD]);
+    return arr
+  }, [minD, maxD])
 
-  const [hovered, setHovered] = useState<string | null>(null);
-  const [selected, setSelected] = useState<CareerProject | null>(null);
+  const [hovered, setHovered] = useState<string | null>(null)
+  const [selected, setSelected] = useState<CareerProject | null>(null)
 
   const isLit = useCallback(
     (id: string) => {
-      if (!hovered) return true;
-      if (id === hovered) return true;
-      return overlaps.get(hovered)?.includes(id) ?? false;
+      if (!hovered) return true
+      if (id === hovered) return true
+      return overlaps.get(hovered)?.includes(id) ?? false
     },
-    [hovered, overlaps]
-  );
+    [hovered, overlaps],
+  )
 
-  const chartW = columns.count * (COL_W + GAP) - GAP;
+  const chartW = columns.count * (COL_W + GAP) - GAP
 
   return (
     <div className={s.wrapper}>
@@ -489,9 +486,7 @@ export function CareerTimeline({
       <div className={s.inner}>
         {/* Title */}
         <div>
-          <h1 className={s.title}>
-            {variant === "innovative" ? "CAREER" : "職務経歴"}
-          </h1>
+          <h1 className={s.title}>{variant === "innovative" ? "CAREER" : "職務経歴"}</h1>
           <p className={s.subtitle}>
             {variant === "innovative" ? "Professional Journey" : "これまでのキャリアと実績"}
           </p>
@@ -499,7 +494,10 @@ export function CareerTimeline({
 
         {/* Timeline chart */}
         <div className="overflow-x-auto pb-4 mb-8">
-          <div className="relative flex" style={{ height: totalH + 32, minWidth: chartW + RULER_W + 16 }}>
+          <div
+            className="relative flex"
+            style={{ height: totalH + 32, minWidth: chartW + RULER_W + 16 }}
+          >
             {/* Year ruler */}
             <div className="shrink-0 relative" style={{ width: RULER_W }}>
               {years.map(({ year, top }) => (
@@ -516,19 +514,23 @@ export function CareerTimeline({
             <div className="relative" style={{ width: chartW }}>
               {/* Grid lines */}
               {years.map(({ year, top }) => (
-                <div key={`g-${year}`} className={cn("absolute left-0 right-0 border-t border-dashed", s.gridLine)} style={{ top }} />
+                <div
+                  key={`g-${year}`}
+                  className={cn("absolute left-0 right-0 border-t border-dashed", s.gridLine)}
+                  style={{ top }}
+                />
               ))}
 
               {/* Blocks */}
               {projects.map((p) => {
-                const start = parseDate(p.startDate);
-                const end = parseDate(p.endDate);
-                const top = monthsBetween(minD, start) * PX;
-                const height = Math.max(monthsBetween(start, end) * PX, 28);
-                const col = columns.map.get(p.id) ?? 0;
-                const lit = isLit(p.id);
-                const active = hovered === p.id;
-                const isParallel = hovered && hovered !== p.id && lit;
+                const start = parseDate(p.startDate)
+                const end = parseDate(p.endDate)
+                const top = monthsBetween(minD, start) * PX
+                const height = Math.max(monthsBetween(start, end) * PX, 28)
+                const col = columns.map.get(p.id) ?? 0
+                const lit = isLit(p.id)
+                const active = hovered === p.id
+                const isParallel = hovered && hovered !== p.id && lit
 
                 return (
                   <div
@@ -536,7 +538,7 @@ export function CareerTimeline({
                     className={cn(
                       "absolute rounded-lg transition-all duration-300 cursor-pointer group",
                       lit ? "opacity-100" : "opacity-[0.06]",
-                      active && "z-20"
+                      active && "z-20",
                     )}
                     style={{
                       top,
@@ -556,7 +558,7 @@ export function CareerTimeline({
                           ? "ring-1 ring-current/20 shadow-lg shadow-black/20"
                           : isParallel
                             ? "ring-1 ring-current/10"
-                            : ""
+                            : "",
                       )}
                       style={{
                         backgroundColor: s.blockBg(p.color),
@@ -567,7 +569,10 @@ export function CareerTimeline({
                     {/* Content */}
                     <div className="relative h-full px-3 py-2.5 flex flex-col overflow-hidden">
                       <div className="min-w-0">
-                        <p className="text-[11px] font-semibold leading-tight truncate" style={{ color: s.nameColor(p.color) }}>
+                        <p
+                          className="text-[11px] font-semibold leading-tight truncate"
+                          style={{ color: s.nameColor(p.color) }}
+                        >
                           {p.name}
                         </p>
                         {height > 55 && (
@@ -576,9 +581,7 @@ export function CareerTimeline({
                           </p>
                         )}
                         {height > 75 && (
-                          <p className={cn("text-[9px] mt-0.5 truncate", s.roleText)}>
-                            {p.role}
-                          </p>
+                          <p className={cn("text-[9px] mt-0.5 truncate", s.roleText)}>{p.role}</p>
                         )}
                       </div>
 
@@ -588,7 +591,10 @@ export function CareerTimeline({
                             <span
                               key={tag}
                               className="text-[8px] font-mono px-1.5 py-0.5 rounded-sm"
-                              style={{ backgroundColor: s.tagBg(p.color), color: s.tagText(p.color) }}
+                              style={{
+                                backgroundColor: s.tagBg(p.color),
+                                color: s.tagText(p.color),
+                              }}
                             >
                               {tag}
                             </span>
@@ -613,7 +619,7 @@ export function CareerTimeline({
                       </div>
                     </div>
                   </div>
-                );
+                )
               })}
             </div>
           </div>
@@ -623,7 +629,12 @@ export function CareerTimeline({
         <div className={s.educationBg}>
           <div className="flex items-center gap-4">
             {variant !== "professional" && (
-              <div className={cn("w-10 h-10 rounded-lg flex items-center justify-center shrink-0", s.educationGrad || "bg-blue-600/20")}>
+              <div
+                className={cn(
+                  "w-10 h-10 rounded-lg flex items-center justify-center shrink-0",
+                  s.educationGrad || "bg-blue-600/20",
+                )}
+              >
                 <GraduationCap className="w-5 h-5 text-blue-400" />
               </div>
             )}
@@ -632,7 +643,9 @@ export function CareerTimeline({
             )}
             <div>
               <h3 className={s.educationTitle}>{educationData.degree}</h3>
-              <p className={s.educationSub}>{educationData.university} / {educationData.year}</p>
+              <p className={s.educationSub}>
+                {educationData.university} / {educationData.year}
+              </p>
             </div>
           </div>
         </div>
@@ -646,5 +659,5 @@ export function CareerTimeline({
         variant={variant}
       />
     </div>
-  );
+  )
 }

@@ -1,24 +1,25 @@
 "use client"
 
-import type React from "react"
 import {
-  Menu,
   ChevronDown,
   ChevronRight,
-  GitCommitHorizontal,
-  Plus,
-  Minus,
-  MoveRight,
-  Star,
   Download,
   ExternalLink,
+  GitCommitHorizontal,
   Github,
+  Menu,
+  Minus,
+  MoveRight,
+  Plus,
+  Star,
 } from "lucide-react"
-import { cn } from "@/lib/utils"
-import type { VSCodeSettings, FileItem, SearchResult } from "@/types"
+import type React from "react"
+
+import { changelog, extensions, gitHistory } from "@/constants/portfolio-data"
 import { adjustBrightness } from "@/lib/color-utils"
 import { IconFromKey } from "@/lib/icon-map"
-import { gitHistory, changelog, extensions } from "@/constants/portfolio-data"
+import { cn } from "@/lib/utils"
+import type { FileItem, SearchResult, VSCodeSettings } from "@/types"
 
 interface SideBarProps {
   settings: VSCodeSettings
@@ -91,11 +92,19 @@ export function SideBar({
                 e.currentTarget.style.backgroundColor = "transparent"
               }}
             >
-              {isOpen ? <ChevronDown className="w-2.5 h-2.5 sm:w-3 sm:h-3 shrink-0" /> : <ChevronRight className="w-2.5 h-2.5 sm:w-3 sm:h-3 shrink-0" />}
-              <span className="mr-0.5 sm:mr-1 shrink-0"><IconFromKey iconKey={item.icon} className="w-3 h-3 sm:w-3.5 sm:h-3.5" /></span>
+              {isOpen ? (
+                <ChevronDown className="w-2.5 h-2.5 sm:w-3 sm:h-3 shrink-0" />
+              ) : (
+                <ChevronRight className="w-2.5 h-2.5 sm:w-3 sm:h-3 shrink-0" />
+              )}
+              <span className="mr-0.5 sm:mr-1 shrink-0">
+                <IconFromKey iconKey={item.icon} className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
+              </span>
               <span className="truncate">{item.name}</span>
             </button>
-            {isOpen && item.children && <div>{renderFileTree(item.children, level + 1, itemPath)}</div>}
+            {isOpen && item.children && (
+              <div>{renderFileTree(item.children, level + 1, itemPath)}</div>
+            )}
           </div>
         )
       }
@@ -117,7 +126,9 @@ export function SideBar({
             e.currentTarget.style.backgroundColor = "transparent"
           }}
         >
-          <span className="mr-0.5 sm:mr-1 shrink-0"><IconFromKey iconKey={item.icon} className="w-3 h-3 sm:w-3.5 sm:h-3.5" /></span>
+          <span className="mr-0.5 sm:mr-1 shrink-0">
+            <IconFromKey iconKey={item.icon} className="w-3 h-3 sm:w-3.5 sm:h-3.5" />
+          </span>
           <span className="truncate">{item.name}</span>
         </button>
       )
@@ -183,12 +194,24 @@ export function SideBar({
                     }}
                   >
                     <div className="flex items-start gap-2 md:gap-3">
-                      <div className="shrink-0"><IconFromKey iconKey={ext.icon} className="w-6 h-6 md:w-7 md:h-7" style={{ color: accentColor }} /></div>
+                      <div className="shrink-0">
+                        <IconFromKey
+                          iconKey={ext.icon}
+                          className="w-6 h-6 md:w-7 md:h-7"
+                          style={{ color: accentColor }}
+                        />
+                      </div>
                       <div className="flex-1 min-w-0">
-                        <div className="font-semibold text-[11px] md:text-sm truncate" style={{ color: textPrimary }}>
+                        <div
+                          className="font-semibold text-[11px] md:text-sm truncate"
+                          style={{ color: textPrimary }}
+                        >
                           {ext.displayName}
                         </div>
-                        <div className="text-[10px] md:text-xs mt-0.5 truncate" style={{ color: textMuted }}>
+                        <div
+                          className="text-[10px] md:text-xs mt-0.5 truncate"
+                          style={{ color: textMuted }}
+                        >
                           {ext.publisher}
                         </div>
                         <div
@@ -344,13 +367,19 @@ export function SideBar({
                                 color: settings.accentColor,
                               }}
                             >
-                              {match.text.substring(match.matchIndex, match.matchIndex + searchQuery.length)}
+                              {match.text.substring(
+                                match.matchIndex,
+                                match.matchIndex + searchQuery.length,
+                              )}
                             </span>
                             {match.text.substring(match.matchIndex + searchQuery.length)}
                           </div>
                         ))}
                         {result.matches.length > 3 && (
-                          <div className="text-[10px] md:text-xs px-2 py-1" style={{ color: textMuted }}>
+                          <div
+                            className="text-[10px] md:text-xs px-2 py-1"
+                            style={{ color: textMuted }}
+                          >
                             +{result.matches.length - 3} 件の一致...
                           </div>
                         )}
@@ -363,8 +392,11 @@ export function SideBar({
 
             {historyMode && !searchMode && !diffMode && !extensionsMode && (
               <div className="py-2">
-                {gitHistory.map((commit, idx) => (
-                  <div key={commit.hash} className="px-2 md:px-3 py-2 md:py-3 border-b border-opacity-10 relative">
+                {gitHistory.map((commit) => (
+                  <div
+                    key={commit.hash}
+                    className="px-2 md:px-3 py-2 md:py-3 border-b border-opacity-10 relative"
+                  >
                     <div className="absolute left-[15px] md:left-[19px] top-8 bottom-[-20px] w-[2px] bg-gray-700 opacity-30 last:hidden"></div>
                     <div className="flex gap-2 md:gap-3">
                       <div className="flex flex-col items-center mt-1">
@@ -381,7 +413,10 @@ export function SideBar({
                           >
                             {commit.hash}
                           </span>
-                          <span className="text-[9px] md:text-[10px] opacity-50" style={{ color: textSecondary }}>
+                          <span
+                            className="text-[9px] md:text-[10px] opacity-50"
+                            style={{ color: textSecondary }}
+                          >
                             {commit.date}
                           </span>
                         </div>
@@ -412,7 +447,10 @@ export function SideBar({
                             </div>
                           ))}
                           {commit.changes.length > 2 && (
-                            <div className="text-[9px] md:text-[10px] pl-4" style={{ color: textMuted }}>
+                            <div
+                              className="text-[9px] md:text-[10px] pl-4"
+                              style={{ color: textMuted }}
+                            >
                               +{commit.changes.length - 2} more
                             </div>
                           )}
@@ -439,7 +477,11 @@ export function SideBar({
                 </div>
 
                 {changelog.map((entry, idx) => (
-                  <div key={entry.version} className="px-2 md:px-3 py-2 md:py-3 border-b relative" style={{ borderColor: bgMain }}>
+                  <div
+                    key={entry.version}
+                    className="px-2 md:px-3 py-2 md:py-3 border-b relative"
+                    style={{ borderColor: bgMain }}
+                  >
                     {idx < changelog.length - 1 && (
                       <div className="absolute left-[15px] md:left-[19px] top-10 bottom-[-12px] w-[2px] bg-gray-700 opacity-30" />
                     )}
@@ -461,29 +503,54 @@ export function SideBar({
                         <div className="flex items-center justify-between gap-2">
                           <span
                             className="text-[10px] md:text-xs font-mono font-semibold"
-                            style={{ color: entry.type === "major" ? "#22c55e" : settings.accentColor }}
+                            style={{
+                              color: entry.type === "major" ? "#22c55e" : settings.accentColor,
+                            }}
                           >
                             v{entry.version}
                           </span>
-                          <span className="text-[9px] md:text-[10px] opacity-50 shrink-0" style={{ color: textSecondary }}>
+                          <span
+                            className="text-[9px] md:text-[10px] opacity-50 shrink-0"
+                            style={{ color: textSecondary }}
+                          >
                             {entry.date}
                           </span>
                         </div>
-                        <div className="font-semibold text-[11px] md:text-sm mt-0.5 truncate" style={{ color: textPrimary }}>
+                        <div
+                          className="font-semibold text-[11px] md:text-sm mt-0.5 truncate"
+                          style={{ color: textPrimary }}
+                        >
                           {entry.title}
                         </div>
                         <div className="mt-2 space-y-1">
                           {entry.changes.slice(0, 3).map((change, i) => (
-                            <div key={i} className="flex items-start gap-1.5 text-[10px] md:text-xs" style={{ color: textMuted }}>
-                              {change.type === "added" && <Plus className="w-2.5 h-2.5 md:w-3 md:h-3 text-green-500 shrink-0 mt-0.5" />}
-                              {change.type === "improved" && <MoveRight className="w-2.5 h-2.5 md:w-3 md:h-3 text-blue-500 shrink-0 mt-0.5" />}
-                              {change.type === "fixed" && <div className="w-2.5 h-2.5 md:w-3 md:h-3 text-yellow-500 shrink-0 mt-0.5 font-bold text-center">!</div>}
-                              {change.type === "removed" && <Minus className="w-2.5 h-2.5 md:w-3 md:h-3 text-red-500 shrink-0 mt-0.5" />}
+                            <div
+                              key={i}
+                              className="flex items-start gap-1.5 text-[10px] md:text-xs"
+                              style={{ color: textMuted }}
+                            >
+                              {change.type === "added" && (
+                                <Plus className="w-2.5 h-2.5 md:w-3 md:h-3 text-green-500 shrink-0 mt-0.5" />
+                              )}
+                              {change.type === "improved" && (
+                                <MoveRight className="w-2.5 h-2.5 md:w-3 md:h-3 text-blue-500 shrink-0 mt-0.5" />
+                              )}
+                              {change.type === "fixed" && (
+                                <div className="w-2.5 h-2.5 md:w-3 md:h-3 text-yellow-500 shrink-0 mt-0.5 font-bold text-center">
+                                  !
+                                </div>
+                              )}
+                              {change.type === "removed" && (
+                                <Minus className="w-2.5 h-2.5 md:w-3 md:h-3 text-red-500 shrink-0 mt-0.5" />
+                              )}
                               <span className="line-clamp-1">{change.description}</span>
                             </div>
                           ))}
                           {entry.changes.length > 3 && (
-                            <div className="text-[9px] md:text-[10px] pl-4" style={{ color: textMuted }}>
+                            <div
+                              className="text-[9px] md:text-[10px] pl-4"
+                              style={{ color: textMuted }}
+                            >
                               +{entry.changes.length - 3} more
                             </div>
                           )}

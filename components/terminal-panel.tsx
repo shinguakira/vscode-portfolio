@@ -1,14 +1,14 @@
 "use client"
 
-import type React from "react"
-import { useState, useEffect, useRef, useCallback } from "react"
 import { ChevronUp, Trash2 } from "lucide-react"
-import { cn } from "@/lib/utils"
+import type React from "react"
+import { useCallback, useEffect, useRef, useState } from "react"
+
 import { gitHistory } from "@/constants/portfolio-data"
+import { cn } from "@/lib/utils"
 
 interface TerminalPanelProps {
   isOpen: boolean
-  onClose: () => void
   settings: {
     backgroundColor: string
     textColor: string
@@ -25,7 +25,7 @@ interface LogEntry {
   timestamp?: string
 }
 
-export function TerminalPanel({ isOpen, onClose, settings, onCommandRef }: TerminalPanelProps) {
+export function TerminalPanel({ isOpen, settings, onCommandRef }: TerminalPanelProps) {
   const [logs, setLogs] = useState<LogEntry[]>([
     { id: 1, type: "info", content: "Microsoft Windows [Version 10.0.19045.2364]" },
     { id: 2, type: "info", content: "(c) Microsoft Corporation. All rights reserved." },
@@ -52,6 +52,10 @@ export function TerminalPanel({ isOpen, onClose, settings, onCommandRef }: Termi
 
   const borderColor = adjustBrightness(bgPanel, 20)
 
+  const scrollToBottom = () => {
+    logsEndRef.current?.scrollIntoView({ behavior: "smooth" })
+  }
+
   useEffect(() => {
     if (isOpen && inputRef.current) {
       inputRef.current.focus()
@@ -59,14 +63,13 @@ export function TerminalPanel({ isOpen, onClose, settings, onCommandRef }: Termi
     scrollToBottom()
   }, [isOpen, logs])
 
-  const scrollToBottom = () => {
-    logsEndRef.current?.scrollIntoView({ behavior: "smooth" })
-  }
-
   const handleCommand = useCallback(async (cmd: string) => {
     const trimmedCmd = cmd.trim()
 
-    setLogs((prev) => [...prev, { id: Date.now(), type: "command", content: `user@portfolio:~$ ${trimmedCmd}` }])
+    setLogs((prev) => [
+      ...prev,
+      { id: Date.now(), type: "command", content: `user@portfolio:~$ ${trimmedCmd}` },
+    ])
     setInput("")
 
     if (!trimmedCmd) return
@@ -106,7 +109,11 @@ export function TerminalPanel({ isOpen, onClose, settings, onCommandRef }: Termi
       return
     }
 
-    if (trimmedCmd === "npm run start" || trimmedCmd === "npm start" || trimmedCmd === "yarn start") {
+    if (
+      trimmedCmd === "npm run start" ||
+      trimmedCmd === "npm start" ||
+      trimmedCmd === "yarn start"
+    ) {
       setIsRunning(true)
 
       const startSequence = [
@@ -122,7 +129,9 @@ export function TerminalPanel({ isOpen, onClose, settings, onCommandRef }: Termi
         setLogs((prev) => [...prev, { id: Date.now(), type: "info", content: line }])
       }
 
-      const sortedHistory = [...gitHistory].sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime())
+      const sortedHistory = [...gitHistory].sort(
+        (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime(),
+      )
 
       for (const commit of sortedHistory) {
         await new Promise((r) => setTimeout(r, 800))
@@ -148,7 +157,10 @@ export function TerminalPanel({ isOpen, onClose, settings, onCommandRef }: Termi
       }
 
       await new Promise((r) => setTimeout(r, 500))
-      setLogs((prev) => [...prev, { id: Date.now(), type: "success", content: "✨  Compile Distributed Successfully" }])
+      setLogs((prev) => [
+        ...prev,
+        { id: Date.now(), type: "success", content: "✨  Compile Distributed Successfully" },
+      ])
       setIsRunning(false)
       return
     }
@@ -187,7 +199,10 @@ export function TerminalPanel({ isOpen, onClose, settings, onCommandRef }: Termi
       }}
     >
       {/* ターミナルタブヘッダー */}
-      <div className="flex items-center px-1 sm:px-2 md:px-4 border-b h-6 sm:h-7 md:h-9 select-none shrink-0" style={{ borderColor }}>
+      <div
+        className="flex items-center px-1 sm:px-2 md:px-4 border-b h-6 sm:h-7 md:h-9 select-none shrink-0"
+        style={{ borderColor }}
+      >
         <div className="flex gap-2 sm:gap-4 md:gap-6 text-[8px] sm:text-[9px] md:text-[11px] font-medium tracking-wide overflow-x-auto">
           {["TERMINAL", "OUTPUT", "PROBLEMS"].map((tab) => (
             <button
@@ -208,7 +223,11 @@ export function TerminalPanel({ isOpen, onClose, settings, onCommandRef }: Termi
         </div>
         <div className="flex-1" />
         <div className="flex items-center gap-1 sm:gap-2">
-          <button onClick={() => setLogs([])} className="p-0.5 sm:p-1 rounded hover:bg-white/10" title="Clear">
+          <button
+            onClick={() => setLogs([])}
+            className="p-0.5 sm:p-1 rounded hover:bg-white/10"
+            title="Clear"
+          >
             <Trash2 className="w-2.5 h-2.5 sm:w-3 sm:h-3 md:w-3.5 md:h-3.5" />
           </button>
           <button className="p-0.5 sm:p-1 rounded hover:bg-white/10" title="Maximize">
@@ -218,9 +237,15 @@ export function TerminalPanel({ isOpen, onClose, settings, onCommandRef }: Termi
       </div>
 
       {/* ターミナルコンテンツ */}
-      <div className="flex-1 overflow-auto p-1 sm:p-2 font-mono text-[8px] sm:text-[10px] md:text-[13px]" onClick={() => inputRef.current?.focus()}>
+      <div
+        className="flex-1 overflow-auto p-1 sm:p-2 font-mono text-[8px] sm:text-[10px] md:text-[13px]"
+        onClick={() => inputRef.current?.focus()}
+      >
         {logs.map((log) => (
-          <div key={log.id} className="leading-4 sm:leading-5 md:leading-6 whitespace-pre-wrap break-all">
+          <div
+            key={log.id}
+            className="leading-4 sm:leading-5 md:leading-6 whitespace-pre-wrap break-all"
+          >
             <span
               className={cn(
                 log.type === "error"

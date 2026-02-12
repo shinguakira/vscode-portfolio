@@ -1,6 +1,6 @@
 // ポートフォリオのファイルツリーデータ
 
-import type { FileItem, GitCommit, SkillDiff, Extension, ChangelogEntry } from "@/types"
+import type { ChangelogEntry, Extension, FileItem, GitCommit } from "@/types"
 
 export const gitHistory: GitCommit[] = [
   {
@@ -10,7 +10,11 @@ export const gitHistory: GitCommit[] = [
     message: "feat: AI機能の実装とチームリード経験を追加",
     company: "Tech Startup Inc.",
     position: "シニアフルスタックエンジニア",
-    changes: ["AI/MLプロジェクトのリード", "チーム規模を5名→12名に拡大", "アーキテクチャ設計の主導"],
+    changes: [
+      "AI/MLプロジェクトのリード",
+      "チーム規模を5名→12名に拡大",
+      "アーキテクチャ設計の主導",
+    ],
   },
   {
     hash: "b3c8f91",
@@ -28,7 +32,11 @@ export const gitHistory: GitCommit[] = [
     message: "refactor: SaaSプロダクトの設計刷新",
     company: "Tech Startup Inc.",
     position: "フルスタックエンジニア",
-    changes: ["マイクロサービスアーキテクチャ導入", "CI/CDパイプライン構築", "ユーザー数150%増加に貢献"],
+    changes: [
+      "マイクロサービスアーキテクチャ導入",
+      "CI/CDパイプライン構築",
+      "ユーザー数150%増加に貢献",
+    ],
   },
   {
     hash: "d1f5b88",
@@ -46,7 +54,11 @@ export const gitHistory: GitCommit[] = [
     message: "init: Web開発キャリアスタート",
     company: "Web Agency Co.",
     position: "フロントエンドエンジニア",
-    changes: ["HTML/CSS/JavaScriptの実務経験", "20以上のWebサイト制作", "クライアント折衝スキル習得"],
+    changes: [
+      "HTML/CSS/JavaScriptの実務経験",
+      "20以上のWebサイト制作",
+      "クライアント折衝スキル習得",
+    ],
   },
 ]
 
@@ -677,7 +689,8 @@ export const extensions: Extension[] = [
     id: "ai-content-generator",
     name: "ai-content-generator",
     displayName: "AI コンテンツジェネレーター",
-    description: "OpenAI APIを使用したコンテンツ生成ツール。ブログ記事、SNS投稿、マーケティングコピーなどを自動生成。",
+    description:
+      "OpenAI APIを使用したコンテンツ生成ツール。ブログ記事、SNS投稿、マーケティングコピーなどを自動生成。",
     version: "1.2.5",
     publisher: "あなたの名前",
     icon: "sparkles",
@@ -705,7 +718,8 @@ export const extensions: Extension[] = [
     id: "image-optimizer",
     name: "image-optimizer",
     displayName: "画像最適化API",
-    description: "高速な画像変換・圧縮APIサービス。複数フォーマット対応、リサイズ、WebP変換などの機能を提供。",
+    description:
+      "高速な画像変換・圧縮APIサービス。複数フォーマット対応、リサイズ、WebP変換などの機能を提供。",
     version: "2.3.0",
     publisher: "あなたの名前",
     icon: "image",

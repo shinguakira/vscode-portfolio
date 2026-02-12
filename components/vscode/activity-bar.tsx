@@ -1,5 +1,6 @@
 "use client"
-import { FileText, Search, History, GitBranch, Settings, Package } from "lucide-react"
+import { FileText, GitBranch, History, Package, Search, Settings } from "lucide-react"
+
 import { cn } from "@/lib/utils"
 import type { VSCodeSettings } from "@/types"
 
@@ -70,7 +71,12 @@ export function ActivityBar({
         onClick={() => handleModeClick(false, false, false, false)}
         className={cn(
           "w-8 h-8 sm:w-10 sm:h-10 md:w-12 md:h-12 flex items-center justify-center relative",
-          !searchMode && !historyMode && !diffMode && !extensionsMode && !sidebarCollapsed && "border-l-2",
+          !searchMode &&
+            !historyMode &&
+            !diffMode &&
+            !extensionsMode &&
+            !sidebarCollapsed &&
+            "border-l-2",
         )}
         style={{
           color:

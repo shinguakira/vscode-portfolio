@@ -5,8 +5,13 @@
   "scripts": {
     "build": "next build",
     "dev": "next dev",
+    "start": "next start",
     "lint": "eslint .",
-    "start": "next start"
+    "lint:fix": "eslint . --fix",
+    "fmt": "oxfmt",
+    "fmt:check": "oxfmt --check",
+    "type-check": "tsc --noEmit",
+    "check": "tsc --noEmit && oxfmt --check && eslint ."
   },
   "dependencies": {
     "@hookform/resolvers": "^3.10.0",
@@ -61,10 +66,16 @@
     "zod": "3.25.76"
   },
   "devDependencies": {
+    "@oxfmt/binding-win32-x64-msvc": "^0.31.0",
     "@tailwindcss/postcss": "^4.1.9",
     "@types/node": "^22",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "eslint": "^9.39.2",
+    "eslint-config-next": "^16.1.6",
+    "eslint-plugin-simple-import-sort": "^12.1.1",
+    "eslint-plugin-unused-imports": "^4.4.1",
+    "oxfmt": "^0.31.0",
     "postcss": "^8.5",
     "tailwindcss": "^4.1.9",
     "typescript": "^5"

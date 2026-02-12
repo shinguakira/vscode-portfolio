@@ -1,9 +1,10 @@
 "use client"
 
+import { FileText, HelpCircle, PanelBottom, Search } from "lucide-react"
 import type React from "react"
-import { FileText, PanelBottom, Search, HelpCircle } from "lucide-react"
-import type { VSCodeSettings } from "@/types"
+
 import { adjustBrightness } from "@/lib/color-utils"
+import type { VSCodeSettings } from "@/types"
 
 interface TitleBarProps {
   settings: VSCodeSettings
@@ -39,8 +40,13 @@ export function TitleBar({
     >
       {/* 左側: アプリ名 */}
       <div className="flex items-center gap-0.5 sm:gap-1 md:gap-2 min-w-0">
-        <FileText className="w-2.5 h-2.5 sm:w-3 sm:h-3 md:w-4 md:h-4 shrink-0" style={{ color: settings.accentColor }} />
-        <span className="font-semibold text-[8px] sm:text-[10px] md:text-[13px] truncate">Portfolio</span>
+        <FileText
+          className="w-2.5 h-2.5 sm:w-3 sm:h-3 md:w-4 md:h-4 shrink-0"
+          style={{ color: settings.accentColor }}
+        />
+        <span className="font-semibold text-[8px] sm:text-[10px] md:text-[13px] truncate">
+          Portfolio
+        </span>
         <button
           onClick={() => setTerminalOpen(!terminalOpen)}
           className="p-0.5 sm:p-1 rounded hover:bg-white/10 transition-colors shrink-0"

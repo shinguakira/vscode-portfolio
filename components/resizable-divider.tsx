@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect, useRef } from "react"
+import { useEffect, useRef, useState } from "react"
 
 interface ResizableDividerProps {
   direction: "horizontal" | "vertical"
@@ -9,7 +9,12 @@ interface ResizableDividerProps {
   hoverColor: string
 }
 
-export function ResizableDivider({ direction, onResize, bgColor, hoverColor }: ResizableDividerProps) {
+export function ResizableDivider({
+  direction,
+  onResize,
+  bgColor,
+  hoverColor,
+}: ResizableDividerProps) {
   const [isDragging, setIsDragging] = useState(false)
   const dividerRef = useRef<HTMLDivElement>(null)
 
@@ -42,7 +47,9 @@ export function ResizableDivider({ direction, onResize, bgColor, hoverColor }: R
       ref={dividerRef}
       onMouseDown={() => setIsDragging(true)}
       className={`${
-        direction === "vertical" ? "w-1 cursor-col-resize hover:w-1.5" : "h-1 cursor-row-resize hover:h-1.5"
+        direction === "vertical"
+          ? "w-1 cursor-col-resize hover:w-1.5"
+          : "h-1 cursor-row-resize hover:h-1.5"
       } shrink-0 transition-all group`}
       style={{
         backgroundColor: isDragging ? hoverColor : bgColor,
