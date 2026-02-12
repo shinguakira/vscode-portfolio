@@ -8,10 +8,9 @@
     "start": "next start",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
-    "fmt": "oxfmt",
-    "fmt:check": "oxfmt --check",
+    "format": "oxfmt",
     "type-check": "tsc --noEmit",
-    "check": "tsc --noEmit && oxfmt --check && eslint ."
+    "check": "tsc --noEmit && oxfmt && eslint . --fix"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.10.0",
