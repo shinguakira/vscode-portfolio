@@ -16,19 +16,6 @@ export interface GitCommit {
   changes: string[]
 }
 
-export interface SkillChange {
-  type: "added" | "improved" | "removed"
-  skill: string
-  before?: string | number
-  after?: string | number
-  description: string
-}
-
-export interface SkillDiff {
-  category: string
-  changes: SkillChange[]
-}
-
 export interface ChangelogChange {
   type: "added" | "improved" | "fixed" | "removed"
   description: string

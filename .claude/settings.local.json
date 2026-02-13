@@ -7,7 +7,17 @@
       "Bash(npx oxfmt:*)",
       "Bash(pnpm approve-builds:*)",
       "Bash(pnpm install:*)",
-      "Bash(node -e:*)"
+      "Bash(node -e:*)",
+      "Bash(npm install:*)",
+      "Bash(npm ls:*)",
+      "Bash(where:*)",
+      "Bash(npx knip:*)",
+      "Bash(dir:*)",
+      "Bash(findstr:*)",
+      "Bash(xargs:*)",
+      "Bash(npm run knip:*)",
+      "WebFetch(domain:www.npmjs.com)",
+      "Bash(find:*)"
     ]
   }
 }

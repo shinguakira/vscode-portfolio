@@ -1,0 +1,29 @@
+{
+  "$schema": "https://unpkg.com/knip@5/schema.json",
+  "next": true,
+  "exclude": ["unresolved"],
+  "paths": {
+    "@/*": ["./*"]
+  },
+  "ignoreDependencies": [
+    "@oxfmt/binding-win32-x64-msvc",
+    "@hookform/resolvers",
+    "@radix-ui/*",
+    "autoprefixer",
+    "cmdk",
+    "date-fns",
+    "embla-carousel-react",
+    "input-otp",
+    "next-themes",
+    "react-day-picker",
+    "react-hook-form",
+    "react-resizable-panels",
+    "recharts",
+    "sonner",
+    "tailwindcss-animate",
+    "vaul",
+    "zod"
+  ],
+  "ignore": ["components/ui/**"],
+  "ignoreExportsUsedInFile": true
+}

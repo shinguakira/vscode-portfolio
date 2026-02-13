@@ -10,7 +10,8 @@
     "lint:fix": "eslint . --fix",
     "format": "oxfmt",
     "type-check": "tsc --noEmit",
-    "check": "tsc --noEmit && oxfmt && eslint . --fix"
+    "check": "tsc --noEmit && oxfmt && eslint . --fix",
+    "knip": "knip"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.10.0",
@@ -77,6 +78,7 @@
     "oxfmt": "^0.31.0",
     "postcss": "^8.5",
     "tailwindcss": "^4.1.9",
+    "knip": "^5",
     "typescript": "^5"
   }
 }

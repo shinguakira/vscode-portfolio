@@ -2,37 +2,6 @@
 
 import type { PreviewTheme } from "@/types"
 
-export const DEFAULT_COLORS = {
-  bgMain: "#0D0D0D",
-  bgSidebar: "#141414",
-  bgActivityBar: "#1A1A1A",
-  bgTitleBar: "#181818",
-  bgHover: "#1F1F1F",
-  bgTab: "#141414",
-  textPrimary: "#CCCCCC",
-  textSecondary: "#969696",
-  textMuted: "#858585",
-  border: "#0D0D0D",
-}
-
-export const COLOR_PRESETS = [
-  { name: "ダークブラック", bg: "#0D0D0D", text: "#CCCCCC" },
-  { name: "ミッドナイト", bg: "#1A1A2E", text: "#E0E0E0" },
-  { name: "グレー", bg: "#1E1E1E", text: "#D4D4D4" },
-  { name: "ダークブルー", bg: "#0E1525", text: "#C5D4DD" },
-  { name: "ダークグリーン", bg: "#0D1B0E", text: "#C8E6C9" },
-  { name: "ダークパープル", bg: "#1A0D1F", text: "#E1BEE7" },
-]
-
-export const ACCENT_COLOR_PRESETS = [
-  { name: "ブルー", color: "#007ACC" },
-  { name: "グリーン", color: "#0E8A16" },
-  { name: "パープル", color: "#8B5CF6" },
-  { name: "オレンジ", color: "#F97316" },
-  { name: "レッド", color: "#EF4444" },
-  { name: "ピンク", color: "#EC4899" },
-]
-
 export const THEME_PRESETS = [
   {
     name: "ダークブラック",
@@ -104,33 +73,3 @@ export const DEFAULT_SETTINGS: {
   previewTheme: "modern",
 }
 
-export const FILE_ICONS: Record<string, string> = {
-  md: "📄",
-  json: "{}",
-  tsx: "⚛️",
-  jsx: "⚛️",
-  ts: "📘",
-  js: "📜",
-  yaml: "⚙️",
-  yml: "⚙️",
-  css: "🎨",
-  html: "🌐",
-  folder: "📁",
-}
-
-export function getFileType(filename: string): string {
-  const ext = filename.split(".").pop()?.toLowerCase()
-  const types: Record<string, string> = {
-    md: "Markdown",
-    json: "JSON",
-    tsx: "TypeScript React",
-    jsx: "JavaScript React",
-    ts: "TypeScript",
-    js: "JavaScript",
-    yaml: "YAML",
-    yml: "YAML",
-    css: "CSS",
-    html: "HTML",
-  }
-  return types[ext || ""] || "Plain Text"
-}
