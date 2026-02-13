@@ -6,7 +6,6 @@
     "@/*": ["./*"]
   },
   "ignoreDependencies": [
-    "@oxfmt/binding-win32-x64-msvc",
     "@hookform/resolvers",
     "@radix-ui/*",
     "autoprefixer",
