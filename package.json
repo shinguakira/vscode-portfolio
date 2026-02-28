@@ -74,10 +74,10 @@
     "eslint-config-next": "^16.1.6",
     "eslint-plugin-simple-import-sort": "^12.1.1",
     "eslint-plugin-unused-imports": "^4.4.1",
+    "knip": "^5",
     "oxfmt": "^0.31.0",
     "postcss": "^8.5",
     "tailwindcss": "^4.1.9",
-    "knip": "^5",
     "typescript": "^5"
   }
 }

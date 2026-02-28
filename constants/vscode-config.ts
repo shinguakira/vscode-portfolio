@@ -72,4 +72,3 @@ export const DEFAULT_SETTINGS: {
   fontSize: 14,
   previewTheme: "modern",
 }
-

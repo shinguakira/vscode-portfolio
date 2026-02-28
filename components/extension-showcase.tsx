@@ -15,16 +15,17 @@ import {
 import Image from "next/image"
 import { useState } from "react"
 
+import { useTheme } from "@/contexts/theme-context"
 import { adjustBrightness } from "@/lib/color-utils"
 import { IconFromKey } from "@/lib/icon-map"
-import type { Extension, VSCodeSettings } from "@/types"
+import type { Extension } from "@/types"
 
 interface ExtensionShowcaseProps {
   extension: Extension
-  settings: VSCodeSettings
 }
 
-export function ExtensionShowcase({ extension, settings }: ExtensionShowcaseProps) {
+export function ExtensionShowcase({ extension }: ExtensionShowcaseProps) {
+  const { settings } = useTheme()
   const [selectedImageIndex, setSelectedImageIndex] = useState(0)
 
   const bgMain = settings.backgroundColor || "#0d0d0d"

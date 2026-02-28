@@ -1,20 +1,20 @@
 "use client"
 import { AlertTriangle, Bell, Check, GitBranch, PanelBottom, XCircle } from "lucide-react"
 
-import type { VSCodeSettings } from "@/types"
+import { useTheme } from "@/contexts/theme-context"
 
 interface StatusBarProps {
-  settings: VSCodeSettings
   terminalOpen: boolean
   setTerminalOpen: (open: boolean) => void
 }
 
-export function StatusBar({ settings, terminalOpen, setTerminalOpen }: StatusBarProps) {
+export function StatusBar({ terminalOpen, setTerminalOpen }: StatusBarProps) {
+  const { accentColor } = useTheme()
   return (
     <div
       className="h-4 sm:h-5 md:h-6 flex items-center justify-between px-1 sm:px-2 md:px-3 text-[7px] sm:text-[9px] md:text-[11px] shrink-0 select-none z-10"
       style={{
-        backgroundColor: settings.accentColor,
+        backgroundColor: accentColor,
         color: "#ffffff",
       }}
     >

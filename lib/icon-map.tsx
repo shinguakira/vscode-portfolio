@@ -17,7 +17,10 @@ import {
 } from "lucide-react"
 import React from "react"
 
-const iconComponents: Record<string, React.FC<{ className?: string }>> = {
+const iconComponents: Record<
+  string,
+  React.FC<{ className?: string; style?: React.CSSProperties }>
+> = {
   "shopping-cart": ShoppingCart,
   "message-circle": MessageCircle,
   "layout-dashboard": LayoutDashboard,

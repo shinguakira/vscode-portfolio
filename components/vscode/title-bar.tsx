@@ -3,36 +3,27 @@
 import { FileText, HelpCircle, PanelBottom, Search } from "lucide-react"
 import type React from "react"
 
+import { useTheme } from "@/contexts/theme-context"
 import { adjustBrightness } from "@/lib/color-utils"
-import type { VSCodeSettings } from "@/types"
 
 interface TitleBarProps {
-  settings: VSCodeSettings
   terminalOpen: boolean
   setTerminalOpen: (open: boolean) => void
   searchQuery: string
   handleSearchChange: (e: React.ChangeEvent<HTMLInputElement>) => void
   setSearchMode: (mode: boolean) => void
-  bgMain: string
-  bgTitleBar: string
-  textPrimary: string
-  textSecondary: string
   onHelpClick?: () => void
 }
 
 export function TitleBar({
-  settings,
   terminalOpen,
   setTerminalOpen,
   searchQuery,
   handleSearchChange,
   setSearchMode,
-  bgMain,
-  bgTitleBar,
-  textPrimary,
-  textSecondary,
   onHelpClick,
 }: TitleBarProps) {
+  const { accentColor, bgMain, bgTitleBar, textPrimary, textSecondary } = useTheme()
   return (
     <div
       className="h-6 sm:h-7 md:h-9 flex items-center justify-between px-1 sm:px-2 md:px-4 text-[9px] sm:text-[10px] md:text-[13px] border-b shrink-0"
@@ -42,7 +33,7 @@ export function TitleBar({
       <div className="flex items-center gap-0.5 sm:gap-1 md:gap-2 min-w-0">
         <FileText
           className="w-2.5 h-2.5 sm:w-3 sm:h-3 md:w-4 md:h-4 shrink-0"
-          style={{ color: settings.accentColor }}
+          style={{ color: accentColor }}
         />
         <span className="font-semibold text-[8px] sm:text-[10px] md:text-[13px] truncate">
           Portfolio
@@ -83,10 +74,10 @@ export function TitleBar({
               backgroundColor: adjustBrightness(bgMain, 10),
               color: textPrimary,
               borderColor: adjustBrightness(bgMain, 20),
-              caretColor: settings.accentColor,
+              caretColor: accentColor,
             }}
             onFocusCapture={(e) => {
-              e.currentTarget.style.borderColor = settings.accentColor
+              e.currentTarget.style.borderColor = accentColor
               e.currentTarget.style.backgroundColor = adjustBrightness(bgMain, 15)
             }}
             onBlur={(e) => {

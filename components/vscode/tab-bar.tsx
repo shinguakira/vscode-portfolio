@@ -3,22 +3,18 @@
 import { Play, X } from "lucide-react"
 import type React from "react"
 
+import { useTheme } from "@/contexts/theme-context"
 import { IconFromKey } from "@/lib/icon-map"
 import { cn } from "@/lib/utils"
-import type { Tab, VSCodeSettings } from "@/types"
+import type { Tab } from "@/types"
 
 interface TabBarProps {
   tabs: Tab[]
   activeTab: string | null
   setActiveTab: (id: string) => void
   closeTab: (id: string, e: React.MouseEvent) => void
-  settings: VSCodeSettings
   previewMode: boolean
   setPreviewMode: (mode: boolean) => void
-  bgTab: string
-  bgMain: string
-  textPrimary: string
-  textSecondary: string
 }
 
 export function TabBar({
@@ -26,14 +22,10 @@ export function TabBar({
   activeTab,
   setActiveTab,
   closeTab,
-  settings,
   previewMode,
   setPreviewMode,
-  bgTab,
-  bgMain,
-  textPrimary,
-  textSecondary,
 }: TabBarProps) {
+  const { accentColor, bgTab, bgMain, textPrimary, textSecondary } = useTheme()
   if (tabs.length === 0) return null
 
   return (
@@ -49,8 +41,7 @@ export function TabBar({
           style={{
             backgroundColor: activeTab === tab.id ? bgMain : bgTab,
             color: activeTab === tab.id ? textPrimary : textSecondary,
-            borderTop:
-              activeTab === tab.id ? `1px solid ${settings.accentColor}` : "1px solid transparent",
+            borderTop: activeTab === tab.id ? `1px solid ${accentColor}` : "1px solid transparent",
           }}
         >
           <span className="shrink-0">
@@ -76,7 +67,7 @@ export function TabBar({
             onClick={() => setPreviewMode(!previewMode)}
             className="flex items-center gap-0.5 sm:gap-1 px-1 sm:px-2 py-0.5 sm:py-1 text-[8px] sm:text-[10px] md:text-xs rounded hover:bg-white/10 transition-colors"
             style={{
-              color: previewMode ? settings.accentColor : textSecondary,
+              color: previewMode ? accentColor : textSecondary,
             }}
             title="Preview"
             data-tutorial="preview-button"

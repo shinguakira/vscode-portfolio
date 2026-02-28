@@ -4,28 +4,17 @@ import { X } from "lucide-react"
 import React, { useEffect, useState } from "react"
 
 import { PREVIEW_THEMES, THEME_PRESETS } from "@/constants/vscode-config"
+import { useTheme } from "@/contexts/theme-context"
 import { adjustBrightness } from "@/lib/color-utils"
 import type { VSCodeSettings } from "@/types"
 
 interface SettingsPanelProps {
-  settings: VSCodeSettings
   onSave: (newSettings: VSCodeSettings) => void
   onClose: () => void
-  bgMain: string
-  bgActivityBar: string
-  textPrimary: string
-  textSecondary: string
 }
 
-export function SettingsPanel({
-  settings,
-  onSave,
-  onClose,
-  bgMain,
-  bgActivityBar,
-  textPrimary,
-  textSecondary,
-}: SettingsPanelProps) {
+export function SettingsPanel({ onSave, onClose }: SettingsPanelProps) {
+  const { settings, bgMain, bgActivityBar, textPrimary, textSecondary } = useTheme()
   const [localSettings, setLocalSettings] = useState(settings)
   const [isSmallScreen, setIsSmallScreen] = useState(false)
 

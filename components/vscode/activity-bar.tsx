@@ -1,11 +1,10 @@
 "use client"
 import { FileText, GitBranch, History, Package, Search, Settings } from "lucide-react"
 
+import { useTheme } from "@/contexts/theme-context"
 import { cn } from "@/lib/utils"
-import type { VSCodeSettings } from "@/types"
 
 interface ActivityBarProps {
-  settings: VSCodeSettings
   searchMode: boolean
   historyMode: boolean
   diffMode: boolean
@@ -17,13 +16,9 @@ interface ActivityBarProps {
   setExtensionsMode: (mode: boolean) => void
   setSidebarCollapsed: (collapsed: boolean) => void
   setSettingsOpen: (open: boolean) => void
-  bgActivityBar: string
-  bgMain: string
-  textSecondary: string
 }
 
 export function ActivityBar({
-  settings,
   searchMode,
   historyMode,
   diffMode,
@@ -35,10 +30,8 @@ export function ActivityBar({
   setExtensionsMode,
   setSidebarCollapsed,
   setSettingsOpen,
-  bgActivityBar,
-  bgMain,
-  textSecondary,
 }: ActivityBarProps) {
+  const { accentColor, bgActivityBar, bgMain, textSecondary } = useTheme()
   const handleModeClick = (
     targetSearchMode: boolean,
     targetHistoryMode: boolean,
@@ -81,9 +74,9 @@ export function ActivityBar({
         style={{
           color:
             !searchMode && !historyMode && !diffMode && !extensionsMode && !sidebarCollapsed
-              ? settings.accentColor
+              ? accentColor
               : textSecondary,
-          borderColor: settings.accentColor,
+          borderColor: accentColor,
         }}
         title="Explorer"
       >
@@ -97,8 +90,8 @@ export function ActivityBar({
           searchMode && !sidebarCollapsed && "border-l-2",
         )}
         style={{
-          color: searchMode && !sidebarCollapsed ? settings.accentColor : textSecondary,
-          borderColor: settings.accentColor,
+          color: searchMode && !sidebarCollapsed ? accentColor : textSecondary,
+          borderColor: accentColor,
         }}
         title="Search"
       >
@@ -112,8 +105,8 @@ export function ActivityBar({
           historyMode && !sidebarCollapsed && "border-l-2",
         )}
         style={{
-          color: historyMode && !sidebarCollapsed ? settings.accentColor : textSecondary,
-          borderColor: settings.accentColor,
+          color: historyMode && !sidebarCollapsed ? accentColor : textSecondary,
+          borderColor: accentColor,
         }}
         title="Git History"
       >
@@ -127,8 +120,8 @@ export function ActivityBar({
           diffMode && !sidebarCollapsed && "border-l-2",
         )}
         style={{
-          color: diffMode && !sidebarCollapsed ? settings.accentColor : textSecondary,
-          borderColor: settings.accentColor,
+          color: diffMode && !sidebarCollapsed ? accentColor : textSecondary,
+          borderColor: accentColor,
         }}
         title="Changelog"
       >
@@ -142,8 +135,8 @@ export function ActivityBar({
           extensionsMode && !sidebarCollapsed && "border-l-2",
         )}
         style={{
-          color: extensionsMode && !sidebarCollapsed ? settings.accentColor : textSecondary,
-          borderColor: settings.accentColor,
+          color: extensionsMode && !sidebarCollapsed ? accentColor : textSecondary,
+          borderColor: accentColor,
         }}
         title="Extensions"
       >

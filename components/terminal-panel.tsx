@@ -5,16 +5,12 @@ import type React from "react"
 import { useCallback, useEffect, useRef, useState } from "react"
 
 import { gitHistory } from "@/constants/portfolio-data"
+import { useTheme } from "@/contexts/theme-context"
+import { adjustBrightness } from "@/lib/color-utils"
 import { cn } from "@/lib/utils"
 
 interface TerminalPanelProps {
   isOpen: boolean
-  settings: {
-    backgroundColor: string
-    textColor: string
-    accentColor: string
-    fontSize: number
-  }
   onCommandRef?: (fn: (command: string) => void) => void
 }
 
@@ -25,7 +21,8 @@ interface LogEntry {
   timestamp?: string
 }
 
-export function TerminalPanel({ isOpen, settings, onCommandRef }: TerminalPanelProps) {
+export function TerminalPanel({ isOpen, onCommandRef }: TerminalPanelProps) {
+  const { settings } = useTheme()
   const [logs, setLogs] = useState<LogEntry[]>([
     { id: 1, type: "info", content: "Microsoft Windows [Version 10.0.19045.2364]" },
     { id: 2, type: "info", content: "(c) Microsoft Corporation. All rights reserved." },
@@ -39,16 +36,6 @@ export function TerminalPanel({ isOpen, settings, onCommandRef }: TerminalPanelP
 
   const bgPanel = settings.backgroundColor
   const textPrimary = settings.textColor
-
-  const adjustBrightness = (color: string, amount: number) => {
-    if (!color || typeof color !== "string") return "#000000"
-    const hex = color.replace("#", "")
-    if (hex.length !== 6) return color
-    const r = Math.min(255, Math.max(0, Number.parseInt(hex.substring(0, 2), 16) + amount))
-    const g = Math.min(255, Math.max(0, Number.parseInt(hex.substring(2, 4), 16) + amount))
-    const b = Math.min(255, Math.max(0, Number.parseInt(hex.substring(4, 6), 16) + amount))
-    return `#${r.toString(16).padStart(2, "0")}${g.toString(16).padStart(2, "0")}${b.toString(16).padStart(2, "0")}`
-  }
 
   const borderColor = adjustBrightness(bgPanel, 20)
 
