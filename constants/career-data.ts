@@ -1,4 +1,4 @@
-import type { CareerProject } from "@/components/career-timeline"
+import type { CareerProject } from "@/components/career-timeline/career-timeline"
 
 export const careerProjects: CareerProject[] = [
   {

@@ -60,7 +60,7 @@ export function SidebarContainer({
   openFile,
   openExtension,
 }: SidebarContainerProps) {
-  const { bgSidebar, bgMain, bgHover, textPrimary, textSecondary, textMuted } = useTheme()
+  const { bgSidebar, bgMain, textPrimary } = useTheme()
   const isExplorer = !searchMode && !historyMode && !diffMode && !extensionsMode
 
   return (

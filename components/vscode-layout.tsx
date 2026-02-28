@@ -2,12 +2,13 @@
 
 import { useCallback, useRef, useState } from "react"
 
-import { EditorArea, EmptyState } from "@/components/editor"
+import { EditorArea } from "@/components/editor/editor-area"
+import { EmptyState } from "@/components/editor/empty-state"
 import { ExtensionShowcase } from "@/components/extension-showcase"
 import { LandscapePrompt } from "@/components/landscape-prompt"
-import { PreviewPanel } from "@/components/preview"
+import { PreviewPanel } from "@/components/preview/preview-panel"
 import { ResizableDivider } from "@/components/resizable-divider"
-import { SidebarContainer } from "@/components/sidebar"
+import { SidebarContainer } from "@/components/sidebar/sidebar-container"
 import { TerminalPanel } from "@/components/terminal-panel"
 import { TutorialOverlay } from "@/components/tutorial-overlay"
 import { ActivityBar } from "@/components/vscode/activity-bar"

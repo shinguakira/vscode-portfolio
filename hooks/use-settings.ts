@@ -1,50 +1,73 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import { useCallback, useSyncExternalStore } from "react"
 
 import { DEFAULT_SETTINGS } from "@/constants/vscode-config"
 import type { PreviewTheme, VSCodeSettings } from "@/types"
 
 const STORAGE_KEY = "vscode-settings"
 
-function loadSettings(): VSCodeSettings {
-  const saved = localStorage.getItem(STORAGE_KEY)
-  if (saved) {
-    try {
-      const parsed = JSON.parse(saved)
-      return {
-        backgroundColor: parsed.backgroundColor || DEFAULT_SETTINGS.backgroundColor,
-        textColor: parsed.textColor || DEFAULT_SETTINGS.textColor,
-        accentColor: parsed.accentColor || DEFAULT_SETTINGS.accentColor,
-        fontSize: parsed.fontSize || DEFAULT_SETTINGS.fontSize,
-        previewTheme: parsed.previewTheme || DEFAULT_SETTINGS.previewTheme,
-      }
-    } catch {
-      // fall through to defaults
-    }
+let listeners: Array<() => void> = []
+let cachedRaw: string | null = null
+let cachedSettings: VSCodeSettings = DEFAULT_SETTINGS
+
+function subscribe(listener: () => void) {
+  listeners = [...listeners, listener]
+  return () => {
+    listeners = listeners.filter((l) => l !== listener)
   }
-  return { ...DEFAULT_SETTINGS }
+}
+
+function parseSettings(raw: string | null): VSCodeSettings {
+  if (!raw) return DEFAULT_SETTINGS
+  try {
+    const parsed = JSON.parse(raw)
+    return {
+      backgroundColor: parsed.backgroundColor || DEFAULT_SETTINGS.backgroundColor,
+      textColor: parsed.textColor || DEFAULT_SETTINGS.textColor,
+      accentColor: parsed.accentColor || DEFAULT_SETTINGS.accentColor,
+      fontSize: parsed.fontSize || DEFAULT_SETTINGS.fontSize,
+      previewTheme: parsed.previewTheme || DEFAULT_SETTINGS.previewTheme,
+    }
+  } catch {
+    return DEFAULT_SETTINGS
+  }
+}
+
+function getSnapshot(): VSCodeSettings {
+  const raw = localStorage.getItem(STORAGE_KEY)
+  if (raw !== cachedRaw) {
+    cachedRaw = raw
+    cachedSettings = parseSettings(raw)
+  }
+  return cachedSettings
+}
+
+function getServerSnapshot(): VSCodeSettings {
+  return DEFAULT_SETTINGS
+}
+
+function writeSettings(newSettings: VSCodeSettings) {
+  const raw = JSON.stringify(newSettings)
+  localStorage.setItem(STORAGE_KEY, raw)
+  cachedRaw = raw
+  cachedSettings = newSettings
+  for (const listener of listeners) {
+    listener()
+  }
 }
 
 export function useSettings() {
-  const [settings, setSettings] = useState<VSCodeSettings>({ ...DEFAULT_SETTINGS })
+  const settings = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot)
 
-  useEffect(() => {
-    setSettings(loadSettings())
+  const saveSettings = useCallback((newSettings: VSCodeSettings) => {
+    writeSettings(newSettings)
   }, [])
 
-  const saveSettings = (newSettings: VSCodeSettings) => {
-    setSettings(newSettings)
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(newSettings))
-  }
-
-  const changePreviewTheme = (themeId: string) => {
-    setSettings((prev) => {
-      const newSettings = { ...prev, previewTheme: themeId as PreviewTheme }
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(newSettings))
-      return newSettings
-    })
-  }
+  const changePreviewTheme = useCallback((themeId: string) => {
+    const current = getSnapshot()
+    writeSettings({ ...current, previewTheme: themeId as PreviewTheme })
+  }, [])
 
   return { settings, saveSettings, changePreviewTheme }
 }
