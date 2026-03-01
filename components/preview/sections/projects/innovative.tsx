@@ -1,5 +1,7 @@
 "use client"
 
+import { PROJECTS_INNOVATIVE } from "@/constants/preview-data"
+
 export function InnovativeProjects() {
   return (
     <div className="min-h-full bg-black">
@@ -9,26 +11,7 @@ export function InnovativeProjects() {
         </h1>
 
         <div className="space-y-32">
-          {[
-            {
-              title: "AI パワードEコマース",
-              desc: "機械学習を活用した次世代のショッピング体験",
-              gradient: "from-cyan-500 via-blue-500 to-purple-500",
-              icon: "🤖",
-            },
-            {
-              title: "リアルタイム3Dコラボレーション",
-              desc: "WebGLとWebSocketsによる革新的な共同作業空間",
-              gradient: "from-purple-500 via-pink-500 to-red-500",
-              icon: "🎨",
-            },
-            {
-              title: "ブロックチェーンプラットフォーム",
-              desc: "分散型アプリケーションの未来を構築",
-              gradient: "from-pink-500 via-red-500 to-orange-500",
-              icon: "⛓️",
-            },
-          ].map((project, i) => (
+          {PROJECTS_INNOVATIVE.map((project, i) => (
             <div key={i} className="group relative">
               <div
                 className={`absolute -inset-1 bg-gradient-to-r ${project.gradient} rounded-3xl blur-2xl opacity-30 group-hover:opacity-60 transition duration-700`}

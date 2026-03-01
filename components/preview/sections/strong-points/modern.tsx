@@ -3,6 +3,7 @@
 import { ChevronRight } from "lucide-react"
 
 import { Card } from "@/components/ui/card"
+import { ACHIEVEMENT_STATS, SOFT_SKILLS, STRENGTHS } from "@/constants/preview-data"
 
 export function ModernStrongPoints() {
   return (
@@ -16,32 +17,7 @@ export function ModernStrongPoints() {
         </div>
 
         <div className="grid md:grid-cols-2 gap-8 mb-12">
-          {[
-            {
-              title: "フルスタック開発力",
-              desc: "フロントエンドからバックエンド、インフラまで一貫して対応。プロジェクト全体を俯瞰した設計・実装が可能です。",
-              icon: "🔧",
-              color: "from-emerald-500 to-cyan-500",
-            },
-            {
-              title: "モダン技術への適応力",
-              desc: "Next.js 14、TypeScript厳密モード、tRPCなど最新技術を積極採用。常に技術のアップデートを続けています。",
-              icon: "🚀",
-              color: "from-cyan-500 to-blue-500",
-            },
-            {
-              title: "パフォーマンス最適化",
-              desc: "Core Web Vitalsを意識した実装、バンドルサイズ最適化、DBクエリ改善などの経験が豊富です。",
-              icon: "⚡",
-              color: "from-blue-500 to-purple-500",
-            },
-            {
-              title: "リーダーシップ",
-              desc: "12名規模のチームリード経験。コードレビュー文化の醸成やメンバーの成長サポートを実践してきました。",
-              icon: "👥",
-              color: "from-purple-500 to-pink-500",
-            },
-          ].map((item, i) => (
+          {STRENGTHS.map((item, i) => (
             <Card
               key={i}
               className="p-8 bg-slate-900/50 border-slate-800 backdrop-blur hover:border-slate-700 transition-all group"
@@ -67,20 +43,7 @@ export function ModernStrongPoints() {
             ソフトスキル
           </h3>
           <div className="grid md:grid-cols-3 gap-6">
-            {[
-              {
-                title: "コミュニケーション",
-                items: ["非エンジニアへの説明が得意", "ドキュメント作成重視", "チーム間の橋渡し役"],
-              },
-              {
-                title: "問題解決",
-                items: ["複雑な問題の分解", "根本原因の特定", "技術的負債の計画的解消"],
-              },
-              {
-                title: "学習意欲",
-                items: ["新技術の積極的習得", "ブログでの知見共有", "コミュニティ活動"],
-              },
-            ].map((section) => (
+            {SOFT_SKILLS.map((section) => (
               <div key={section.title}>
                 <h4 className="text-lg font-semibold text-white mb-3">{section.title}</h4>
                 <ul className="space-y-2">
@@ -97,12 +60,7 @@ export function ModernStrongPoints() {
         </Card>
 
         <div className="grid md:grid-cols-4 gap-4">
-          {[
-            { num: "40%", label: "パフォーマンス改善", color: "from-emerald-500 to-cyan-500" },
-            { num: "150%", label: "ユーザー数成長", color: "from-cyan-500 to-blue-500" },
-            { num: "30%", label: "生産性向上", color: "from-blue-500 to-purple-500" },
-            { num: "10万PV", label: "月間ブログ", color: "from-purple-500 to-pink-500" },
-          ].map((stat) => (
+          {ACHIEVEMENT_STATS.map((stat) => (
             <Card
               key={stat.label}
               className="p-6 bg-slate-900/50 border-slate-800 backdrop-blur text-center"

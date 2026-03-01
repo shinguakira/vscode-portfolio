@@ -1,5 +1,7 @@
 "use client"
 
+import { ACHIEVEMENT_STATS, SOFT_SKILLS, STRENGTHS } from "@/constants/preview-data"
+
 export function ProfessionalStrongPoints() {
   return (
     <div className="min-h-full bg-white">
@@ -15,24 +17,7 @@ export function ProfessionalStrongPoints() {
               技術的な強み
             </h2>
             <div className="grid md:grid-cols-2 gap-8">
-              {[
-                {
-                  title: "フルスタック開発力",
-                  desc: "フロントエンドからバックエンド、インフラまで一貫して対応可能。プロジェクト全体を俯瞰した設計・実装を行います。",
-                },
-                {
-                  title: "モダン技術への適応",
-                  desc: "Next.js App Router、TypeScript厳密モード、tRPCなど最新技術を積極的に採用し、品質の高いコードを提供します。",
-                },
-                {
-                  title: "パフォーマンス最適化",
-                  desc: "Core Web Vitalsを意識した実装、バンドルサイズの最適化、データベースクエリの改善などを得意としています。",
-                },
-                {
-                  title: "クリーンなコード",
-                  desc: "保守性と可読性を重視したコーディング。適切なテストカバレッジと継続的なリファクタリングを実践します。",
-                },
-              ].map((item) => (
+              {STRENGTHS.map((item) => (
                 <div key={item.title} className="border-l-2 border-gray-900 pl-6">
                   <h3 className="text-lg font-bold text-gray-900 mb-2">{item.title}</h3>
                   <p className="text-gray-600 leading-relaxed text-sm">{item.desc}</p>
@@ -46,20 +31,7 @@ export function ProfessionalStrongPoints() {
               ソフトスキル
             </h2>
             <div className="grid md:grid-cols-3 gap-6">
-              {[
-                {
-                  title: "コミュニケーション",
-                  items: ["非エンジニアへの技術説明", "ドキュメント作成", "チーム間調整"],
-                },
-                {
-                  title: "問題解決",
-                  items: ["問題の分解・整理", "根本原因の特定", "技術的負債の解消"],
-                },
-                {
-                  title: "リーダーシップ",
-                  items: ["12名チームリード経験", "コードレビュー文化醸成", "メンバー育成"],
-                },
-              ].map((item) => (
+              {SOFT_SKILLS.map((item) => (
                 <div key={item.title}>
                   <h3 className="font-bold text-gray-900 mb-3">{item.title}</h3>
                   <ul className="space-y-2">
@@ -80,12 +52,7 @@ export function ProfessionalStrongPoints() {
             実績サマリー
           </h2>
           <div className="grid md:grid-cols-4 gap-6 text-center">
-            {[
-              { num: "40%", label: "パフォーマンス改善" },
-              { num: "150%", label: "ユーザー数増加" },
-              { num: "30%", label: "開発効率向上" },
-              { num: "10万PV", label: "技術ブログ月間" },
-            ].map((stat) => (
+            {ACHIEVEMENT_STATS.map((stat) => (
               <div key={stat.label} className="border border-gray-200 p-6">
                 <div className="text-3xl font-bold text-gray-900 mb-1">{stat.num}</div>
                 <div className="text-xs text-gray-500 uppercase tracking-wide">{stat.label}</div>

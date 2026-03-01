@@ -7,21 +7,14 @@ import { useState } from "react"
 import { Badge } from "@/components/ui/badge"
 import { Card } from "@/components/ui/card"
 import { extensions } from "@/constants/portfolio-data"
+import { EXTENSION_COLOR_MAP } from "@/constants/preview-data"
 import { IconFromKey } from "@/lib/icon-map"
 import type { Extension, PreviewTheme } from "@/types"
 
-// Extension Gallery Component with Modal
 export function ExtensionGallery({ theme }: { theme: PreviewTheme }) {
   const [selectedExtension, setSelectedExtension] = useState<Extension | null>(null)
 
-  const colorMap: Record<string, string> = {
-    "nextjs-ecommerce": "from-emerald-500 to-teal-500",
-    "realtime-chat": "from-blue-500 to-cyan-500",
-    "project-management": "from-violet-500 to-purple-500",
-    "design-system": "from-pink-500 to-rose-500",
-    "ai-content-generator": "from-orange-500 to-amber-500",
-    "image-optimizer": "from-indigo-500 to-blue-500",
-  }
+  const colorMap = EXTENSION_COLOR_MAP
 
   if (theme === "professional") {
     return (

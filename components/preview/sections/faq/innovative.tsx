@@ -1,5 +1,7 @@
 "use client"
 
+import { FAQ_ITEMS } from "@/constants/preview-data"
+
 export function InnovativeFaq() {
   return (
     <div className="min-h-full bg-black relative overflow-hidden">
@@ -17,25 +19,7 @@ export function InnovativeFaq() {
         </div>
 
         <div className="space-y-6">
-          {[
-            {
-              q: "リモートワークは可能ですか?",
-              a: "完全リモート対応。Slack, Discord, Teams等で円滑にコミュニケーションします。",
-            },
-            { q: "稼働時間はどのくらい?", a: "週20〜40時間で柔軟に対応可能です。" },
-            {
-              q: "対応可能な技術スタックは?",
-              a: "React, Next.js, TypeScript, Node.js, Python, Go, PostgreSQL, AWS等。",
-            },
-            {
-              q: "新しい技術のキャッチアップは?",
-              a: "積極的に学習し、プロジェクト前に事前準備いたします。",
-            },
-            {
-              q: "設計から実装まで対応可能?",
-              a: "要件定義からデプロイまで一貫して対応できます。",
-            },
-          ].map((item, i) => (
+          {FAQ_ITEMS.slice(0, 5).map((item, i) => (
             <div key={i} className="group relative">
               <div className="absolute -inset-0.5 bg-gradient-to-r from-orange-500 to-yellow-500 rounded-2xl blur opacity-20 group-hover:opacity-50 transition duration-500" />
               <div className="relative bg-black border border-gray-800 rounded-2xl p-8">

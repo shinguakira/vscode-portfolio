@@ -1,20 +1,62 @@
 "use client"
 
-export function ProfessionalSkills() {
-  const getRankStyle = (rank: string) => {
-    switch (rank) {
-      case "S":
-        return "bg-amber-100 text-amber-700 border-amber-300"
-      case "A":
-        return "bg-rose-100 text-rose-700 border-rose-300"
-      case "B":
-        return "bg-violet-100 text-violet-700 border-violet-300"
-      case "C":
-        return "bg-blue-100 text-blue-700 border-blue-300"
-      default:
-        return "bg-gray-100 text-gray-700 border-gray-300"
-    }
+import { OTHER_SKILLS_PROFESSIONAL, SKILL_CATEGORIES } from "@/constants/preview-data"
+
+const CATEGORY_LABELS: Record<string, string> = {
+  フロントエンド: "フロントエンド開発",
+  バックエンド: "バックエンド開発",
+  "AI / ML": "AI / 機械学習",
+  インフラ: "インフラストラクチャ",
+}
+
+const PROFESSIONAL_SKILL_NAMES: Record<string, Record<string, string>> = {
+  フロントエンド: { React: "React / Next.js", TypeScript: "TypeScript", "Next.js": "" },
+  バックエンド: {
+    "Node.js": "Node.js / Express",
+    Python: "Python / FastAPI",
+    PostgreSQL: "PostgreSQL",
+  },
+  "AI / ML": { "OpenAI API": "OpenAI API / GPT", LangChain: "LangChain", RAG: "RAG / Embedding" },
+  インフラ: {
+    AWS: "AWS (EC2, Lambda, S3)",
+    Docker: "Docker / Kubernetes",
+    Terraform: "Terraform / IaC",
+  },
+}
+
+function getRankStyle(rank: string) {
+  switch (rank) {
+    case "S":
+      return "bg-amber-100 text-amber-700 border-amber-300"
+    case "A":
+      return "bg-rose-100 text-rose-700 border-rose-300"
+    case "B":
+      return "bg-violet-100 text-violet-700 border-violet-300"
+    case "C":
+      return "bg-blue-100 text-blue-700 border-blue-300"
+    default:
+      return "bg-gray-100 text-gray-700 border-gray-300"
   }
+}
+
+export function ProfessionalSkills() {
+  const sections = SKILL_CATEGORIES.map((cat) => {
+    const label = CATEGORY_LABELS[cat.category] ?? cat.category
+    const nameMap = PROFESSIONAL_SKILL_NAMES[cat.category] ?? {}
+    const skills = cat.skills
+      .map((s) => {
+        const displayName = nameMap[s.name]
+        if (displayName === "") return null
+        return { name: displayName ?? s.name, years: s.years, rank: s.rank }
+      })
+      .filter(Boolean) as { name: string; years: number; rank: string }[]
+
+    if (cat.category === "フロントエンド") {
+      skills.push({ name: "Tailwind CSS", years: 3, rank: "S" })
+    }
+
+    return { category: label, skills }
+  })
 
   return (
     <div className="min-h-full bg-white">
@@ -25,40 +67,7 @@ export function ProfessionalSkills() {
         </div>
 
         <div className="space-y-16">
-          {[
-            {
-              category: "フロントエンド開発",
-              skills: [
-                { name: "React / Next.js", years: 5, rank: "S" },
-                { name: "TypeScript", years: 4, rank: "A" },
-                { name: "Tailwind CSS", years: 3, rank: "S" },
-              ],
-            },
-            {
-              category: "バックエンド開発",
-              skills: [
-                { name: "Node.js / Express", years: 4, rank: "A" },
-                { name: "Python / FastAPI", years: 3, rank: "B" },
-                { name: "PostgreSQL", years: 3, rank: "A" },
-              ],
-            },
-            {
-              category: "AI / 機械学習",
-              skills: [
-                { name: "OpenAI API / GPT", years: 2, rank: "A" },
-                { name: "LangChain", years: 1, rank: "B" },
-                { name: "RAG / Embedding", years: 1, rank: "B" },
-              ],
-            },
-            {
-              category: "インフラストラクチャ",
-              skills: [
-                { name: "AWS (EC2, Lambda, S3)", years: 3, rank: "A" },
-                { name: "Docker / Kubernetes", years: 3, rank: "A" },
-                { name: "Terraform / IaC", years: 2, rank: "B" },
-              ],
-            },
-          ].map((section) => (
+          {sections.map((section) => (
             <div key={section.category}>
               <h2 className="text-sm font-bold text-gray-500 uppercase tracking-wider mb-6 pb-3 border-b border-gray-200">
                 {section.category}
@@ -90,16 +99,7 @@ export function ProfessionalSkills() {
             その他のスキル
           </h2>
           <div className="flex flex-wrap gap-3">
-            {[
-              "Agile開発",
-              "テスト駆動開発",
-              "レスポンシブデザイン",
-              "アクセシビリティ",
-              "パフォーマンス最適化",
-              "SEO",
-              "チームリーダーシップ",
-              "コードレビュー",
-            ].map((skill) => (
+            {OTHER_SKILLS_PROFESSIONAL.map((skill) => (
               <span key={skill} className="px-4 py-2 border border-gray-300 text-gray-700 text-sm">
                 {skill}
               </span>

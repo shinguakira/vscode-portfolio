@@ -5,6 +5,12 @@ import type React from "react"
 import { useCallback, useEffect, useRef, useState } from "react"
 
 import { gitHistory } from "@/constants/portfolio-data"
+import {
+  TERMINAL_HELP_TEXT,
+  TERMINAL_INITIAL_LOGS,
+  TERMINAL_LS_FILES,
+  TERMINAL_START_SEQUENCE,
+} from "@/constants/preview-data"
 import { useTheme } from "@/contexts/theme-context"
 import { adjustBrightness } from "@/lib/color-utils"
 import { cn } from "@/lib/utils"
@@ -23,11 +29,9 @@ interface LogEntry {
 
 export function TerminalPanel({ isOpen, onCommandRef }: TerminalPanelProps) {
   const { settings } = useTheme()
-  const [logs, setLogs] = useState<LogEntry[]>([
-    { id: 1, type: "info", content: "Microsoft Windows [Version 10.0.19045.2364]" },
-    { id: 2, type: "info", content: "(c) Microsoft Corporation. All rights reserved." },
-    { id: 3, type: "info", content: "" },
-  ])
+  const [logs, setLogs] = useState<LogEntry[]>(
+    TERMINAL_INITIAL_LOGS.map((content, i) => ({ id: i + 1, type: "info" as const, content })),
+  )
   const [input, setInput] = useState("")
   const [isRunning, setIsRunning] = useState(false)
   const inputRef = useRef<HTMLInputElement>(null)
@@ -67,21 +71,9 @@ export function TerminalPanel({ isOpen, onCommandRef }: TerminalPanelProps) {
     }
 
     if (trimmedCmd === "help") {
-      const helpText = [
-        "",
-        "╔══════════════════════════════════════════════════════════╗",
-        "║                  Available Commands                       ║",
-        "╠══════════════════════════════════════════════════════════╣",
-        "║  npm run start  │ Show career history as dev server log  ║",
-        "║  ls             │ List project directories               ║",
-        "║  clear          │ Clear terminal output                  ║",
-        "║  help           │ Show this help message                 ║",
-        "╚══════════════════════════════════════════════════════════╝",
-        "",
-      ]
       setLogs((prev) => [
         ...prev,
-        ...helpText.map((text, i) => ({
+        ...TERMINAL_HELP_TEXT.map((text, i) => ({
           id: Date.now() + i,
           type: "info" as const,
           content: text,
@@ -91,8 +83,10 @@ export function TerminalPanel({ isOpen, onCommandRef }: TerminalPanelProps) {
     }
 
     if (trimmedCmd === "ls") {
-      const files = ["about/", "projects/", "package.json", "tsconfig.json", "README.md"]
-      setLogs((prev) => [...prev, { id: Date.now(), type: "info", content: files.join("  ") }])
+      setLogs((prev) => [
+        ...prev,
+        { id: Date.now(), type: "info", content: TERMINAL_LS_FILES.join("  ") },
+      ])
       return
     }
 
@@ -103,15 +97,7 @@ export function TerminalPanel({ isOpen, onCommandRef }: TerminalPanelProps) {
     ) {
       setIsRunning(true)
 
-      const startSequence = [
-        "> portfolio@1.0.0 start",
-        "> next dev",
-        "",
-        "ready - started server on 0.0.0.0:3000, url: http://localhost:3000",
-        "info  - Loaded env from .env",
-      ]
-
-      for (const line of startSequence) {
+      for (const line of TERMINAL_START_SEQUENCE) {
         await new Promise((r) => setTimeout(r, 300))
         setLogs((prev) => [...prev, { id: Date.now(), type: "info", content: line }])
       }

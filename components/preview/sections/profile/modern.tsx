@@ -4,6 +4,13 @@ import { ChevronRight } from "lucide-react"
 
 import { Badge } from "@/components/ui/badge"
 import { Card } from "@/components/ui/card"
+import {
+  PROFILE_ACHIEVEMENTS,
+  PROFILE_BACKEND_SKILLS,
+  PROFILE_FRONTEND_SKILLS,
+} from "@/constants/preview-data"
+
+const BULLET_COLORS = ["bg-blue-500", "bg-purple-500", "bg-pink-500"]
 
 export function ModernProfile() {
   return (
@@ -41,7 +48,7 @@ export function ModernProfile() {
               フロントエンド
             </h3>
             <div className="space-y-3">
-              {["React", "Next.js", "TypeScript", "Tailwind CSS"].map((skill) => (
+              {PROFILE_FRONTEND_SKILLS.map((skill) => (
                 <div key={skill} className="flex items-center gap-3">
                   <ChevronRight className="w-5 h-5 text-blue-400" />
                   <span className="text-slate-300 text-lg">{skill}</span>
@@ -56,7 +63,7 @@ export function ModernProfile() {
               バックエンド
             </h3>
             <div className="space-y-3">
-              {["Node.js", "Python", "PostgreSQL", "MongoDB"].map((skill) => (
+              {PROFILE_BACKEND_SKILLS.map((skill) => (
                 <div key={skill} className="flex items-center gap-3">
                   <ChevronRight className="w-5 h-5 text-purple-400" />
                   <span className="text-slate-300 text-lg">{skill}</span>
@@ -72,18 +79,12 @@ export function ModernProfile() {
             実績
           </h3>
           <div className="space-y-4 text-slate-300">
-            <div className="flex items-start gap-3">
-              <div className="w-2 h-2 bg-blue-500 rounded-full mt-2" />
-              <p className="text-lg">5年以上のWeb開発経験</p>
-            </div>
-            <div className="flex items-start gap-3">
-              <div className="w-2 h-2 bg-purple-500 rounded-full mt-2" />
-              <p className="text-lg">大規模なSaaSプロダクトの開発経験</p>
-            </div>
-            <div className="flex items-start gap-3">
-              <div className="w-2 h-2 bg-pink-500 rounded-full mt-2" />
-              <p className="text-lg">アジャイル開発チームでのリード経験</p>
-            </div>
+            {PROFILE_ACHIEVEMENTS.map((achievement, i) => (
+              <div key={achievement} className="flex items-start gap-3">
+                <div className={`w-2 h-2 ${BULLET_COLORS[i]} rounded-full mt-2`} />
+                <p className="text-lg">{achievement}</p>
+              </div>
+            ))}
           </div>
         </Card>
       </div>

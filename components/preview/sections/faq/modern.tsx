@@ -2,6 +2,9 @@
 
 import { Badge } from "@/components/ui/badge"
 import { Card } from "@/components/ui/card"
+import { FAQ_ITEMS } from "@/constants/preview-data"
+
+const COLORS = ["orange", "amber", "yellow", "orange", "amber", "yellow"]
 
 export function ModernFaq() {
   return (
@@ -15,47 +18,16 @@ export function ModernFaq() {
         </div>
 
         <div className="space-y-6">
-          {[
-            {
-              q: "リモートワークは可能ですか?",
-              a: "はい、完全リモートでの業務に対応しています。Slack、Discord、Teams等のツールを活用し、円滑なコミュニケーションを心がけています。",
-              color: "orange",
-            },
-            {
-              q: "稼働時間はどのくらいですか?",
-              a: "週20〜40時間での稼働が可能です。プロジェクトの状況に応じて柔軟に対応いたします。",
-              color: "amber",
-            },
-            {
-              q: "対応可能な技術スタックは?",
-              a: "React、Next.js、TypeScript、Vue.js、Node.js、Python、Go、PostgreSQL、MongoDB、AWS、GCP、Vercel等に対応しています。",
-              color: "yellow",
-            },
-            {
-              q: "新しい技術のキャッチアップは可能?",
-              a: "はい、積極的に新技術を学習しています。プロジェクトで必要な技術は事前にキャッチアップして対応いたします。",
-              color: "orange",
-            },
-            {
-              q: "設計から実装まで対応できる?",
-              a: "はい、要件定義から設計、実装、テスト、デプロイまで一貫して対応可能です。",
-              color: "amber",
-            },
-            {
-              q: "見積もりは無料ですか?",
-              a: "はい、お見積もりは無料で承っております。お気軽にご相談ください。",
-              color: "yellow",
-            },
-          ].map((item, i) => (
+          {FAQ_ITEMS.map((item, i) => (
             <Card
               key={i}
               className="p-6 bg-slate-900/50 border-slate-800 backdrop-blur hover:border-slate-700 transition-all"
             >
               <div className="flex items-start gap-4">
                 <div
-                  className={`w-10 h-10 rounded-xl bg-${item.color}-600/20 flex items-center justify-center shrink-0`}
+                  className={`w-10 h-10 rounded-xl bg-${COLORS[i]}-600/20 flex items-center justify-center shrink-0`}
                 >
-                  <span className={`text-${item.color}-400 font-bold`}>Q</span>
+                  <span className={`text-${COLORS[i]}-400 font-bold`}>Q</span>
                 </div>
                 <div className="flex-1">
                   <h3 className="text-lg font-semibold text-white mb-2">{item.q}</h3>

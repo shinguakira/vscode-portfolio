@@ -1,5 +1,7 @@
 "use client"
 
+import { PROJECTS_PROFESSIONAL } from "@/constants/preview-data"
+
 export function ProfessionalProjects() {
   return (
     <div className="min-h-full bg-white">
@@ -10,29 +12,7 @@ export function ProfessionalProjects() {
         </div>
 
         <div className="space-y-20">
-          {[
-            {
-              num: "01",
-              title: "Eコマースプラットフォーム",
-              client: "Tech Startup Inc.",
-              year: "2024",
-              desc: "Next.js 14とSupabaseを使用した完全なEコマースソリューション。高速なページロードとシームレスなチェックアウト体験を実現。",
-            },
-            {
-              num: "02",
-              title: "プロジェクト管理システム",
-              client: "Enterprise Co.",
-              year: "2023",
-              desc: "チーム向けの包括的なプロジェクト管理ツール。リアルタイムコラボレーションとカンバンボードを実装。",
-            },
-            {
-              num: "03",
-              title: "コーポレートウェブサイト",
-              client: "Design Studio",
-              year: "2023",
-              desc: "モダンでミニマルなコーポレートサイト。優れたタイポグラフィとスムーズなアニメーションが特徴。",
-            },
-          ].map((project) => (
+          {PROJECTS_PROFESSIONAL.map((project) => (
             <div key={project.num} className="grid md:grid-cols-12 gap-8 items-start">
               <div className="md:col-span-2">
                 <div className="text-6xl font-bold text-gray-200">{project.num}</div>

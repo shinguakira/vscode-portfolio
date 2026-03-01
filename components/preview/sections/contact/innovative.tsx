@@ -1,6 +1,23 @@
 "use client"
 
 import { Github, Linkedin, Mail, Twitter } from "lucide-react"
+import type React from "react"
+
+import { CONTACT_LINKS } from "@/constants/preview-data"
+
+const ICONS: Record<string, React.ReactNode> = {
+  Email: <Mail className="w-8 h-8" />,
+  GitHub: <Github className="w-8 h-8" />,
+  LinkedIn: <Linkedin className="w-8 h-8" />,
+  Twitter: <Twitter className="w-8 h-8" />,
+}
+
+const GRADIENTS: Record<string, string> = {
+  Email: "from-rose-500 to-pink-500",
+  GitHub: "from-pink-500 to-purple-500",
+  LinkedIn: "from-purple-500 to-indigo-500",
+  Twitter: "from-indigo-500 to-blue-500",
+}
 
 export function InnovativeContact() {
   return (
@@ -19,59 +36,33 @@ export function InnovativeContact() {
         </div>
 
         <div className="grid md:grid-cols-2 gap-8 mb-12">
-          {[
-            {
-              icon: <Mail className="w-8 h-8" />,
-              label: "Email",
-              value: "contact@example.com",
-              href: "mailto:contact@example.com",
-              color: "from-rose-500 to-pink-500",
-            },
-            {
-              icon: <Github className="w-8 h-8" />,
-              label: "GitHub",
-              value: "@yourusername",
-              href: "https://github.com/yourusername",
-              color: "from-pink-500 to-purple-500",
-            },
-            {
-              icon: <Linkedin className="w-8 h-8" />,
-              label: "LinkedIn",
-              value: "yourprofile",
-              href: "https://linkedin.com/in/yourprofile",
-              color: "from-purple-500 to-indigo-500",
-            },
-            {
-              icon: <Twitter className="w-8 h-8" />,
-              label: "Twitter/X",
-              value: "@yourusername",
-              href: "https://twitter.com/yourusername",
-              color: "from-indigo-500 to-blue-500",
-            },
-          ].map((item, i) => (
-            <a
-              key={i}
-              href={item.href}
-              target={item.href.startsWith("mailto:") ? undefined : "_blank"}
-              rel={item.href.startsWith("mailto:") ? undefined : "noopener noreferrer"}
-              className="group relative block"
-            >
-              <div
-                className={`absolute -inset-0.5 bg-gradient-to-r ${item.color} rounded-2xl blur opacity-30 group-hover:opacity-70 transition duration-500`}
-              />
-              <div className="relative bg-black border border-gray-800 rounded-2xl p-6 flex items-center gap-6">
+          {CONTACT_LINKS.map((item, i) => {
+            const gradient = GRADIENTS[item.label] ?? "from-rose-500 to-pink-500"
+            return (
+              <a
+                key={i}
+                href={item.href}
+                target={item.href.startsWith("mailto:") ? undefined : "_blank"}
+                rel={item.href.startsWith("mailto:") ? undefined : "noopener noreferrer"}
+                className="group relative block"
+              >
                 <div
-                  className={`w-16 h-16 rounded-xl bg-gradient-to-r ${item.color} flex items-center justify-center text-white`}
-                >
-                  {item.icon}
+                  className={`absolute -inset-0.5 bg-gradient-to-r ${gradient} rounded-2xl blur opacity-30 group-hover:opacity-70 transition duration-500`}
+                />
+                <div className="relative bg-black border border-gray-800 rounded-2xl p-6 flex items-center gap-6">
+                  <div
+                    className={`w-16 h-16 rounded-xl bg-gradient-to-r ${gradient} flex items-center justify-center text-white`}
+                  >
+                    {ICONS[item.label]}
+                  </div>
+                  <div>
+                    <div className="text-gray-500 text-sm mb-1">{item.label}</div>
+                    <div className="text-xl font-bold text-white">{item.value}</div>
+                  </div>
                 </div>
-                <div>
-                  <div className="text-gray-500 text-sm mb-1">{item.label}</div>
-                  <div className="text-xl font-bold text-white">{item.value}</div>
-                </div>
-              </div>
-            </a>
-          ))}
+              </a>
+            )
+          })}
         </div>
 
         <div className="text-center">

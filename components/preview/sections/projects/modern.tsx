@@ -4,6 +4,7 @@ import { ExternalLink, Github } from "lucide-react"
 
 import { Badge } from "@/components/ui/badge"
 import { Card } from "@/components/ui/card"
+import { PROJECTS } from "@/constants/preview-data"
 
 export function ModernProjects() {
   return (
@@ -17,26 +18,7 @@ export function ModernProjects() {
         </div>
 
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {[
-            {
-              title: "Eコマースプラットフォーム",
-              desc: "Next.js 14とSupabaseを使用した完全なEコマースソリューション",
-              techs: ["Next.js", "TypeScript", "Supabase", "Stripe"],
-              color: "from-blue-600 to-blue-800",
-            },
-            {
-              title: "リアルタイムチャットアプリ",
-              desc: "WebSocketを使用したリアルタイムコミュニケーションプラットフォーム",
-              techs: ["React", "Node.js", "Socket.io", "MongoDB"],
-              color: "from-purple-600 to-purple-800",
-            },
-            {
-              title: "プロジェクト管理ツール",
-              desc: "チーム向けの包括的なプロジェクト管理システム",
-              techs: ["Next.js", "tRPC", "Prisma", "PostgreSQL"],
-              color: "from-pink-600 to-pink-800",
-            },
-          ].map((project, i) => (
+          {PROJECTS.map((project, i) => (
             <Card
               key={i}
               className="group bg-slate-900/50 border-slate-800 backdrop-blur hover:border-slate-700 transition-all duration-300 overflow-hidden"
@@ -44,7 +26,7 @@ export function ModernProjects() {
               <div
                 className={`h-48 bg-gradient-to-br ${project.color} flex items-center justify-center text-6xl`}
               >
-                {i === 0 ? "🛒" : i === 1 ? "💬" : "📊"}
+                {project.icon}
               </div>
               <div className="p-6">
                 <h3 className="text-xl font-bold mb-3 text-white group-hover:text-blue-400 transition-colors">

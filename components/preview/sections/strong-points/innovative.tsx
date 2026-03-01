@@ -1,5 +1,7 @@
 "use client"
 
+import { ACHIEVEMENT_STATS, STRENGTHS } from "@/constants/preview-data"
+
 export function InnovativeStrongPoints() {
   return (
     <div className="min-h-full bg-black relative overflow-hidden">
@@ -17,32 +19,7 @@ export function InnovativeStrongPoints() {
         </div>
 
         <div className="grid md:grid-cols-2 gap-8 mb-20">
-          {[
-            {
-              title: "Full-Stack",
-              desc: "フロントからインフラまで一貫対応",
-              icon: "01",
-              color: "from-emerald-500 to-cyan-500",
-            },
-            {
-              title: "Modern Tech",
-              desc: "最新技術への高い適応力",
-              icon: "02",
-              color: "from-cyan-500 to-blue-500",
-            },
-            {
-              title: "Performance",
-              desc: "Core Web Vitalsを意識した最適化",
-              icon: "03",
-              color: "from-blue-500 to-purple-500",
-            },
-            {
-              title: "Leadership",
-              desc: "12名チームのリード経験",
-              icon: "04",
-              color: "from-purple-500 to-pink-500",
-            },
-          ].map((item, i) => (
+          {STRENGTHS.map((item, i) => (
             <div key={i} className="group relative">
               <div
                 className={`absolute -inset-0.5 bg-gradient-to-r ${item.color} rounded-3xl blur opacity-30 group-hover:opacity-70 transition duration-500`}
@@ -51,7 +28,7 @@ export function InnovativeStrongPoints() {
                 <div
                   className={`text-8xl font-black mb-4 text-transparent bg-clip-text bg-gradient-to-r ${item.color} opacity-30`}
                 >
-                  {item.icon}
+                  {String(i + 1).padStart(2, "0")}
                 </div>
                 <h3
                   className={`text-3xl font-black mb-3 text-transparent bg-clip-text bg-gradient-to-r ${item.color}`}
@@ -65,12 +42,7 @@ export function InnovativeStrongPoints() {
         </div>
 
         <div className="grid md:grid-cols-4 gap-6">
-          {[
-            { num: "40%", label: "読み込み時間短縮" },
-            { num: "150%", label: "ユーザー数成長" },
-            { num: "30%", label: "生産性向上" },
-            { num: "10万", label: "月間PV" },
-          ].map((stat, i) => (
+          {ACHIEVEMENT_STATS.map((stat, i) => (
             <div key={i} className="text-center p-6 border border-gray-800 rounded-2xl bg-black/50">
               <div className="text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-cyan-400 mb-2">
                 {stat.num}

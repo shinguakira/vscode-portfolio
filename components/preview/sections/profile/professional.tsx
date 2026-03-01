@@ -1,5 +1,11 @@
 "use client"
 
+import {
+  PROFILE_BACKEND_PROFESSIONAL,
+  PROFILE_FRONTEND_PROFESSIONAL,
+  PROFILE_STATS,
+} from "@/constants/preview-data"
+
 export function ProfessionalProfile() {
   return (
     <div className="min-h-full bg-white">
@@ -30,13 +36,11 @@ export function ProfessionalProfile() {
                 フロントエンド開発
               </h3>
               <ul className="space-y-3">
-                {["React / Next.js", "TypeScript", "Tailwind CSS", "レスポンシブデザイン"].map(
-                  (item) => (
-                    <li key={item} className="text-gray-700 pl-4 border-l-2 border-gray-900">
-                      {item}
-                    </li>
-                  ),
-                )}
+                {PROFILE_FRONTEND_PROFESSIONAL.map((item) => (
+                  <li key={item} className="text-gray-700 pl-4 border-l-2 border-gray-900">
+                    {item}
+                  </li>
+                ))}
               </ul>
             </div>
             <div>
@@ -44,12 +48,7 @@ export function ProfessionalProfile() {
                 バックエンド開発
               </h3>
               <ul className="space-y-3">
-                {[
-                  "Node.js / Express",
-                  "Python / Django",
-                  "PostgreSQL / MongoDB",
-                  "RESTful API設計",
-                ].map((item) => (
+                {PROFILE_BACKEND_PROFESSIONAL.map((item) => (
                   <li key={item} className="text-gray-700 pl-4 border-l-2 border-gray-900">
                     {item}
                   </li>
@@ -62,11 +61,7 @@ export function ProfessionalProfile() {
         <div className="border-t border-gray-200 pt-12">
           <h2 className="text-3xl font-serif font-bold text-gray-900 mb-8">実績</h2>
           <div className="grid md:grid-cols-3 gap-8 text-center">
-            {[
-              { num: "5+", label: "年の経験" },
-              { num: "50+", label: "プロジェクト" },
-              { num: "20+", label: "満足したクライアント" },
-            ].map((stat) => (
+            {PROFILE_STATS.map((stat) => (
               <div key={stat.label} className="border border-gray-200 p-6 rounded">
                 <div className="text-4xl font-bold text-gray-900 mb-2">{stat.num}</div>
                 <div className="text-sm text-gray-600 uppercase tracking-wide">{stat.label}</div>

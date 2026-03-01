@@ -1,6 +1,16 @@
 "use client"
 
 import { Github, Linkedin, Mail, Twitter } from "lucide-react"
+import type React from "react"
+
+import { CONTACT_LINKS, SERVICES } from "@/constants/preview-data"
+
+const ICONS: Record<string, React.ReactNode> = {
+  Email: <Mail className="w-5 h-5" />,
+  GitHub: <Github className="w-5 h-5" />,
+  LinkedIn: <Linkedin className="w-5 h-5" />,
+  Twitter: <Twitter className="w-5 h-5" />,
+}
 
 export function ProfessionalContact() {
   return (
@@ -17,32 +27,7 @@ export function ProfessionalContact() {
               連絡先
             </h2>
             <div className="space-y-6">
-              {[
-                {
-                  label: "Email",
-                  value: "contact@example.com",
-                  href: "mailto:contact@example.com",
-                  icon: <Mail className="w-5 h-5" />,
-                },
-                {
-                  label: "GitHub",
-                  value: "github.com/yourusername",
-                  href: "https://github.com/yourusername",
-                  icon: <Github className="w-5 h-5" />,
-                },
-                {
-                  label: "LinkedIn",
-                  value: "linkedin.com/in/yourprofile",
-                  href: "https://linkedin.com/in/yourprofile",
-                  icon: <Linkedin className="w-5 h-5" />,
-                },
-                {
-                  label: "Twitter",
-                  value: "@yourusername",
-                  href: "https://twitter.com/yourusername",
-                  icon: <Twitter className="w-5 h-5" />,
-                },
-              ].map((contact) => (
+              {CONTACT_LINKS.map((contact) => (
                 <a
                   key={contact.label}
                   href={contact.href}
@@ -51,7 +36,7 @@ export function ProfessionalContact() {
                   className="flex items-center gap-4 hover:opacity-70 transition-opacity"
                 >
                   <div className="w-10 h-10 rounded-full border border-gray-200 flex items-center justify-center text-gray-600">
-                    {contact.icon}
+                    {ICONS[contact.label]}
                   </div>
                   <div>
                     <div className="text-xs text-gray-500 uppercase tracking-wide">
@@ -69,14 +54,7 @@ export function ProfessionalContact() {
               対応可能な業務
             </h2>
             <ul className="space-y-3">
-              {[
-                "Webアプリケーション開発",
-                "フロントエンド開発",
-                "バックエンド開発",
-                "技術コンサルティング",
-                "コードレビュー",
-                "技術記事執筆",
-              ].map((service) => (
+              {SERVICES.map((service) => (
                 <li key={service} className="text-gray-700 pl-4 border-l-2 border-gray-900">
                   {service}
                 </li>
