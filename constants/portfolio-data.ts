@@ -6,7 +6,7 @@ export const gitHistory: GitCommit[] = [
   {
     hash: "a7f3d2e",
     date: "2024-01-15",
-    author: "あなたの名前",
+    author: "神宮 章",
     message: "feat: AI機能の実装とチームリード経験を追加",
     company: "Tech Startup Inc.",
     position: "シニアフルスタックエンジニア",
@@ -19,7 +19,7 @@ export const gitHistory: GitCommit[] = [
   {
     hash: "b3c8f91",
     date: "2023-03-20",
-    author: "あなたの名前",
+    author: "神宮 章",
     message: "feat: Next.js 13移行とパフォーマンス改善",
     company: "Tech Startup Inc.",
     position: "フルスタックエンジニア",
@@ -28,7 +28,7 @@ export const gitHistory: GitCommit[] = [
   {
     hash: "c9e2a44",
     date: "2021-06-10",
-    author: "あなたの名前",
+    author: "神宮 章",
     message: "refactor: SaaSプロダクトの設計刷新",
     company: "Tech Startup Inc.",
     position: "フルスタックエンジニア",
@@ -41,7 +41,7 @@ export const gitHistory: GitCommit[] = [
   {
     hash: "d1f5b88",
     date: "2020-09-05",
-    author: "あなたの名前",
+    author: "神宮 章",
     message: "feat: React/Next.jsスタック移行を主導",
     company: "Web Agency Co.",
     position: "フロントエンドエンジニア",
@@ -50,7 +50,7 @@ export const gitHistory: GitCommit[] = [
   {
     hash: "e7a9c22",
     date: "2019-04-01",
-    author: "あなたの名前",
+    author: "神宮 章",
     message: "init: Web開発キャリアスタート",
     company: "Web Agency Co.",
     position: "フロントエンドエンジニア",
@@ -537,7 +537,7 @@ A: はい、小規模から大規模まで、幅広く対応可能です。
 site:
   title: "Developer Portfolio"
   description: "フルスタックエンジニアのポートフォリオサイト"
-  author: "あなたの名前"
+  author: "神宮 章"
   url: "https://yourportfolio.com"
 
 theme:
@@ -576,7 +576,7 @@ export const extensions: Extension[] = [
     description:
       "Next.js 14とSupabaseを使用した完全なEコマースソリューション。Stripe決済、在庫管理、ユーザー認証などの機能を備えた実用的なプラットフォーム。",
     version: "2.1.0",
-    publisher: "あなたの名前",
+    publisher: "神宮 章",
     icon: "shopping-cart",
     categories: ["フルスタック", "Eコマース"],
     tags: ["Next.js", "TypeScript", "Supabase", "Stripe", "Tailwind CSS"],
@@ -605,7 +605,7 @@ export const extensions: Extension[] = [
     description:
       "WebSocketを使用した高性能なリアルタイムコミュニケーションプラットフォーム。プライベート/グループチャット、ファイル共有、通知機能を実装。",
     version: "1.5.3",
-    publisher: "あなたの名前",
+    publisher: "神宮 章",
     icon: "message-circle",
     categories: ["フルスタック", "リアルタイム"],
     tags: ["React", "Node.js", "Socket.io", "MongoDB", "Redis"],
@@ -634,7 +634,7 @@ export const extensions: Extension[] = [
     description:
       "チーム向けの包括的なプロジェクト管理システム。かんばんボード、ガントチャート、タスク管理、リアルタイムコラボレーション機能を提供。",
     version: "3.0.1",
-    publisher: "あなたの名前",
+    publisher: "神宮 章",
     icon: "layout-dashboard",
     categories: ["フルスタック", "生産性"],
     tags: ["Next.js", "tRPC", "Prisma", "PostgreSQL", "Zustand"],
@@ -663,7 +663,7 @@ export const extensions: Extension[] = [
     description:
       "再利用可能でアクセシブルなReactコンポーネントライブラリ。Tailwind CSSベースで、ダークモード、テーマカスタマイズをサポート。",
     version: "1.8.0",
-    publisher: "あなたの名前",
+    publisher: "神宮 章",
     icon: "palette",
     categories: ["フロントエンド", "UIライブラリ"],
     tags: ["React", "TypeScript", "Tailwind CSS", "Storybook", "Accessibility"],
@@ -692,7 +692,7 @@ export const extensions: Extension[] = [
     description:
       "OpenAI APIを使用したコンテンツ生成ツール。ブログ記事、SNS投稿、マーケティングコピーなどを自動生成。",
     version: "1.2.5",
-    publisher: "あなたの名前",
+    publisher: "神宮 章",
     icon: "sparkles",
     categories: ["AI/ML", "ツール"],
     tags: ["Next.js", "OpenAI", "TypeScript", "Prisma"],
@@ -721,7 +721,7 @@ export const extensions: Extension[] = [
     description:
       "高速な画像変換・圧縮APIサービス。複数フォーマット対応、リサイズ、WebP変換などの機能を提供。",
     version: "2.3.0",
-    publisher: "あなたの名前",
+    publisher: "神宮 章",
     icon: "image",
     categories: ["バックエンド", "API"],
     tags: ["Node.js", "Sharp", "Express", "Docker"],

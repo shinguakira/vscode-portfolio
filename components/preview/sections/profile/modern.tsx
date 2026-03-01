@@ -20,7 +20,7 @@ export function ModernProfile() {
           <div className="mb-8 flex justify-center">
             <div className="relative">
               <div className="w-32 h-32 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center text-5xl font-bold text-white shadow-2xl">
-                Dev
+                AS
               </div>
               <div className="absolute -bottom-2 -right-2 w-8 h-8 bg-green-500 rounded-full border-4 border-slate-950" />
             </div>

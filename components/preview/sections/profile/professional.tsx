@@ -13,11 +13,11 @@ export function ProfessionalProfile() {
         <div className="mb-24 border-b border-gray-200 pb-16">
           <div className="flex items-start gap-8 mb-8">
             <div className="w-32 h-32 rounded-full bg-gray-900 flex items-center justify-center text-4xl font-bold text-white shrink-0">
-              TY
+              AS
             </div>
             <div className="pt-4">
               <h1 className="text-5xl font-serif font-bold text-gray-900 mb-3 tracking-tight">
-                田中 太郎
+                神宮 章
               </h1>
               <p className="text-2xl text-gray-600 mb-4 font-light">フルスタックエンジニア</p>
               <p className="text-gray-700 leading-relaxed max-w-xl">

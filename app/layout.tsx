@@ -8,9 +8,39 @@ import type React from "react"
 const geistMono = Geist_Mono({ subsets: ["latin"] })
 
 export const metadata: Metadata = {
-  title: "VS Code Portfolio - Developer Portfolio",
-  description: "インタラクティブなVS Codeスタイルのポートフォリオサイト",
-  generator: "v0.app",
+  title: "神宮 章 | Akira Shingu - フルスタックエンジニア ポートフォリオ",
+  description:
+    "神宮 章（しんぐう あきら / Akira Shingu）のポートフォリオサイト。React, Next.js, TypeScript, Python, AWSなどモダン技術スタックでのフルスタック開発。",
+  authors: [{ name: "神宮 章" }],
+  creator: "神宮 章",
+  keywords: [
+    "神宮 章",
+    "Akira Shingu",
+    "しんぐう あきら",
+    "シングウ アキラ",
+    "フルスタックエンジニア",
+    "React",
+    "Next.js",
+    "TypeScript",
+    "フリーランス",
+    "ポートフォリオ",
+    "Web開発",
+  ],
+  openGraph: {
+    title: "神宮 章 | Akira Shingu - フルスタックエンジニア",
+    description: "React, Next.js, TypeScript, AWSを活用したフルスタック開発。5年以上の実績。",
+    type: "website",
+    locale: "ja_JP",
+    siteName: "神宮 章 Portfolio",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "神宮 章 | Akira Shingu",
+    description: "フルスタックエンジニア 神宮 章のポートフォリオ",
+  },
+  alternates: {
+    canonical: "/",
+  },
   icons: {
     icon: [
       {
@@ -45,6 +75,22 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ja">
+      <head>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "Person",
+              name: "神宮 章",
+              alternateName: ["Akira Shingu", "しんぐう あきら", "シングウ アキラ"],
+              jobTitle: "フルスタックエンジニア",
+              knowsAbout: ["React", "Next.js", "TypeScript", "Python", "AWS"],
+              url: "https://yoursite.com",
+            }),
+          }}
+        />
+      </head>
       <body className={`${geistMono.className} antialiased`}>
         {children}
         <Analytics />

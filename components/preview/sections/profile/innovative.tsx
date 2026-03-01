@@ -22,7 +22,7 @@ export function InnovativeProfile() {
             <div className="w-40 h-40 relative">
               <div className="absolute inset-0 bg-gradient-to-br from-cyan-400 via-purple-500 to-pink-500 rounded-3xl rotate-6 animate-pulse" />
               <div className="absolute inset-2 bg-black rounded-3xl flex items-center justify-center text-6xl font-black text-transparent bg-clip-text bg-gradient-to-br from-cyan-400 to-purple-500">
-                Dev
+                AS
               </div>
             </div>
           </div>
