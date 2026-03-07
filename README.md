@@ -65,13 +65,21 @@ Each section is available in 3 visual themes: **Modern**, **Innovative**, and **
 
 The VS Code UI includes fully interactive elements beyond the portfolio sections.
 
-| Explorer | Search | Git History | Changelog |
-| -------- | ------ | ----------- | --------- |
-| ![Explorer](e2e/__snapshots__/en/features/explorer.png) | ![Search](e2e/__snapshots__/en/features/search.png) | ![Git History](e2e/__snapshots__/en/features/git-history.png) | ![Changelog](e2e/__snapshots__/en/features/changelog.png) |
+| Explorer | Search |
+| -------- | ------ |
+| ![Explorer](e2e/__snapshots__/en/features/explorer.png) | ![Search](e2e/__snapshots__/en/features/search.png) |
 
-| Extensions | Terminal | Settings | Tutorial |
-| ---------- | -------- | -------- | -------- |
-| ![Extensions](e2e/__snapshots__/en/features/extensions.png) | ![Terminal](e2e/__snapshots__/en/features/terminal.png) | ![Settings](e2e/__snapshots__/en/features/settings.png) | ![Tutorial](e2e/__snapshots__/en/features/tutorial.png) |
+| Git History | Changelog |
+| ----------- | --------- |
+| ![Git History](e2e/__snapshots__/en/features/git-history.png) | ![Changelog](e2e/__snapshots__/en/features/changelog.png) |
+
+| Extensions | Terminal |
+| ---------- | -------- |
+| ![Extensions](e2e/__snapshots__/en/features/extensions.png) | ![Terminal](e2e/__snapshots__/en/features/terminal.png) |
+
+| Settings | Tutorial |
+| -------- | -------- |
+| ![Settings](e2e/__snapshots__/en/features/settings.png) | ![Tutorial](e2e/__snapshots__/en/features/tutorial.png) |
 
 ## Tech Stack
 
