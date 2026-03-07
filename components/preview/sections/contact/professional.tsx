@@ -3,7 +3,8 @@
 import { Github, Linkedin, Mail, Twitter } from "lucide-react"
 import type React from "react"
 
-import { CONTACT_LINKS, SERVICES } from "@/constants/preview-data"
+import { CONTACT_LINKS, getServices } from "@/constants/preview-data"
+import { useLocale } from "@/contexts/locale-context"
 
 const ICONS: Record<string, React.ReactNode> = {
   Email: <Mail className="w-5 h-5" />,
@@ -13,18 +14,23 @@ const ICONS: Record<string, React.ReactNode> = {
 }
 
 export function ProfessionalContact() {
+  const locale = useLocale()
+  const services = getServices(locale)
+
   return (
     <div className="min-h-full bg-white">
       <div className="max-w-4xl mx-auto px-8 py-24">
         <div className="mb-16 border-b border-gray-200 pb-8">
-          <h1 className="text-5xl font-serif font-bold text-gray-900 mb-3">お問い合わせ</h1>
+          <h1 className="text-5xl font-serif font-bold text-gray-900 mb-3">
+            {locale === "en" ? "Contact" : "お問い合わせ"}
+          </h1>
           <p className="text-xl text-gray-600">Get in Touch</p>
         </div>
 
         <div className="grid md:grid-cols-2 gap-16">
           <div>
             <h2 className="text-sm font-bold text-gray-500 uppercase tracking-wider mb-6 pb-3 border-b border-gray-200">
-              連絡先
+              {locale === "en" ? "Contact Info" : "連絡先"}
             </h2>
             <div className="space-y-6">
               {CONTACT_LINKS.map((contact) => (
@@ -51,10 +57,10 @@ export function ProfessionalContact() {
 
           <div>
             <h2 className="text-sm font-bold text-gray-500 uppercase tracking-wider mb-6 pb-3 border-b border-gray-200">
-              対応可能な業務
+              {locale === "en" ? "Available Services" : "対応可能な業務"}
             </h2>
             <ul className="space-y-3">
-              {SERVICES.map((service) => (
+              {services.map((service) => (
                 <li key={service} className="text-gray-700 pl-4 border-l-2 border-gray-900">
                   {service}
                 </li>
@@ -64,12 +70,16 @@ export function ProfessionalContact() {
         </div>
 
         <div className="mt-16 pt-12 border-t border-gray-200 text-center">
-          <p className="text-gray-600 mb-6">お仕事のご依頼やご相談など、お気軽にご連絡ください。</p>
+          <p className="text-gray-600 mb-6">
+            {locale === "en"
+              ? "Feel free to reach out for work inquiries or consultations."
+              : "お仕事のご依頼やご相談など、お気軽にご連絡ください。"}
+          </p>
           <a
             href="mailto:contact@example.com"
             className="inline-block px-8 py-3 bg-gray-900 text-white font-medium hover:bg-gray-800 transition"
           >
-            メールで問い合わせる
+            {locale === "en" ? "Send an Email" : "メールで問い合わせる"}
           </a>
         </div>
       </div>

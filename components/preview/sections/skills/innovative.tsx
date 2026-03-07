@@ -1,12 +1,16 @@
 "use client"
 
-import { SKILL_CATEGORIES } from "@/constants/preview-data"
+import { getSkillCategories } from "@/constants/preview-data"
+import { useLocale } from "@/contexts/locale-context"
 
 const CATEGORY_GRADIENTS: Record<string, string> = {
   フロントエンド: "from-cyan-400 to-blue-500",
+  Frontend: "from-cyan-400 to-blue-500",
   バックエンド: "from-green-400 to-emerald-500",
+  Backend: "from-green-400 to-emerald-500",
   "AI / ML": "from-purple-400 to-pink-500",
   インフラ: "from-orange-400 to-amber-500",
+  Infrastructure: "from-orange-400 to-amber-500",
 }
 
 const SKILL_COLORS: Record<string, string> = {
@@ -55,15 +59,18 @@ function getRankColor(rank: string) {
 }
 
 export function InnovativeSkills() {
+  const locale = useLocale()
+  const skillCategories = getSkillCategories(locale)
+
   return (
     <div className="min-h-full bg-black">
       <div className="max-w-7xl mx-auto px-8 py-20">
         <h1 className="text-7xl font-black mb-20 text-center text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-purple-400">
-          テクノロジースタック
+          {locale === "en" ? "Technology Stack" : "テクノロジースタック"}
         </h1>
 
         <div className="space-y-16">
-          {SKILL_CATEGORIES.map((category, catIndex) => {
+          {skillCategories.map((category, catIndex) => {
             const gradient = CATEGORY_GRADIENTS[category.category] ?? "from-gray-400 to-gray-500"
             return (
               <div key={catIndex}>
@@ -94,7 +101,10 @@ export function InnovativeSkills() {
                             >
                               {skill.rank}
                             </span>
-                            <span className="text-gray-500 text-lg">{skill.years}年</span>
+                            <span className="text-gray-500 text-lg">
+                              {skill.years}
+                              {locale === "en" ? " yr(s)" : "年"}
+                            </span>
                           </div>
                         </div>
                       </div>

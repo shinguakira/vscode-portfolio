@@ -39,6 +39,35 @@ export const FAQ_ITEMS: FaqItem[] = [
   },
 ]
 
+export const FAQ_ITEMS_EN: FaqItem[] = [
+  {
+    q: "Are you available for remote work?",
+    a: "Yes, I am fully available for remote work. I use tools like Slack, Discord, and Teams to ensure smooth communication.",
+  },
+  {
+    q: "How many hours can you work per week?",
+    a: "I can work 20-40 hours per week. I am flexible depending on project needs.",
+  },
+  {
+    q: "What tech stack do you support?",
+    a: "I work with React, Next.js, TypeScript, Vue.js, Node.js, Python, Go, PostgreSQL, MongoDB, AWS, GCP, Vercel, and more.",
+  },
+  {
+    q: "Can you quickly learn new technologies?",
+    a: "Yes, I actively learn new technologies. I can catch up on required technologies before project kickoff.",
+  },
+  {
+    q: "Can you handle everything from design to implementation?",
+    a: "Yes, I can handle the entire process from requirements definition, design, implementation, testing, to deployment.",
+  },
+  {
+    q: "Is the estimate free?",
+    a: "Yes, estimates are provided free of charge. Feel free to reach out.",
+  },
+]
+
+export const getFaqItems = (locale: string) => (locale === "en" ? FAQ_ITEMS_EN : FAQ_ITEMS)
+
 export const FAQ_CATEGORIES: FaqCategory[] = [
   {
     category: "業務について",
@@ -73,6 +102,43 @@ export const FAQ_CATEGORIES: FaqCategory[] = [
   },
 ]
 
+export const FAQ_CATEGORIES_EN: FaqCategory[] = [
+  {
+    category: "About Work",
+    questions: [
+      FAQ_ITEMS_EN[0],
+      FAQ_ITEMS_EN[1],
+      {
+        q: "Can you work as a side job or contract?",
+        a: "Yes, I can. Please contact me to discuss contract details.",
+      },
+    ],
+  },
+  {
+    category: "About Technology",
+    questions: [
+      FAQ_ITEMS_EN[2],
+      {
+        q: "Can you handle everything from design to implementation alone?",
+        a: "Yes, I can handle the entire process from requirements definition, design, implementation, testing, to deployment.",
+      },
+    ],
+  },
+  {
+    category: "Other",
+    questions: [
+      FAQ_ITEMS_EN[5],
+      {
+        q: "Is an interview possible?",
+        a: "Yes, I am available for online interviews. Feel free to request one.",
+      },
+    ],
+  },
+]
+
+export const getFaqCategories = (locale: string) =>
+  locale === "en" ? FAQ_CATEGORIES_EN : FAQ_CATEGORIES
+
 // ─── Contact ────────────────────────────────────────────────────
 
 export interface ContactLink {
@@ -100,6 +166,17 @@ export const SERVICES = [
   "コードレビュー",
   "技術記事執筆",
 ]
+
+export const SERVICES_EN = [
+  "Web Application Development",
+  "Frontend Development",
+  "Backend Development",
+  "Technical Consulting",
+  "Code Review",
+  "Technical Writing",
+]
+
+export const getServices = (locale: string) => (locale === "en" ? SERVICES_EN : SERVICES)
 
 // ─── Skills ─────────────────────────────────────────────────────
 
@@ -154,6 +231,48 @@ export const SKILL_CATEGORIES: SkillCategory[] = [
   },
 ]
 
+export const SKILL_CATEGORIES_EN: SkillCategory[] = [
+  {
+    category: "Frontend",
+    icon: "💻",
+    skills: [
+      { name: "React", years: 5, rank: "S" },
+      { name: "Next.js", years: 4, rank: "S" },
+      { name: "TypeScript", years: 4, rank: "A" },
+    ],
+  },
+  {
+    category: "Backend",
+    icon: "⚙️",
+    skills: [
+      { name: "Node.js", years: 4, rank: "A" },
+      { name: "Python", years: 3, rank: "B" },
+      { name: "PostgreSQL", years: 3, rank: "A" },
+    ],
+  },
+  {
+    category: "AI / ML",
+    icon: "🤖",
+    skills: [
+      { name: "OpenAI API", years: 2, rank: "A" },
+      { name: "LangChain", years: 1, rank: "B" },
+      { name: "RAG", years: 1, rank: "B" },
+    ],
+  },
+  {
+    category: "Infrastructure",
+    icon: "☁️",
+    skills: [
+      { name: "AWS", years: 3, rank: "A" },
+      { name: "Docker", years: 3, rank: "A" },
+      { name: "Terraform", years: 2, rank: "B" },
+    ],
+  },
+]
+
+export const getSkillCategories = (locale: string) =>
+  locale === "en" ? SKILL_CATEGORIES_EN : SKILL_CATEGORIES
+
 export const OTHER_TOOLS = [
   "Git",
   "GitHub Actions",
@@ -176,6 +295,20 @@ export const OTHER_SKILLS_PROFESSIONAL = [
   "コードレビュー",
 ]
 
+export const OTHER_SKILLS_PROFESSIONAL_EN = [
+  "Agile Development",
+  "Test-Driven Development",
+  "Responsive Design",
+  "Accessibility",
+  "Performance Optimization",
+  "SEO",
+  "Team Leadership",
+  "Code Review",
+]
+
+export const getOtherSkillsProfessional = (locale: string) =>
+  locale === "en" ? OTHER_SKILLS_PROFESSIONAL_EN : OTHER_SKILLS_PROFESSIONAL
+
 // ─── Profile ────────────────────────────────────────────────────
 
 export const PROFILE_FRONTEND_SKILLS = ["React", "Next.js", "TypeScript", "Tailwind CSS"]
@@ -187,6 +320,15 @@ export const PROFILE_ACHIEVEMENTS = [
   "アジャイル開発チームでのリード経験",
 ]
 
+export const PROFILE_ACHIEVEMENTS_EN = [
+  "5+ years of web development experience",
+  "Experience developing large-scale SaaS products",
+  "Team lead experience in agile development",
+]
+
+export const getProfileAchievements = (locale: string) =>
+  locale === "en" ? PROFILE_ACHIEVEMENTS_EN : PROFILE_ACHIEVEMENTS
+
 export interface ProfileStat {
   num: string
   label: string
@@ -197,6 +339,15 @@ export const PROFILE_STATS: ProfileStat[] = [
   { num: "50+", label: "プロジェクト" },
   { num: "100%", label: "満足度" },
 ]
+
+export const PROFILE_STATS_EN: ProfileStat[] = [
+  { num: "5+", label: "Years of Experience" },
+  { num: "50+", label: "Projects" },
+  { num: "100%", label: "Satisfaction" },
+]
+
+export const getProfileStats = (locale: string) =>
+  locale === "en" ? PROFILE_STATS_EN : PROFILE_STATS
 
 export const PROFILE_FRONTEND_PROFESSIONAL = [
   "React / Next.js",
@@ -210,6 +361,26 @@ export const PROFILE_BACKEND_PROFESSIONAL = [
   "PostgreSQL / MongoDB",
   "RESTful API設計",
 ]
+
+export const PROFILE_FRONTEND_PROFESSIONAL_EN = [
+  "React / Next.js",
+  "TypeScript",
+  "Tailwind CSS",
+  "Responsive Design",
+]
+
+export const PROFILE_BACKEND_PROFESSIONAL_EN = [
+  "Node.js / Express",
+  "Python / Django",
+  "PostgreSQL / MongoDB",
+  "RESTful API Design",
+]
+
+export const getProfileFrontendProfessional = (locale: string) =>
+  locale === "en" ? PROFILE_FRONTEND_PROFESSIONAL_EN : PROFILE_FRONTEND_PROFESSIONAL
+
+export const getProfileBackendProfessional = (locale: string) =>
+  locale === "en" ? PROFILE_BACKEND_PROFESSIONAL_EN : PROFILE_BACKEND_PROFESSIONAL
 
 // ─── Strong Points ──────────────────────────────────────────────
 
@@ -247,6 +418,35 @@ export const STRENGTHS: Strength[] = [
   },
 ]
 
+export const STRENGTHS_EN: Strength[] = [
+  {
+    title: "Full-Stack Development",
+    desc: "Capable of handling everything from frontend to backend and infrastructure. Can design and implement with a holistic project perspective.",
+    icon: "🔧",
+    color: "from-emerald-500 to-cyan-500",
+  },
+  {
+    title: "Modern Tech Adaptability",
+    desc: "Actively adopting cutting-edge technologies like Next.js 14, strict TypeScript mode, and tRPC. Continuously staying up to date.",
+    icon: "🚀",
+    color: "from-cyan-500 to-blue-500",
+  },
+  {
+    title: "Performance Optimization",
+    desc: "Extensive experience with Core Web Vitals-conscious implementation, bundle size optimization, and database query improvements.",
+    icon: "⚡",
+    color: "from-blue-500 to-purple-500",
+  },
+  {
+    title: "Leadership",
+    desc: "Led a team of 12 members. Fostered a code review culture and supported team members' growth.",
+    icon: "👥",
+    color: "from-purple-500 to-pink-500",
+  },
+]
+
+export const getStrengths = (locale: string) => (locale === "en" ? STRENGTHS_EN : STRENGTHS)
+
 export interface SoftSkillSection {
   title: string
   items: string[]
@@ -267,6 +467,35 @@ export const SOFT_SKILLS: SoftSkillSection[] = [
   },
 ]
 
+export const SOFT_SKILLS_EN: SoftSkillSection[] = [
+  {
+    title: "Communication",
+    items: [
+      "Good at explaining to non-engineers",
+      "Documentation-oriented",
+      "Bridge between teams",
+    ],
+  },
+  {
+    title: "Problem Solving",
+    items: [
+      "Breaking down complex problems",
+      "Identifying root causes",
+      "Systematic technical debt resolution",
+    ],
+  },
+  {
+    title: "Learning Drive",
+    items: [
+      "Actively learning new technologies",
+      "Sharing knowledge through blog",
+      "Community involvement",
+    ],
+  },
+]
+
+export const getSoftSkills = (locale: string) => (locale === "en" ? SOFT_SKILLS_EN : SOFT_SKILLS)
+
 export interface AchievementStat {
   num: string
   label: string
@@ -279,6 +508,16 @@ export const ACHIEVEMENT_STATS: AchievementStat[] = [
   { num: "30%", label: "生産性向上", color: "from-blue-500 to-purple-500" },
   { num: "10万PV", label: "月間ブログ", color: "from-purple-500 to-pink-500" },
 ]
+
+export const ACHIEVEMENT_STATS_EN: AchievementStat[] = [
+  { num: "40%", label: "Performance Improvement", color: "from-emerald-500 to-cyan-500" },
+  { num: "150%", label: "User Growth", color: "from-cyan-500 to-blue-500" },
+  { num: "30%", label: "Productivity Increase", color: "from-blue-500 to-purple-500" },
+  { num: "100K PV", label: "Monthly Blog", color: "from-purple-500 to-pink-500" },
+]
+
+export const getAchievementStats = (locale: string) =>
+  locale === "en" ? ACHIEVEMENT_STATS_EN : ACHIEVEMENT_STATS
 
 // ─── Projects ───────────────────────────────────────────────────
 
@@ -314,6 +553,32 @@ export const PROJECTS: Project[] = [
   },
 ]
 
+export const PROJECTS_EN: Project[] = [
+  {
+    title: "E-Commerce Platform",
+    desc: "A complete e-commerce solution built with Next.js 14 and Supabase",
+    techs: ["Next.js", "TypeScript", "Supabase", "Stripe"],
+    color: "from-blue-600 to-blue-800",
+    icon: "🛒",
+  },
+  {
+    title: "Real-Time Chat App",
+    desc: "A real-time communication platform using WebSocket",
+    techs: ["React", "Node.js", "Socket.io", "MongoDB"],
+    color: "from-purple-600 to-purple-800",
+    icon: "💬",
+  },
+  {
+    title: "Project Management Tool",
+    desc: "A comprehensive project management system for teams",
+    techs: ["Next.js", "tRPC", "Prisma", "PostgreSQL"],
+    color: "from-pink-600 to-pink-800",
+    icon: "📊",
+  },
+]
+
+export const getProjects = (locale: string) => (locale === "en" ? PROJECTS_EN : PROJECTS)
+
 export interface ProfessionalProject {
   num: string
   title: string
@@ -346,6 +611,33 @@ export const PROJECTS_PROFESSIONAL: ProfessionalProject[] = [
   },
 ]
 
+export const PROJECTS_PROFESSIONAL_EN: ProfessionalProject[] = [
+  {
+    num: "01",
+    title: "E-Commerce Platform",
+    client: "Tech Startup Inc.",
+    year: "2024",
+    desc: "A complete e-commerce solution built with Next.js 14 and Supabase. Achieved fast page loads and seamless checkout experience.",
+  },
+  {
+    num: "02",
+    title: "Project Management System",
+    client: "Enterprise Co.",
+    year: "2023",
+    desc: "A comprehensive project management tool for teams. Implemented real-time collaboration and Kanban boards.",
+  },
+  {
+    num: "03",
+    title: "Corporate Website",
+    client: "Design Studio",
+    year: "2023",
+    desc: "A modern, minimal corporate website. Features excellent typography and smooth animations.",
+  },
+]
+
+export const getProjectsProfessional = (locale: string) =>
+  locale === "en" ? PROJECTS_PROFESSIONAL_EN : PROJECTS_PROFESSIONAL
+
 export interface InnovativeProject {
   title: string
   desc: string
@@ -373,6 +665,30 @@ export const PROJECTS_INNOVATIVE: InnovativeProject[] = [
     icon: "⛓️",
   },
 ]
+
+export const PROJECTS_INNOVATIVE_EN: InnovativeProject[] = [
+  {
+    title: "AI-Powered E-Commerce",
+    desc: "Next-gen shopping experience leveraging machine learning",
+    gradient: "from-cyan-500 via-blue-500 to-purple-500",
+    icon: "🤖",
+  },
+  {
+    title: "Real-Time 3D Collaboration",
+    desc: "Innovative co-working space powered by WebGL and WebSockets",
+    gradient: "from-purple-500 via-pink-500 to-red-500",
+    icon: "🎨",
+  },
+  {
+    title: "Blockchain Platform",
+    desc: "Building the future of decentralized applications",
+    gradient: "from-pink-500 via-red-500 to-orange-500",
+    icon: "⛓️",
+  },
+]
+
+export const getProjectsInnovative = (locale: string) =>
+  locale === "en" ? PROJECTS_INNOVATIVE_EN : PROJECTS_INNOVATIVE
 
 // ─── Terminal ───────────────────────────────────────────────────
 

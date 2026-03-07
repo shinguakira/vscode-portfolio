@@ -1,17 +1,21 @@
 "use client"
 
-import { PROJECTS_INNOVATIVE } from "@/constants/preview-data"
+import { getProjectsInnovative } from "@/constants/preview-data"
+import { useLocale } from "@/contexts/locale-context"
 
 export function InnovativeProjects() {
+  const locale = useLocale()
+  const projects = getProjectsInnovative(locale)
+
   return (
     <div className="min-h-full bg-black">
       <div className="max-w-7xl mx-auto px-8 py-20">
         <h1 className="text-7xl font-black mb-20 text-center text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-purple-400 to-pink-400">
-          革新的プロジェクト
+          {locale === "en" ? "Innovative Projects" : "革新的プロジェクト"}
         </h1>
 
         <div className="space-y-32">
-          {PROJECTS_INNOVATIVE.map((project, i) => (
+          {projects.map((project, i) => (
             <div key={i} className="group relative">
               <div
                 className={`absolute -inset-1 bg-gradient-to-r ${project.gradient} rounded-3xl blur-2xl opacity-30 group-hover:opacity-60 transition duration-700`}
@@ -34,7 +38,7 @@ export function InnovativeProjects() {
                       <button
                         className={`px-6 py-3 rounded-xl font-bold bg-gradient-to-r ${project.gradient} text-white`}
                       >
-                        詳細を見る
+                        {locale === "en" ? "View Details" : "詳細を見る"}
                       </button>
                       <button className="px-6 py-3 rounded-xl font-bold border-2 border-gray-700 text-white hover:border-gray-500 transition">
                         GitHub

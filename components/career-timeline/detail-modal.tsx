@@ -3,6 +3,7 @@
 import { Calendar, Users, X } from "lucide-react"
 import { useCallback, useEffect, useRef } from "react"
 
+import { useLocale } from "@/contexts/locale-context"
 import { cn } from "@/lib/utils"
 
 import type { CareerProject, TimelineVariant } from "./career-timeline"
@@ -22,6 +23,7 @@ export function DetailModal({
   onClose: () => void
   variant?: TimelineVariant
 }) {
+  const locale = useLocale()
   const overlayRef = useRef<HTMLDivElement>(null)
   const s = variantStyles[variant]
 
@@ -102,11 +104,12 @@ export function DetailModal({
               className="text-[10px] font-mono font-semibold px-2 py-0.5 rounded-full"
               style={{ backgroundColor: `${project.color}18`, color: project.color }}
             >
-              {durationJa(project.startDate, project.endDate)}
+              {durationJa(project.startDate, project.endDate, locale)}
             </span>
             {project.teamSize && (
               <span className={cn("text-xs font-mono flex items-center gap-1", s.modalMeta)}>
-                <Users className="w-3 h-3" /> {project.teamSize}名
+                <Users className="w-3 h-3" />{" "}
+                {locale === "en" ? `${project.teamSize} members` : `${project.teamSize}名`}
               </span>
             )}
           </div>
@@ -164,7 +167,7 @@ export function DetailModal({
                   s.modalSectionTitle,
                 )}
               >
-                並行プロジェクト
+                {locale === "en" ? "Parallel Projects" : "並行プロジェクト"}
               </p>
               <div className="space-y-2">
                 {parallel.map((pp) => (
@@ -184,7 +187,7 @@ export function DetailModal({
                       <p className={cn("text-[10px] truncate", s.parallelCompany)}>{pp.company}</p>
                     </div>
                     <span className={cn("shrink-0 text-[9px] font-mono", s.modalMeta)}>
-                      {durationJa(pp.startDate, pp.endDate)}
+                      {durationJa(pp.startDate, pp.endDate, locale)}
                     </span>
                   </div>
                 ))}

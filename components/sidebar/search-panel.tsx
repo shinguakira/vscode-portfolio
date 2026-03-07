@@ -2,6 +2,7 @@
 
 import type React from "react"
 
+import { useLocale } from "@/contexts/locale-context"
 import { useTheme } from "@/contexts/theme-context"
 import { adjustBrightness } from "@/lib/color-utils"
 import type { SearchResult } from "@/types"
@@ -19,6 +20,7 @@ export function SearchPanel({
   searchResults,
   openSearchResult,
 }: SearchPanelProps) {
+  const locale = useLocale()
   const { accentColor, bgMain, bgHover, textPrimary, textSecondary, textMuted } = useTheme()
   return (
     <div className="px-2 py-2 flex flex-col gap-2">
@@ -26,7 +28,7 @@ export function SearchPanel({
         type="text"
         value={searchQuery}
         onChange={handleSearchChange}
-        placeholder="検索..."
+        placeholder={locale === "en" ? "Search..." : "検索..."}
         className="w-full px-2 md:px-3 py-1.5 md:py-2 text-[11px] md:text-sm rounded border outline-none focus:ring-1"
         style={{
           backgroundColor: bgMain,
@@ -45,7 +47,7 @@ export function SearchPanel({
       <div className="overflow-y-auto" style={{ maxHeight: "calc(100vh - 140px)" }}>
         {searchResults.length === 0 && searchQuery && (
           <div className="px-2 py-4 text-[11px] md:text-sm" style={{ color: textMuted }}>
-            結果が見つかりませんでした
+            {locale === "en" ? "No results found" : "結果が見つかりませんでした"}
           </div>
         )}
 
@@ -101,7 +103,9 @@ export function SearchPanel({
               ))}
               {result.matches.length > 3 && (
                 <div className="text-[10px] md:text-xs px-2 py-1" style={{ color: textMuted }}>
-                  +{result.matches.length - 3} 件の一致...
+                  {locale === "en"
+                    ? `+${result.matches.length - 3} more matches...`
+                    : `+${result.matches.length - 3} 件の一致...`}
                 </div>
               )}
             </div>

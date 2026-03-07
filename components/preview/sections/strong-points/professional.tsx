@@ -1,20 +1,30 @@
 "use client"
 
-import { ACHIEVEMENT_STATS, SOFT_SKILLS, STRENGTHS } from "@/constants/preview-data"
+import { getAchievementStats, getSoftSkills, getStrengths } from "@/constants/preview-data"
+import { useLocale } from "@/contexts/locale-context"
 
 export function ProfessionalStrongPoints() {
+  const locale = useLocale()
+  const STRENGTHS = getStrengths(locale)
+  const SOFT_SKILLS = getSoftSkills(locale)
+  const ACHIEVEMENT_STATS = getAchievementStats(locale)
+
   return (
     <div className="min-h-full bg-white">
       <div className="max-w-4xl mx-auto px-8 py-24">
         <div className="mb-16 border-b border-gray-200 pb-8">
-          <h1 className="text-5xl font-serif font-bold text-gray-900 mb-3">強み・専門性</h1>
-          <p className="text-xl text-gray-600">What I Bring to the Table</p>
+          <h1 className="text-5xl font-serif font-bold text-gray-900 mb-3">
+            {locale === "en" ? "Strengths & Highlights" : "強み・専門性"}
+          </h1>
+          <p className="text-xl text-gray-600">
+            {locale === "en" ? "" : "What I Bring to the Table"}
+          </p>
         </div>
 
         <div className="space-y-12 mb-16">
           <div>
             <h2 className="text-sm font-bold text-gray-500 uppercase tracking-wider mb-6 pb-3 border-b border-gray-200">
-              技術的な強み
+              {locale === "en" ? "Technical Strengths" : "技術的な強み"}
             </h2>
             <div className="grid md:grid-cols-2 gap-8">
               {STRENGTHS.map((item) => (
@@ -28,7 +38,7 @@ export function ProfessionalStrongPoints() {
 
           <div>
             <h2 className="text-sm font-bold text-gray-500 uppercase tracking-wider mb-6 pb-3 border-b border-gray-200">
-              ソフトスキル
+              {locale === "en" ? "Soft Skills" : "ソフトスキル"}
             </h2>
             <div className="grid md:grid-cols-3 gap-6">
               {SOFT_SKILLS.map((item) => (
@@ -49,7 +59,7 @@ export function ProfessionalStrongPoints() {
 
         <div className="border-t border-gray-200 pt-12">
           <h2 className="text-sm font-bold text-gray-500 uppercase tracking-wider mb-6">
-            実績サマリー
+            {locale === "en" ? "Achievement Summary" : "実績サマリー"}
           </h2>
           <div className="grid md:grid-cols-4 gap-6 text-center">
             {ACHIEVEMENT_STATS.map((stat) => (

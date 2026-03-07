@@ -1,12 +1,18 @@
 "use client"
 
 import {
-  PROFILE_BACKEND_PROFESSIONAL,
-  PROFILE_FRONTEND_PROFESSIONAL,
-  PROFILE_STATS,
+  getProfileBackendProfessional,
+  getProfileFrontendProfessional,
+  getProfileStats,
 } from "@/constants/preview-data"
+import { useLocale } from "@/contexts/locale-context"
 
 export function ProfessionalProfile() {
+  const locale = useLocale()
+  const frontendSkills = getProfileFrontendProfessional(locale)
+  const backendSkills = getProfileBackendProfessional(locale)
+  const stats = getProfileStats(locale)
+
   return (
     <div className="min-h-full bg-white">
       <div className="max-w-4xl mx-auto px-8 py-24">
@@ -17,26 +23,31 @@ export function ProfessionalProfile() {
             </div>
             <div className="pt-4">
               <h1 className="text-5xl font-serif font-bold text-gray-900 mb-3 tracking-tight">
-                神宮 章
+                {locale === "en" ? "Akira Shingu" : "神宮 章"}
               </h1>
-              <p className="text-2xl text-gray-600 mb-4 font-light">フルスタックエンジニア</p>
+              <p className="text-2xl text-gray-600 mb-4 font-light">
+                {locale === "en" ? "Full-Stack Engineer" : "フルスタックエンジニア"}
+              </p>
               <p className="text-gray-700 leading-relaxed max-w-xl">
-                5年以上のWeb開発経験を持ち、モダンな技術スタックで高品質なプロダクトを提供します。
-                クリーンなコード、優れたUX、そしてビジネス価値の創出を重視しています。
+                {locale === "en"
+                  ? "With 5+ years of web development experience, I deliver high-quality products using modern tech stacks. I value clean code, excellent UX, and creating business value."
+                  : "5年以上のWeb開発経験を持ち、モダンな技術スタックで高品質なプロダクトを提供します。クリーンなコード、優れたUX、そしてビジネス価値の創出を重視しています。"}
               </p>
             </div>
           </div>
         </div>
 
         <div className="mb-16">
-          <h2 className="text-3xl font-serif font-bold text-gray-900 mb-8">専門分野</h2>
+          <h2 className="text-3xl font-serif font-bold text-gray-900 mb-8">
+            {locale === "en" ? "Specialties" : "専門分野"}
+          </h2>
           <div className="grid md:grid-cols-2 gap-12">
             <div>
               <h3 className="text-sm font-bold text-gray-500 uppercase tracking-wider mb-4 pb-2 border-b border-gray-200">
-                フロントエンド開発
+                {locale === "en" ? "Frontend Development" : "フロントエンド開発"}
               </h3>
               <ul className="space-y-3">
-                {PROFILE_FRONTEND_PROFESSIONAL.map((item) => (
+                {frontendSkills.map((item) => (
                   <li key={item} className="text-gray-700 pl-4 border-l-2 border-gray-900">
                     {item}
                   </li>
@@ -45,10 +56,10 @@ export function ProfessionalProfile() {
             </div>
             <div>
               <h3 className="text-sm font-bold text-gray-500 uppercase tracking-wider mb-4 pb-2 border-b border-gray-200">
-                バックエンド開発
+                {locale === "en" ? "Backend Development" : "バックエンド開発"}
               </h3>
               <ul className="space-y-3">
-                {PROFILE_BACKEND_PROFESSIONAL.map((item) => (
+                {backendSkills.map((item) => (
                   <li key={item} className="text-gray-700 pl-4 border-l-2 border-gray-900">
                     {item}
                   </li>
@@ -59,9 +70,11 @@ export function ProfessionalProfile() {
         </div>
 
         <div className="border-t border-gray-200 pt-12">
-          <h2 className="text-3xl font-serif font-bold text-gray-900 mb-8">実績</h2>
+          <h2 className="text-3xl font-serif font-bold text-gray-900 mb-8">
+            {locale === "en" ? "Achievements" : "実績"}
+          </h2>
           <div className="grid md:grid-cols-3 gap-8 text-center">
-            {PROFILE_STATS.map((stat) => (
+            {stats.map((stat) => (
               <div key={stat.label} className="border border-gray-200 p-6 rounded">
                 <div className="text-4xl font-bold text-gray-900 mb-2">{stat.num}</div>
                 <div className="text-sm text-gray-600 uppercase tracking-wide">{stat.label}</div>

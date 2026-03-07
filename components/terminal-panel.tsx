@@ -4,13 +4,14 @@ import { ChevronUp, Trash2 } from "lucide-react"
 import type React from "react"
 import { useCallback, useEffect, useRef, useState } from "react"
 
-import { gitHistory } from "@/constants/portfolio-data"
+import { getGitHistory } from "@/constants/portfolio-data"
 import {
   TERMINAL_HELP_TEXT,
   TERMINAL_INITIAL_LOGS,
   TERMINAL_LS_FILES,
   TERMINAL_START_SEQUENCE,
 } from "@/constants/preview-data"
+import { useLocale } from "@/contexts/locale-context"
 import { useTheme } from "@/contexts/theme-context"
 import { adjustBrightness } from "@/lib/color-utils"
 import { cn } from "@/lib/utils"
@@ -28,6 +29,8 @@ interface LogEntry {
 }
 
 export function TerminalPanel({ isOpen, onCommandRef }: TerminalPanelProps) {
+  const locale = useLocale()
+  const gitHistory = getGitHistory(locale)
   const { settings } = useTheme()
   const [logs, setLogs] = useState<LogEntry[]>(
     TERMINAL_INITIAL_LOGS.map((content, i) => ({ id: i + 1, type: "info" as const, content })),
@@ -54,99 +57,102 @@ export function TerminalPanel({ isOpen, onCommandRef }: TerminalPanelProps) {
     scrollToBottom()
   }, [isOpen, logs])
 
-  const handleCommand = useCallback(async (cmd: string) => {
-    const trimmedCmd = cmd.trim()
+  const handleCommand = useCallback(
+    async (cmd: string) => {
+      const trimmedCmd = cmd.trim()
 
-    setLogs((prev) => [
-      ...prev,
-      { id: Date.now(), type: "command", content: `user@portfolio:~$ ${trimmedCmd}` },
-    ])
-    setInput("")
-
-    if (!trimmedCmd) return
-
-    if (trimmedCmd === "clear" || trimmedCmd === "cls") {
-      setLogs([])
-      return
-    }
-
-    if (trimmedCmd === "help") {
       setLogs((prev) => [
         ...prev,
-        ...TERMINAL_HELP_TEXT.map((text, i) => ({
-          id: Date.now() + i,
-          type: "info" as const,
-          content: text,
-        })),
+        { id: Date.now(), type: "command", content: `user@portfolio:~$ ${trimmedCmd}` },
       ])
-      return
-    }
+      setInput("")
 
-    if (trimmedCmd === "ls") {
-      setLogs((prev) => [
-        ...prev,
-        { id: Date.now(), type: "info", content: TERMINAL_LS_FILES.join("  ") },
-      ])
-      return
-    }
+      if (!trimmedCmd) return
 
-    if (
-      trimmedCmd === "npm run start" ||
-      trimmedCmd === "npm start" ||
-      trimmedCmd === "yarn start"
-    ) {
-      setIsRunning(true)
-
-      for (const line of TERMINAL_START_SEQUENCE) {
-        await new Promise((r) => setTimeout(r, 300))
-        setLogs((prev) => [...prev, { id: Date.now(), type: "info", content: line }])
+      if (trimmedCmd === "clear" || trimmedCmd === "cls") {
+        setLogs([])
+        return
       }
 
-      const sortedHistory = [...gitHistory].sort(
-        (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime(),
-      )
-
-      for (const commit of sortedHistory) {
-        await new Promise((r) => setTimeout(r, 800))
+      if (trimmedCmd === "help") {
         setLogs((prev) => [
           ...prev,
-          {
-            id: Date.now(),
-            type: "success",
-            content: `[${commit.date}] ${commit.company} - ${commit.position}`,
-            timestamp: commit.date,
-          },
+          ...TERMINAL_HELP_TEXT.map((text, i) => ({
+            id: Date.now() + i,
+            type: "info" as const,
+            content: text,
+          })),
         ])
-
-        await new Promise((r) => setTimeout(r, 200))
-        setLogs((prev) => [
-          ...prev,
-          {
-            id: Date.now(),
-            type: "info",
-            content: `  └─ ${commit.message}`,
-          },
-        ])
+        return
       }
 
-      await new Promise((r) => setTimeout(r, 500))
+      if (trimmedCmd === "ls") {
+        setLogs((prev) => [
+          ...prev,
+          { id: Date.now(), type: "info", content: TERMINAL_LS_FILES.join("  ") },
+        ])
+        return
+      }
+
+      if (
+        trimmedCmd === "npm run start" ||
+        trimmedCmd === "npm start" ||
+        trimmedCmd === "yarn start"
+      ) {
+        setIsRunning(true)
+
+        for (const line of TERMINAL_START_SEQUENCE) {
+          await new Promise((r) => setTimeout(r, 300))
+          setLogs((prev) => [...prev, { id: Date.now(), type: "info", content: line }])
+        }
+
+        const sortedHistory = [...gitHistory].sort(
+          (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime(),
+        )
+
+        for (const commit of sortedHistory) {
+          await new Promise((r) => setTimeout(r, 800))
+          setLogs((prev) => [
+            ...prev,
+            {
+              id: Date.now(),
+              type: "success",
+              content: `[${commit.date}] ${commit.company} - ${commit.position}`,
+              timestamp: commit.date,
+            },
+          ])
+
+          await new Promise((r) => setTimeout(r, 200))
+          setLogs((prev) => [
+            ...prev,
+            {
+              id: Date.now(),
+              type: "info",
+              content: `  └─ ${commit.message}`,
+            },
+          ])
+        }
+
+        await new Promise((r) => setTimeout(r, 500))
+        setLogs((prev) => [
+          ...prev,
+          { id: Date.now(), type: "success", content: "✨  Compile Distributed Successfully" },
+        ])
+        setIsRunning(false)
+        return
+      }
+
       setLogs((prev) => [
         ...prev,
-        { id: Date.now(), type: "success", content: "✨  Compile Distributed Successfully" },
+        {
+          id: Date.now(),
+          type: "error",
+          content: `Command not found: ${trimmedCmd}. Type 'help' for available commands.`,
+        },
       ])
-      setIsRunning(false)
-      return
-    }
-
-    setLogs((prev) => [
-      ...prev,
-      {
-        id: Date.now(),
-        type: "error",
-        content: `Command not found: ${trimmedCmd}. Type 'help' for available commands.`,
-      },
-    ])
-  }, [])
+    },
+    [gitHistory],
+  )
 
   useEffect(() => {
     if (onCommandRef) {

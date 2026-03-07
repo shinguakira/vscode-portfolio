@@ -1,8 +1,13 @@
 "use client"
 
-import { ACHIEVEMENT_STATS, STRENGTHS } from "@/constants/preview-data"
+import { getAchievementStats, getStrengths } from "@/constants/preview-data"
+import { useLocale } from "@/contexts/locale-context"
 
 export function InnovativeStrongPoints() {
+  const locale = useLocale()
+  const STRENGTHS = getStrengths(locale)
+  const ACHIEVEMENT_STATS = getAchievementStats(locale)
+
   return (
     <div className="min-h-full bg-black relative overflow-hidden">
       <div className="absolute inset-0">

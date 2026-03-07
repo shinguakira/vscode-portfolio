@@ -4,6 +4,7 @@ import { Github, Linkedin, Mail, Twitter } from "lucide-react"
 import type React from "react"
 
 import { CONTACT_LINKS } from "@/constants/preview-data"
+import { useLocale } from "@/contexts/locale-context"
 
 const ICONS: Record<string, React.ReactNode> = {
   Email: <Mail className="w-8 h-8" />,
@@ -20,6 +21,8 @@ const GRADIENTS: Record<string, string> = {
 }
 
 export function InnovativeContact() {
+  const locale = useLocale()
+
   return (
     <div className="min-h-full bg-black relative overflow-hidden">
       <div className="absolute inset-0">
@@ -69,7 +72,7 @@ export function InnovativeContact() {
           <div className="inline-block group relative">
             <div className="absolute -inset-1 bg-gradient-to-r from-rose-500 via-pink-500 to-purple-500 rounded-2xl blur opacity-75 group-hover:opacity-100 transition" />
             <button className="relative px-12 py-6 bg-black rounded-2xl text-white font-bold text-xl">
-              お仕事のご相談はこちら
+              {locale === "en" ? "Get in Touch" : "お仕事のご相談はこちら"}
             </button>
           </div>
         </div>

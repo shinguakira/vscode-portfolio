@@ -2,10 +2,11 @@
 
 import { useState } from "react"
 
-import { fileTree } from "@/constants/portfolio-data"
+import { getFileTree } from "@/constants/portfolio-data"
 import type { FileItem, SearchResult } from "@/types"
 
-export function useFileSearch(openFile: (file: FileItem, path: string[]) => void) {
+export function useFileSearch(openFile: (file: FileItem, path: string[]) => void, locale: string) {
+  const fileTree = getFileTree(locale)
   const [searchQuery, setSearchQuery] = useState("")
   const [searchResults, setSearchResults] = useState<SearchResult[]>([])
 

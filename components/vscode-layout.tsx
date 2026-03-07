@@ -16,7 +16,8 @@ import { SettingsPanel } from "@/components/vscode/settings-panel"
 import { StatusBar } from "@/components/vscode/status-bar"
 import { TabBar } from "@/components/vscode/tab-bar"
 import { TitleBar } from "@/components/vscode/title-bar"
-import { fileTree } from "@/constants/portfolio-data"
+import { getFileTree } from "@/constants/portfolio-data"
+import { useLocale } from "@/contexts/locale-context"
 import { ThemeProvider, useTheme } from "@/contexts/theme-context"
 import { useFileSearch } from "@/hooks/use-file-search"
 import { useResponsive } from "@/hooks/use-responsive"
@@ -41,7 +42,9 @@ function VSCodeLayoutInner({
   saveSettings: (s: import("@/types").VSCodeSettings) => void
   changePreviewTheme: (themeId: string) => void
 }) {
+  const locale = useLocale()
   const { settings, bgMain, bgActivityBar, accentColor } = useTheme()
+  const fileTree = getFileTree(locale)
 
   const {
     tabs,
@@ -53,7 +56,7 @@ function VSCodeLayoutInner({
     openExtension,
     closeTab,
     updateTabContent,
-  } = useTabs()
+  } = useTabs(locale)
 
   const {
     isMobile,
@@ -81,7 +84,7 @@ function VSCodeLayoutInner({
     searchResults,
     handleSearchChange,
     openSearchResult: openSearchResultRaw,
-  } = useFileSearch(openFile)
+  } = useFileSearch(openFile, locale)
 
   const openSearchResult = useCallback(
     (result: SearchResult) => {
@@ -159,7 +162,7 @@ function VSCodeLayoutInner({
         openFile(result.file, result.path)
       }
     },
-    [openFile],
+    [openFile, fileTree],
   )
 
   const toggleFolder = (folderName: string) => {

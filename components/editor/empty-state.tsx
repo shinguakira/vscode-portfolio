@@ -1,8 +1,10 @@
 "use client"
 
+import { useLocale } from "@/contexts/locale-context"
 import { useTheme } from "@/contexts/theme-context"
 
 export function EmptyState() {
+  const locale = useLocale()
   const { textPrimary } = useTheme()
 
   return (
@@ -16,9 +18,11 @@ export function EmptyState() {
           <polyline points="14 2 14 8 20 8" />
         </svg>
       </div>
-      <p className="text-[10px] md:text-xs lg:text-sm text-center">ファイルを選択して開く</p>
+      <p className="text-[10px] md:text-xs lg:text-sm text-center">
+        {locale === "en" ? "Select a file to open" : "ファイルを選択して開く"}
+      </p>
       <p className="text-[8px] md:text-[10px] lg:text-xs mt-1 md:mt-2 opacity-50">
-        ⌘P でファイルを検索
+        {locale === "en" ? "⌘P to search files" : "⌘P でファイルを検索"}
       </p>
     </div>
   )

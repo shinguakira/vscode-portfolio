@@ -2,11 +2,14 @@
 
 import { Minus, MoveRight, Plus } from "lucide-react"
 
-import { changelog } from "@/constants/portfolio-data"
+import { getChangelog } from "@/constants/portfolio-data"
+import { useLocale } from "@/contexts/locale-context"
 import { useTheme } from "@/contexts/theme-context"
 
 export function ChangelogPanel() {
+  const locale = useLocale()
   const { accentColor, bgMain, textPrimary, textSecondary, textMuted } = useTheme()
+  const changelog = getChangelog(locale)
   return (
     <div className="py-2">
       <div className="px-2 md:px-3 mb-3">
@@ -14,10 +17,10 @@ export function ChangelogPanel() {
           className="text-[10px] md:text-[11px] font-semibold uppercase tracking-wider mb-1"
           style={{ color: textSecondary }}
         >
-          Changelog
+          {locale === "en" ? "Changelog" : "Changelog"}
         </div>
         <div className="text-[10px] md:text-xs" style={{ color: textMuted }}>
-          アプリの変更履歴
+          {locale === "en" ? "Application changelog" : "アプリの変更履歴"}
         </div>
       </div>
 
@@ -93,7 +96,9 @@ export function ChangelogPanel() {
                 ))}
                 {entry.changes.length > 3 && (
                   <div className="text-[9px] md:text-[10px] pl-4" style={{ color: textMuted }}>
-                    +{entry.changes.length - 3} more
+                    {locale === "en"
+                      ? `+${entry.changes.length - 3} more`
+                      : `他${entry.changes.length - 3}件`}
                   </div>
                 )}
               </div>

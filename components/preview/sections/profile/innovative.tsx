@@ -1,8 +1,11 @@
 "use client"
 
-import { PROFILE_STATS } from "@/constants/preview-data"
+import { getProfileStats } from "@/constants/preview-data"
+import { useLocale } from "@/contexts/locale-context"
 
 export function InnovativeProfile() {
+  const locale = useLocale()
+  const stats = getProfileStats(locale)
   const STAT_COLORS = [
     "from-cyan-500 to-blue-500",
     "from-purple-500 to-pink-500",
@@ -27,35 +30,51 @@ export function InnovativeProfile() {
             </div>
           </div>
           <h1 className="text-8xl font-black mb-6 leading-none">
-            <span className="inline-block animate-bounce delay-100 text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-500">
-              未来
-            </span>
-            <span className="inline-block text-white mx-4">を</span>
-            <span className="inline-block animate-bounce delay-300 text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-500">
-              創る
-            </span>
+            {locale === "en" ? (
+              <>
+                <span className="inline-block animate-bounce delay-100 text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-500">
+                  Create
+                </span>
+                <span className="inline-block text-white mx-4">the</span>
+                <span className="inline-block animate-bounce delay-300 text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-500">
+                  Future
+                </span>
+              </>
+            ) : (
+              <>
+                <span className="inline-block animate-bounce delay-100 text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-500">
+                  未来
+                </span>
+                <span className="inline-block text-white mx-4">を</span>
+                <span className="inline-block animate-bounce delay-300 text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-500">
+                  創る
+                </span>
+              </>
+            )}
           </h1>
           <p className="text-2xl text-gray-400 mb-12 max-w-3xl mx-auto font-light tracking-wide">
-            革新的なテクノロジーで、次世代のデジタル体験をデザインします
+            {locale === "en"
+              ? "Designing next-generation digital experiences with innovative technology"
+              : "革新的なテクノロジーで、次世代のデジタル体験をデザインします"}
           </p>
           <div className="flex justify-center gap-6">
             <div className="group relative">
               <div className="absolute -inset-1 bg-gradient-to-r from-cyan-500 to-blue-500 rounded-2xl blur opacity-75 group-hover:opacity-100 transition" />
               <button className="relative px-8 py-4 bg-black rounded-2xl text-white font-bold text-lg">
-                プロジェクトを見る
+                {locale === "en" ? "View Projects" : "プロジェクトを見る"}
               </button>
             </div>
             <div className="group relative">
               <div className="absolute -inset-1 bg-gradient-to-r from-purple-500 to-pink-500 rounded-2xl blur opacity-75 group-hover:opacity-100 transition" />
               <button className="relative px-8 py-4 bg-black rounded-2xl text-white font-bold text-lg">
-                お問い合わせ
+                {locale === "en" ? "Contact Me" : "お問い合わせ"}
               </button>
             </div>
           </div>
         </div>
 
         <div className="grid md:grid-cols-3 gap-6">
-          {PROFILE_STATS.map((stat, i) => (
+          {stats.map((stat, i) => (
             <div key={i} className="group relative">
               <div
                 className={`absolute -inset-0.5 bg-gradient-to-r ${STAT_COLORS[i]} rounded-2xl blur opacity-30 group-hover:opacity-100 transition duration-500`}

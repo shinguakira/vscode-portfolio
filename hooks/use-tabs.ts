@@ -3,10 +3,11 @@
 import type React from "react"
 import { useCallback, useMemo, useState } from "react"
 
-import { extensions } from "@/constants/portfolio-data"
+import { getExtensions } from "@/constants/portfolio-data"
 import type { Extension, FileItem, Tab } from "@/types"
 
-export function useTabs() {
+export function useTabs(locale: string) {
+  const extensions = getExtensions(locale)
   const [tabs, setTabs] = useState<Tab[]>([])
   const [activeTab, setActiveTab] = useState<string | null>(null)
 
@@ -16,19 +17,15 @@ export function useTabs() {
       return extensions.find((e) => e.id === extId) || null
     }
     return null
-  }, [activeTab])
+  }, [activeTab, extensions])
 
   const activeTabContent = tabs.find((tab) => tab.id === activeTab)
 
-  const openFile = useCallback(
-    (file: FileItem, path: string[] = []) => {
-      const fileId = [...path, file.name].join("/")
+  const openFile = useCallback((file: FileItem, path: string[] = []) => {
+    const fileId = [...path, file.name].join("/")
 
-      if (tabs.find((tab) => tab.id === fileId)) {
-        setActiveTab(fileId)
-        return
-      }
-
+    setTabs((prev) => {
+      if (prev.find((tab) => tab.id === fileId)) return prev
       const newTab: Tab = {
         id: fileId,
         name: file.name,
@@ -36,12 +33,10 @@ export function useTabs() {
         content: file.content || "",
         isDirty: false,
       }
-
-      setTabs((prev) => [...prev, newTab])
-      setActiveTab(fileId)
-    },
-    [tabs],
-  )
+      return [...prev, newTab]
+    })
+    setActiveTab(fileId)
+  }, [])
 
   const openExtension = useCallback(
     (extensionId: string) => {
@@ -50,23 +45,20 @@ export function useTabs() {
 
       const tabId = `extensions/${extensionId}`
 
-      if (tabs.find((tab) => tab.id === tabId)) {
-        setActiveTab(tabId)
-        return
-      }
-
-      const newTab: Tab = {
-        id: tabId,
-        name: extension.displayName,
-        icon: extension.icon,
-        content: "",
-        isDirty: false,
-      }
-
-      setTabs((prev) => [...prev, newTab])
+      setTabs((prev) => {
+        if (prev.find((tab) => tab.id === tabId)) return prev
+        const newTab: Tab = {
+          id: tabId,
+          name: extension.displayName,
+          icon: extension.icon,
+          content: "",
+          isDirty: false,
+        }
+        return [...prev, newTab]
+      })
       setActiveTab(tabId)
     },
-    [tabs],
+    [extensions],
   )
 
   const closeTab = (tabId: string, e: React.MouseEvent) => {

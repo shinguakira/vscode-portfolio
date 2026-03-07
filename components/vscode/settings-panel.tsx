@@ -3,7 +3,8 @@
 import { X } from "lucide-react"
 import React, { useEffect, useState } from "react"
 
-import { PREVIEW_THEMES, THEME_PRESETS } from "@/constants/vscode-config"
+import { getPreviewThemes, getThemePresets } from "@/constants/vscode-config"
+import { useLocale } from "@/contexts/locale-context"
 import { useTheme } from "@/contexts/theme-context"
 import { adjustBrightness } from "@/lib/color-utils"
 import type { VSCodeSettings } from "@/types"
@@ -14,7 +15,10 @@ interface SettingsPanelProps {
 }
 
 export function SettingsPanel({ onSave, onClose }: SettingsPanelProps) {
+  const locale = useLocale()
   const { settings, bgMain, bgActivityBar, textPrimary, textSecondary } = useTheme()
+  const THEME_PRESETS = getThemePresets(locale)
+  const PREVIEW_THEMES = getPreviewThemes(locale)
   const [localSettings, setLocalSettings] = useState(settings)
   const [isSmallScreen, setIsSmallScreen] = useState(false)
 
@@ -33,8 +37,12 @@ export function SettingsPanel({ onSave, onClose }: SettingsPanelProps) {
   }
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-1 sm:p-2 md:p-4">
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-1 sm:p-2 md:p-4"
+      onClick={onClose}
+    >
       <div
+        onClick={(e) => e.stopPropagation()}
         className={`rounded-lg shadow-2xl overflow-hidden flex flex-col border ${
           isSmallScreen
             ? "w-[95vw] max-h-[95vh]"
@@ -50,7 +58,7 @@ export function SettingsPanel({ onSave, onClose }: SettingsPanelProps) {
           <h2
             className={`font-semibold ${isSmallScreen ? "text-xs" : "text-sm sm:text-base md:text-lg"}`}
           >
-            設定
+            {locale === "en" ? "Settings" : "設定"}
           </h2>
           <button
             onClick={onClose}
@@ -76,7 +84,7 @@ export function SettingsPanel({ onSave, onClose }: SettingsPanelProps) {
                 className={`block font-medium ${isSmallScreen ? "text-[10px] mb-1" : "text-xs sm:text-sm mb-1.5 sm:mb-2 md:mb-3"}`}
                 style={{ color: textPrimary }}
               >
-                テーマプリセット
+                {locale === "en" ? "Theme Presets" : "テーマプリセット"}
               </label>
               <div
                 className={`grid grid-cols-3 ${isSmallScreen ? "gap-1" : "gap-1.5 sm:gap-2 md:gap-3"}`}
@@ -129,7 +137,7 @@ export function SettingsPanel({ onSave, onClose }: SettingsPanelProps) {
                     className="block text-xs sm:text-sm font-medium mb-1 sm:mb-2"
                     style={{ color: textPrimary }}
                   >
-                    背景色
+                    {locale === "en" ? "Background Color" : "背景色"}
                   </label>
                   <div className="flex gap-2 sm:gap-3 items-center">
                     <input
@@ -163,7 +171,7 @@ export function SettingsPanel({ onSave, onClose }: SettingsPanelProps) {
                     className="block text-xs sm:text-sm font-medium mb-1 sm:mb-2"
                     style={{ color: textPrimary }}
                   >
-                    文字色
+                    {locale === "en" ? "Text Color" : "文字色"}
                   </label>
                   <div className="flex gap-2 sm:gap-3 items-center">
                     <input
@@ -197,7 +205,7 @@ export function SettingsPanel({ onSave, onClose }: SettingsPanelProps) {
                     className="block text-xs sm:text-sm font-medium mb-1 sm:mb-2"
                     style={{ color: textPrimary }}
                   >
-                    アクセントカラー
+                    {locale === "en" ? "Accent Color" : "アクセントカラー"}
                   </label>
                   <div className="flex gap-2 sm:gap-3 items-center">
                     <input
@@ -233,7 +241,7 @@ export function SettingsPanel({ onSave, onClose }: SettingsPanelProps) {
                 className={`block font-medium ${isSmallScreen ? "text-[10px] mb-0.5" : "text-xs sm:text-sm mb-1 sm:mb-2"}`}
                 style={{ color: textPrimary }}
               >
-                フォントサイズ: {localSettings.fontSize}px
+                {locale === "en" ? "Font Size" : "フォントサイズ"}: {localSettings.fontSize}px
               </label>
               <input
                 type="range"
@@ -256,7 +264,7 @@ export function SettingsPanel({ onSave, onClose }: SettingsPanelProps) {
                 className={`block font-medium ${isSmallScreen ? "text-[10px] mb-1" : "text-xs sm:text-sm mb-1.5 sm:mb-2 md:mb-3"}`}
                 style={{ color: textPrimary }}
               >
-                プレビューテーマ
+                {locale === "en" ? "Preview Theme" : "プレビューテーマ"}
               </label>
               <div
                 className={`grid grid-cols-3 ${isSmallScreen ? "gap-1" : "gap-1.5 sm:gap-2 md:gap-3"}`}
@@ -311,7 +319,7 @@ export function SettingsPanel({ onSave, onClose }: SettingsPanelProps) {
               e.currentTarget.style.backgroundColor = "transparent"
             }}
           >
-            キャンセル
+            {locale === "en" ? "Cancel" : "キャンセル"}
           </button>
           <button
             onClick={handleSave}
@@ -324,7 +332,7 @@ export function SettingsPanel({ onSave, onClose }: SettingsPanelProps) {
               e.currentTarget.style.opacity = "1"
             }}
           >
-            保存
+            {locale === "en" ? "Save" : "保存"}
           </button>
         </div>
       </div>

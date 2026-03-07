@@ -49,3 +49,64 @@ export const careerProjects: CareerProject[] = [
     teamSize: 1,
   },
 ]
+
+export const careerProjects_EN: CareerProject[] = [
+  {
+    id: "tech-startup",
+    name: "Senior Full-Stack Engineer",
+    company: "Tech Startup Inc.",
+    role: "Tech Lead / Full-Stack",
+    startDate: "2021-04",
+    endDate: "present",
+    color: "#8b5cf6",
+    tags: ["Next.js", "TypeScript", "PostgreSQL", "AWS", "Docker", "Terraform", "tRPC", "Prisma"],
+    description:
+      "Joined as a frontend engineer. Promoted to tech lead after 6 months, leading technical decisions across the entire product including backend. Significantly improved development productivity through Next.js App Router migration and tRPC adoption.",
+    highlights: [
+      "150% user growth",
+      "40% faster load times",
+      "Built CI/CD pipeline",
+      "Microservices architecture migration",
+    ],
+    teamSize: 12,
+  },
+  {
+    id: "web-agency",
+    name: "Frontend Engineer",
+    company: "Web Agency Co.",
+    role: "Frontend Engineer",
+    startDate: "2019-04",
+    endDate: "2021-03",
+    color: "#3b82f6",
+    tags: ["React", "Next.js", "Vue.js", "SCSS", "Node.js", "Firebase"],
+    description:
+      "Started with HTML/CSS/jQuery-based development after joining as a new graduate. Proposed and led the technology migration to React/Next.js, modernizing the internal tech stack and improving development efficiency by over 2x. Also focused on establishing code review guidelines and mentoring junior engineers.",
+    highlights: [
+      "Delivered 20+ projects",
+      "Led React/Next.js migration",
+      "Established code review culture",
+    ],
+    teamSize: 5,
+  },
+  {
+    id: "freelance",
+    name: "Web Developer (Side Project)",
+    company: "Freelance",
+    role: "Full-Stack Engineer",
+    startDate: "2020-10",
+    endDate: "2021-06",
+    color: "#14b8a6",
+    tags: ["Next.js", "Tailwind CSS", "Supabase", "Vercel", "Stripe"],
+    description:
+      "Started as a side project while at Web Agency Co. Focused on MVP development for startups, handling everything from planning to tech selection, implementation, and deployment. This experience became the catalyst for transitioning to a full-stack engineer.",
+    highlights: [
+      "Developed & launched 3 MVPs",
+      "Stripe payment integration",
+      "Built Supabase real-time features",
+    ],
+    teamSize: 1,
+  },
+]
+
+export const getCareerProjects = (locale: string) =>
+  locale === "en" ? careerProjects_EN : careerProjects

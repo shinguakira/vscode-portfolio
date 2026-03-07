@@ -1,23 +1,42 @@
 "use client"
 
-import { OTHER_SKILLS_PROFESSIONAL, SKILL_CATEGORIES } from "@/constants/preview-data"
+import { getOtherSkillsProfessional, getSkillCategories } from "@/constants/preview-data"
+import { useLocale } from "@/contexts/locale-context"
 
-const CATEGORY_LABELS: Record<string, string> = {
+const CATEGORY_LABELS_JA: Record<string, string> = {
   フロントエンド: "フロントエンド開発",
   バックエンド: "バックエンド開発",
   "AI / ML": "AI / 機械学習",
   インフラ: "インフラストラクチャ",
 }
 
+const CATEGORY_LABELS_EN: Record<string, string> = {
+  Frontend: "Frontend Development",
+  Backend: "Backend Development",
+  "AI / ML": "AI / Machine Learning",
+  Infrastructure: "Infrastructure",
+}
+
 const PROFESSIONAL_SKILL_NAMES: Record<string, Record<string, string>> = {
   フロントエンド: { React: "React / Next.js", TypeScript: "TypeScript", "Next.js": "" },
+  Frontend: { React: "React / Next.js", TypeScript: "TypeScript", "Next.js": "" },
   バックエンド: {
+    "Node.js": "Node.js / Express",
+    Python: "Python / FastAPI",
+    PostgreSQL: "PostgreSQL",
+  },
+  Backend: {
     "Node.js": "Node.js / Express",
     Python: "Python / FastAPI",
     PostgreSQL: "PostgreSQL",
   },
   "AI / ML": { "OpenAI API": "OpenAI API / GPT", LangChain: "LangChain", RAG: "RAG / Embedding" },
   インフラ: {
+    AWS: "AWS (EC2, Lambda, S3)",
+    Docker: "Docker / Kubernetes",
+    Terraform: "Terraform / IaC",
+  },
+  Infrastructure: {
     AWS: "AWS (EC2, Lambda, S3)",
     Docker: "Docker / Kubernetes",
     Terraform: "Terraform / IaC",
@@ -40,8 +59,14 @@ function getRankStyle(rank: string) {
 }
 
 export function ProfessionalSkills() {
-  const sections = SKILL_CATEGORIES.map((cat) => {
-    const label = CATEGORY_LABELS[cat.category] ?? cat.category
+  const locale = useLocale()
+  const skillCategories = getSkillCategories(locale)
+  const otherSkills = getOtherSkillsProfessional(locale)
+
+  const categoryLabels = locale === "en" ? CATEGORY_LABELS_EN : CATEGORY_LABELS_JA
+
+  const sections = skillCategories.map((cat) => {
+    const label = categoryLabels[cat.category] ?? cat.category
     const nameMap = PROFESSIONAL_SKILL_NAMES[cat.category] ?? {}
     const skills = cat.skills
       .map((s) => {
@@ -51,7 +76,7 @@ export function ProfessionalSkills() {
       })
       .filter(Boolean) as { name: string; years: number; rank: string }[]
 
-    if (cat.category === "フロントエンド") {
+    if (cat.category === "フロントエンド" || cat.category === "Frontend") {
       skills.push({ name: "Tailwind CSS", years: 3, rank: "S" })
     }
 
@@ -62,8 +87,12 @@ export function ProfessionalSkills() {
     <div className="min-h-full bg-white">
       <div className="max-w-5xl mx-auto px-8 py-24">
         <div className="mb-16 border-b border-gray-200 pb-8">
-          <h1 className="text-5xl font-serif font-bold text-gray-900 mb-3">スキルと技術</h1>
-          <p className="text-xl text-gray-600">専門知識と技術スタック</p>
+          <h1 className="text-5xl font-serif font-bold text-gray-900 mb-3">
+            {locale === "en" ? "Skills & Technologies" : "スキルと技術"}
+          </h1>
+          <p className="text-xl text-gray-600">
+            {locale === "en" ? "Expertise & Tech Stack" : "専門知識と技術スタック"}
+          </p>
         </div>
 
         <div className="space-y-16">
@@ -80,7 +109,10 @@ export function ProfessionalSkills() {
                   >
                     <span className="text-gray-900 font-medium">{skill.name}</span>
                     <div className="flex items-center gap-3">
-                      <span className="text-gray-500 text-sm">{skill.years}年</span>
+                      <span className="text-gray-500 text-sm">
+                        {skill.years}
+                        {locale === "en" ? " yr(s)" : "年"}
+                      </span>
                       <span
                         className={`px-3 py-1 text-sm font-bold border rounded ${getRankStyle(skill.rank)}`}
                       >
@@ -96,10 +128,10 @@ export function ProfessionalSkills() {
 
         <div className="mt-16 pt-16 border-t border-gray-200">
           <h2 className="text-sm font-bold text-gray-500 uppercase tracking-wider mb-6">
-            その他のスキル
+            {locale === "en" ? "Other Skills" : "その他のスキル"}
           </h2>
           <div className="flex flex-wrap gap-3">
-            {OTHER_SKILLS_PROFESSIONAL.map((skill) => (
+            {otherSkills.map((skill) => (
               <span key={skill} className="px-4 py-2 border border-gray-300 text-gray-700 text-sm">
                 {skill}
               </span>

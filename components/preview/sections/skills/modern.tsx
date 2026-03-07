@@ -1,8 +1,7 @@
 "use client"
 
-import { Badge } from "@/components/ui/badge"
-import { Card } from "@/components/ui/card"
-import { OTHER_TOOLS, SKILL_CATEGORIES } from "@/constants/preview-data"
+import { getSkillCategories, OTHER_TOOLS } from "@/constants/preview-data"
+import { useLocale } from "@/contexts/locale-context"
 
 function getRankBadge(rank: string) {
   switch (rank) {
@@ -20,19 +19,27 @@ function getRankBadge(rank: string) {
 }
 
 export function ModernSkills() {
+  const locale = useLocale()
+  const skillCategories = getSkillCategories(locale)
+
   return (
     <div className="min-h-full bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950">
       <div className="max-w-6xl mx-auto px-8 py-16">
         <div className="mb-12 text-center">
           <h1 className="text-5xl font-bold mb-4 bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
-            スキルセット
+            {locale === "en" ? "Skill Set" : "スキルセット"}
           </h1>
-          <p className="text-xl text-slate-400">技術スタックと習熟度</p>
+          <p className="text-xl text-slate-400">
+            {locale === "en" ? "Tech Stack & Proficiency" : "技術スタックと習熟度"}
+          </p>
         </div>
 
         <div className="grid md:grid-cols-2 gap-8">
-          {SKILL_CATEGORIES.map((cat) => (
-            <Card key={cat.category} className="p-6 bg-slate-900/50 border-slate-800 backdrop-blur">
+          {skillCategories.map((cat) => (
+            <div
+              key={cat.category}
+              className="rounded-xl shadow-sm p-6 bg-slate-900/50 border-slate-800 backdrop-blur"
+            >
               <h3 className="text-xl font-bold mb-6 text-white flex items-center gap-3">
                 <span className="text-2xl">{cat.icon}</span>
                 {cat.category}
@@ -45,7 +52,10 @@ export function ModernSkills() {
                   >
                     <span className="text-slate-300 font-medium">{skill.name}</span>
                     <div className="flex items-center gap-3">
-                      <span className="text-slate-500 text-sm">{skill.years}年</span>
+                      <span className="text-slate-500 text-sm">
+                        {skill.years}
+                        {locale === "en" ? " yr(s)" : "年"}
+                      </span>
                       <span
                         className={`px-3 py-1 text-sm font-bold border rounded-lg ${getRankBadge(skill.rank)}`}
                       >
@@ -55,26 +65,26 @@ export function ModernSkills() {
                   </div>
                 ))}
               </div>
-            </Card>
+            </div>
           ))}
         </div>
 
-        <Card className="mt-8 p-6 bg-slate-900/50 border-slate-800 backdrop-blur">
+        <div className="rounded-xl shadow-sm mt-8 p-6 bg-slate-900/50 border-slate-800 backdrop-blur">
           <h3 className="text-xl font-bold mb-6 text-white flex items-center gap-3">
             <span className="text-2xl">🛠️</span>
-            その他のツール & 技術
+            {locale === "en" ? "Other Tools & Technologies" : "その他のツール & 技術"}
           </h3>
           <div className="flex flex-wrap gap-3">
             {OTHER_TOOLS.map((tool) => (
-              <Badge
+              <span
                 key={tool}
-                className="px-4 py-2 bg-slate-800 text-slate-300 border-slate-700 text-sm"
+                className="inline-flex items-center rounded-md text-xs font-medium px-4 py-2 bg-slate-800 text-slate-300 border-slate-700 text-sm"
               >
                 {tool}
-              </Badge>
+              </span>
             ))}
           </div>
-        </Card>
+        </div>
       </div>
     </div>
   )

@@ -20,12 +20,17 @@ export function fmtLong(d: string) {
   return dt.toLocaleDateString("en-US", { month: "short", year: "numeric" })
 }
 
-export function durationJa(s: string, e: string) {
+export function durationJa(s: string, e: string, locale?: string) {
   const a = parseDate(s)
   const b = parseDate(e)
   const mo = (b.getFullYear() - a.getFullYear()) * 12 + (b.getMonth() - a.getMonth())
   const y = Math.floor(mo / 12)
   const m = mo % 12
+  if (locale === "en") {
+    if (y === 0) return `${m}mo`
+    if (m === 0) return `${y}yr`
+    return `${y}yr ${m}mo`
+  }
   if (y === 0) return `${m}ヶ月`
   if (m === 0) return `${y}年`
   return `${y}年${m}ヶ月`

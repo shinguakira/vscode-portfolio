@@ -3,6 +3,7 @@
 import { GraduationCap } from "lucide-react"
 import { useCallback, useMemo, useState } from "react"
 
+import { useLocale } from "@/contexts/locale-context"
 import { cn } from "@/lib/utils"
 
 import { DetailModal } from "./detail-modal"
@@ -42,9 +43,8 @@ export type TimelineVariant = "innovative" | "professional" | "modern"
 /* ─── Education data ─── */
 
 const educationData = {
-  degree: "情報工学学士",
-  university: "○○大学",
-  year: "2019年卒業",
+  ja: { degree: "情報工学学士", university: "○○大学", year: "2019年卒業" },
+  en: { degree: "B.S. in Computer Science", university: "XX University", year: "Graduated 2019" },
 }
 
 /* ─── Main exported component ─── */
@@ -56,6 +56,8 @@ export function CareerTimeline({
   projects: CareerProject[]
   variant?: TimelineVariant
 }) {
+  const locale = useLocale()
+  const education = locale === "en" ? educationData.en : educationData.ja
   const s = variantStyles[variant]
   const { minD, maxD } = useMemo(() => getRange(projects), [projects])
   const totalH = useMemo(() => monthsBetween(minD, maxD) * PX, [minD, maxD])
@@ -97,9 +99,15 @@ export function CareerTimeline({
       <div className={s.inner}>
         {/* Title */}
         <div>
-          <h1 className={s.title}>{variant === "innovative" ? "CAREER" : "職務経歴"}</h1>
+          <h1 className={s.title}>
+            {variant === "innovative" ? "CAREER" : locale === "en" ? "Work Experience" : "職務経歴"}
+          </h1>
           <p className={s.subtitle}>
-            {variant === "innovative" ? "Professional Journey" : "これまでのキャリアと実績"}
+            {variant === "innovative"
+              ? "Professional Journey"
+              : locale === "en"
+                ? "Career and Achievements"
+                : "これまでのキャリアと実績"}
           </p>
         </div>
 
@@ -224,7 +232,7 @@ export function CareerTimeline({
                             className="text-[9px] font-mono font-medium mt-0.5 block"
                             style={{ color: s.durationColor(p.color) }}
                           >
-                            {durationJa(p.startDate, p.endDate)}
+                            {durationJa(p.startDate, p.endDate, locale)}
                           </span>
                         )}
                       </div>
@@ -253,9 +261,9 @@ export function CareerTimeline({
               <GraduationCap className="w-5 h-5 text-gray-500 shrink-0" />
             )}
             <div>
-              <h3 className={s.educationTitle}>{educationData.degree}</h3>
+              <h3 className={s.educationTitle}>{education.degree}</h3>
               <p className={s.educationSub}>
-                {educationData.university} / {educationData.year}
+                {education.university} / {education.year}
               </p>
             </div>
           </div>

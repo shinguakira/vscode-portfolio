@@ -1,8 +1,12 @@
 "use client"
 
-import { FAQ_ITEMS } from "@/constants/preview-data"
+import { getFaqItems } from "@/constants/preview-data"
+import { useLocale } from "@/contexts/locale-context"
 
 export function InnovativeFaq() {
+  const locale = useLocale()
+  const FAQ_ITEMS = getFaqItems(locale)
+
   return (
     <div className="min-h-full bg-black relative overflow-hidden">
       <div className="absolute inset-0">
@@ -41,7 +45,7 @@ export function InnovativeFaq() {
           <div className="inline-block group relative">
             <div className="absolute -inset-1 bg-gradient-to-r from-orange-500 to-yellow-500 rounded-2xl blur opacity-75 group-hover:opacity-100 transition" />
             <button className="relative px-10 py-5 bg-black rounded-2xl text-white font-bold text-xl">
-              お気軽にお問い合わせください
+              {locale === "en" ? "Feel free to contact us" : "お気軽にお問い合わせください"}
             </button>
           </div>
         </div>

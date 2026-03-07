@@ -2,7 +2,8 @@
 
 import { Download, ExternalLink, Github, Star } from "lucide-react"
 
-import { extensions } from "@/constants/portfolio-data"
+import { getExtensions } from "@/constants/portfolio-data"
+import { useLocale } from "@/contexts/locale-context"
 import { useTheme } from "@/contexts/theme-context"
 import { IconFromKey } from "@/lib/icon-map"
 
@@ -11,7 +12,9 @@ interface ExtensionsPanelProps {
 }
 
 export function ExtensionsPanel({ openExtension }: ExtensionsPanelProps) {
+  const locale = useLocale()
   const { accentColor, bgMain, bgHover, textPrimary, textSecondary, textMuted } = useTheme()
+  const extensions = getExtensions(locale)
   return (
     <div className="py-2">
       <div className="px-2 md:px-3 mb-3">
@@ -19,10 +22,12 @@ export function ExtensionsPanel({ openExtension }: ExtensionsPanelProps) {
           className="text-[10px] md:text-[11px] font-semibold uppercase tracking-wider mb-2"
           style={{ color: textSecondary }}
         >
-          インストール済み
+          {locale === "en" ? "Installed" : "インストール済み"}
         </div>
         <div className="text-[10px] md:text-xs" style={{ color: textMuted }}>
-          {extensions.length} 件の拡張機能
+          {locale === "en"
+            ? `${extensions.length} extensions`
+            : `${extensions.length} 件の拡張機能`}
         </div>
       </div>
 
@@ -112,7 +117,9 @@ export function ExtensionsPanel({ openExtension }: ExtensionsPanelProps) {
                     onClick={(e) => e.stopPropagation()}
                   >
                     <Github className="w-2.5 h-2.5 md:w-3 md:h-3" />
-                    <span className="hidden md:inline">リポジトリ</span>
+                    <span className="hidden md:inline">
+                      {locale === "en" ? "Repository" : "リポジトリ"}
+                    </span>
                   </a>
                 )}
                 {ext.homepage && (
@@ -125,7 +132,7 @@ export function ExtensionsPanel({ openExtension }: ExtensionsPanelProps) {
                     onClick={(e) => e.stopPropagation()}
                   >
                     <ExternalLink className="w-2.5 h-2.5 md:w-3 md:h-3" />
-                    <span className="hidden md:inline">デモ</span>
+                    <span className="hidden md:inline">{locale === "en" ? "Demo" : "デモ"}</span>
                   </a>
                 )}
               </div>

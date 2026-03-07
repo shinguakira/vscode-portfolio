@@ -2,11 +2,14 @@
 
 import { GitCommitHorizontal, Plus } from "lucide-react"
 
-import { gitHistory } from "@/constants/portfolio-data"
+import { getGitHistory } from "@/constants/portfolio-data"
+import { useLocale } from "@/contexts/locale-context"
 import { useTheme } from "@/contexts/theme-context"
 
 export function GitHistoryPanel() {
+  const locale = useLocale()
   const { accentColor, textPrimary, textSecondary, textMuted } = useTheme()
+  const gitHistory = getGitHistory(locale)
   return (
     <div className="py-2">
       {gitHistory.map((commit) => (
@@ -65,7 +68,9 @@ export function GitHistoryPanel() {
                 ))}
                 {commit.changes.length > 2 && (
                   <div className="text-[9px] md:text-[10px] pl-4" style={{ color: textMuted }}>
-                    +{commit.changes.length - 2} more
+                    {locale === "en"
+                      ? `+${commit.changes.length - 2} more`
+                      : `他${commit.changes.length - 2}件`}
                   </div>
                 )}
               </div>
