@@ -17,7 +17,8 @@
       "Bash(xargs:*)",
       "Bash(npm run knip:*)",
       "WebFetch(domain:www.npmjs.com)",
-      "Bash(find:*)"
+      "Bash(find:*)",
+      "Bash(npx tsc --noEmit)"
     ]
   }
 }
