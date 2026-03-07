@@ -1,3 +1,5 @@
+**日本語版は [README.ja.md](README.ja.md) をご覧ください。**
+
 # VSCode Portfolio
 
 A portfolio website that replicates the Visual Studio Code editor interface. Browse portfolio sections as if they were files in an IDE — complete with tabs, sidebar, terminal, settings panel, and theme customization.

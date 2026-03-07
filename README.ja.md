@@ -1,3 +1,5 @@
+**For English, see [README.md](README.md).**
+
 # VSCode Portfolio
 
 Visual Studio Codeのエディタインターフェースを再現したポートフォリオサイトです。IDE上でファイルを閲覧するようにポートフォリオの各セクションを表示できます。タブ、サイドバー、ターミナル、設定パネル、テーマカスタマイズなどを備えています。
