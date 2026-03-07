@@ -21,44 +21,44 @@ Each section is available in 3 visual themes: **Modern**, **Innovative**, and **
 
 ### Profile
 
-| Modern | Innovative | Professional |
-|--------|------------|--------------|
+| Modern                                                             | Innovative                                                                 | Professional                                                                   |
+| ------------------------------------------------------------------ | -------------------------------------------------------------------------- | ------------------------------------------------------------------------------ |
 | ![Profile Modern](e2e/__snapshots__/ja/desktop/profile-modern.png) | ![Profile Innovative](e2e/__snapshots__/ja/desktop/profile-innovative.png) | ![Profile Professional](e2e/__snapshots__/ja/desktop/profile-professional.png) |
 
 ### Projects
 
-| Modern | Innovative | Professional |
-|--------|------------|--------------|
+| Modern                                                               | Innovative                                                                   | Professional                                                                     |
+| -------------------------------------------------------------------- | ---------------------------------------------------------------------------- | -------------------------------------------------------------------------------- |
 | ![Projects Modern](e2e/__snapshots__/ja/desktop/projects-modern.png) | ![Projects Innovative](e2e/__snapshots__/ja/desktop/projects-innovative.png) | ![Projects Professional](e2e/__snapshots__/ja/desktop/projects-professional.png) |
 
 ### Skills
 
-| Modern | Innovative | Professional |
-|--------|------------|--------------|
+| Modern                                                           | Innovative                                                               | Professional                                                                 |
+| ---------------------------------------------------------------- | ------------------------------------------------------------------------ | ---------------------------------------------------------------------------- |
 | ![Skills Modern](e2e/__snapshots__/ja/desktop/skills-modern.png) | ![Skills Innovative](e2e/__snapshots__/ja/desktop/skills-innovative.png) | ![Skills Professional](e2e/__snapshots__/ja/desktop/skills-professional.png) |
 
 ### Experience
 
-| Modern | Innovative | Professional |
-|--------|------------|--------------|
+| Modern                                                                   | Innovative                                                                       | Professional                                                                         |
+| ------------------------------------------------------------------------ | -------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------ |
 | ![Experience Modern](e2e/__snapshots__/ja/desktop/experience-modern.png) | ![Experience Innovative](e2e/__snapshots__/ja/desktop/experience-innovative.png) | ![Experience Professional](e2e/__snapshots__/ja/desktop/experience-professional.png) |
 
 ### Strong Points
 
-| Modern | Innovative | Professional |
-|--------|------------|--------------|
+| Modern                                                                         | Innovative                                                                             | Professional                                                                               |
+| ------------------------------------------------------------------------------ | -------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------ |
 | ![Strong Points Modern](e2e/__snapshots__/ja/desktop/strong-points-modern.png) | ![Strong Points Innovative](e2e/__snapshots__/ja/desktop/strong-points-innovative.png) | ![Strong Points Professional](e2e/__snapshots__/ja/desktop/strong-points-professional.png) |
 
 ### Contact
 
-| Modern | Innovative | Professional |
-|--------|------------|--------------|
+| Modern                                                             | Innovative                                                                 | Professional                                                                   |
+| ------------------------------------------------------------------ | -------------------------------------------------------------------------- | ------------------------------------------------------------------------------ |
 | ![Contact Modern](e2e/__snapshots__/ja/desktop/contact-modern.png) | ![Contact Innovative](e2e/__snapshots__/ja/desktop/contact-innovative.png) | ![Contact Professional](e2e/__snapshots__/ja/desktop/contact-professional.png) |
 
 ### FAQ
 
-| Modern | Innovative | Professional |
-|--------|------------|--------------|
+| Modern                                                     | Innovative                                                         | Professional                                                           |
+| ---------------------------------------------------------- | ------------------------------------------------------------------ | ---------------------------------------------------------------------- |
 | ![FAQ Modern](e2e/__snapshots__/ja/desktop/faq-modern.png) | ![FAQ Innovative](e2e/__snapshots__/ja/desktop/faq-innovative.png) | ![FAQ Professional](e2e/__snapshots__/ja/desktop/faq-professional.png) |
 
 ## Tech Stack
@@ -101,6 +101,7 @@ npm run start
 ```
 
 Build output shows SSG status:
+
 - `○ (Static)` — pre-rendered as static content
 - `● (SSG)` — pre-rendered with `generateStaticParams`
 - `ƒ (Dynamic)` — server-rendered on demand
