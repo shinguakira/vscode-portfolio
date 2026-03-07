@@ -1,9 +1,5 @@
-"use client"
+import { notFound } from "next/navigation"
 
-import { useParams } from "next/navigation"
-
-import { DEFAULT_SETTINGS } from "@/constants/vscode-config"
-import { ThemeProvider } from "@/contexts/theme-context"
 import { LandscapePrompt } from "@/components/landscape-prompt"
 import { InnovativeContact } from "@/components/preview/sections/contact/innovative"
 import { ModernContact } from "@/components/preview/sections/contact/modern"
@@ -26,26 +22,65 @@ import { ProfessionalSkills } from "@/components/preview/sections/skills/profess
 import { InnovativeStrongPoints } from "@/components/preview/sections/strong-points/innovative"
 import { ModernStrongPoints } from "@/components/preview/sections/strong-points/modern"
 import { ProfessionalStrongPoints } from "@/components/preview/sections/strong-points/professional"
+import { DEFAULT_SETTINGS } from "@/constants/vscode-config"
+import { ThemeProvider } from "@/contexts/theme-context"
+
+const SECTIONS = ["profile", "projects", "skills", "contact", "strong-points", "faq", "experience"]
+const THEMES = ["modern", "innovative", "professional"]
 
 const SECTION_MAP: Record<string, Record<string, React.ComponentType>> = {
-  profile: { modern: ModernProfile, innovative: InnovativeProfile, professional: ProfessionalProfile },
-  projects: { modern: ModernProjects, innovative: InnovativeProjects, professional: ProfessionalProjects },
+  profile: {
+    modern: ModernProfile,
+    innovative: InnovativeProfile,
+    professional: ProfessionalProfile,
+  },
+  projects: {
+    modern: ModernProjects,
+    innovative: InnovativeProjects,
+    professional: ProfessionalProjects,
+  },
   skills: { modern: ModernSkills, innovative: InnovativeSkills, professional: ProfessionalSkills },
-  contact: { modern: ModernContact, innovative: InnovativeContact, professional: ProfessionalContact },
-  "strong-points": { modern: ModernStrongPoints, innovative: InnovativeStrongPoints, professional: ProfessionalStrongPoints },
+  contact: {
+    modern: ModernContact,
+    innovative: InnovativeContact,
+    professional: ProfessionalContact,
+  },
+  "strong-points": {
+    modern: ModernStrongPoints,
+    innovative: InnovativeStrongPoints,
+    professional: ProfessionalStrongPoints,
+  },
   faq: { modern: ModernFaq, innovative: InnovativeFaq, professional: ProfessionalFaq },
-  experience: { modern: ModernExperience, innovative: InnovativeExperience, professional: ProfessionalExperience },
+  experience: {
+    modern: ModernExperience,
+    innovative: InnovativeExperience,
+    professional: ProfessionalExperience,
+  },
 }
 
-export default function ScreenshotPage() {
-  const params = useParams()
-  const section = params.section as string
-  const theme = params.theme as string
+export const dynamic = "force-static"
+
+export function generateStaticParams() {
+  const params = []
+  for (const section of SECTIONS) {
+    for (const theme of THEMES) {
+      params.push({ section, theme })
+    }
+  }
+  return params
+}
+
+export default async function ScreenshotPage({
+  params,
+}: {
+  params: Promise<{ section: string; theme: string }>
+}) {
+  const { section, theme } = await params
 
   const Section = SECTION_MAP[section]?.[theme]
 
   if (!Section) {
-    return <div className="p-8 text-white bg-black">Unknown: {section}/{theme}</div>
+    notFound()
   }
 
   return (
