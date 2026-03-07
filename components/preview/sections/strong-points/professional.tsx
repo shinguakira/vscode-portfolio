@@ -64,7 +64,9 @@ export function ProfessionalStrongPoints() {
           <div className="grid md:grid-cols-4 gap-6 short:gap-3 text-center">
             {ACHIEVEMENT_STATS.map((stat) => (
               <div key={stat.label} className="border border-gray-200 p-6 short:p-3">
-                <div className="text-3xl short:text-xl font-bold text-gray-900 mb-1">{stat.num}</div>
+                <div className="text-3xl short:text-xl font-bold text-gray-900 mb-1">
+                  {stat.num}
+                </div>
                 <div className="text-xs text-gray-500 uppercase tracking-wide">{stat.label}</div>
               </div>
             ))}

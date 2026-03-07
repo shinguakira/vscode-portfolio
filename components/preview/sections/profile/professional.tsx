@@ -76,7 +76,9 @@ export function ProfessionalProfile() {
           <div className="grid md:grid-cols-3 gap-8 short:gap-3 text-center">
             {stats.map((stat) => (
               <div key={stat.label} className="border border-gray-200 p-6 short:p-3 rounded">
-                <div className="text-4xl short:text-xl font-bold text-gray-900 mb-2 short:mb-1">{stat.num}</div>
+                <div className="text-4xl short:text-xl font-bold text-gray-900 mb-2 short:mb-1">
+                  {stat.num}
+                </div>
                 <div className="text-sm text-gray-600 uppercase tracking-wide">{stat.label}</div>
               </div>
             ))}

@@ -48,7 +48,10 @@ export function InnovativeStrongPoints() {
 
         <div className="grid md:grid-cols-4 gap-6 short:gap-3">
           {ACHIEVEMENT_STATS.map((stat, i) => (
-            <div key={i} className="text-center p-6 short:p-3 border border-gray-800 rounded-2xl bg-black/50">
+            <div
+              key={i}
+              className="text-center p-6 short:p-3 border border-gray-800 rounded-2xl bg-black/50"
+            >
               <div className="text-4xl short:text-xl font-black text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-cyan-400 mb-2 short:mb-1">
                 {stat.num}
               </div>

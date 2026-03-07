@@ -19,7 +19,9 @@ export function InnovativeFaq() {
           <h1 className="text-8xl short:text-3xl font-black mb-6 short:mb-2 text-transparent bg-clip-text bg-gradient-to-r from-orange-400 via-yellow-400 to-amber-400">
             FAQ
           </h1>
-          <p className="text-2xl short:text-sm text-gray-400 font-light">Frequently Asked Questions</p>
+          <p className="text-2xl short:text-sm text-gray-400 font-light">
+            Frequently Asked Questions
+          </p>
         </div>
 
         <div className="space-y-6 short:space-y-3">
@@ -32,7 +34,9 @@ export function InnovativeFaq() {
                     Q
                   </div>
                   <div className="flex-1">
-                    <h3 className="text-xl short:text-base font-bold text-white mb-4 short:mb-1">{item.q}</h3>
+                    <h3 className="text-xl short:text-base font-bold text-white mb-4 short:mb-1">
+                      {item.q}
+                    </h3>
                     <p className="text-gray-400 leading-relaxed short:text-sm">{item.a}</p>
                   </div>
                 </div>

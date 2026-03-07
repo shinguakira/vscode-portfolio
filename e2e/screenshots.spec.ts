@@ -24,13 +24,10 @@ for (const viewport of VIEWPORTS) {
           })
           await page.waitForSelector("[data-ready]", { timeout: 15000 })
           await page.waitForTimeout(500)
-          await expect(page).toHaveScreenshot(
-            [locale, viewport.name, `${section}-${theme}.png`],
-            {
-              fullPage: viewport.fullPage,
-              maxDiffPixelRatio: 0.01,
-            }
-          )
+          await expect(page).toHaveScreenshot([locale, viewport.name, `${section}-${theme}.png`], {
+            fullPage: viewport.fullPage,
+            maxDiffPixelRatio: 0.01,
+          })
         })
       }
     }

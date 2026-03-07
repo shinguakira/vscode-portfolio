@@ -35,7 +35,9 @@ export function InnovativeContact() {
           <h1 className="text-8xl short:text-3xl font-black mb-6 short:mb-2 text-transparent bg-clip-text bg-gradient-to-r from-rose-400 via-pink-400 to-purple-400">
             CONTACT
           </h1>
-          <p className="text-2xl short:text-sm text-gray-400 font-light">Let&apos;s Build Something Amazing</p>
+          <p className="text-2xl short:text-sm text-gray-400 font-light">
+            Let&apos;s Build Something Amazing
+          </p>
         </div>
 
         <div className="grid md:grid-cols-2 gap-8 short:gap-3 mb-12 short:mb-4">

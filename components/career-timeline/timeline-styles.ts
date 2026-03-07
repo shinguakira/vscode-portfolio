@@ -44,7 +44,8 @@ export const variantStyles = {
     bg2: "",
     inner: "max-w-4xl mx-auto px-8 short:px-4 py-24 short:py-8",
     title: "text-5xl short:text-2xl font-serif font-bold text-gray-900 mb-3 short:mb-1 text-left",
-    subtitle: "text-xl short:text-sm text-gray-600 text-left mb-16 short:mb-4 pb-8 short:pb-4 border-b border-gray-200",
+    subtitle:
+      "text-xl short:text-sm text-gray-600 text-left mb-16 short:mb-4 pb-8 short:pb-4 border-b border-gray-200",
     rulerText: "text-gray-400",
     gridLine: "border-gray-200/40",
     blockBg: (color: string) => `${color}08`,

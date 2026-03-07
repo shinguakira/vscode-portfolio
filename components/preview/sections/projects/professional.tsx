@@ -38,7 +38,9 @@ export function ProfessionalProjects() {
                     </div>
                   </div>
                 </div>
-                <p className="text-gray-700 leading-relaxed mb-6 short:mb-2 max-w-2xl short:text-sm">{project.desc}</p>
+                <p className="text-gray-700 leading-relaxed mb-6 short:mb-2 max-w-2xl short:text-sm">
+                  {project.desc}
+                </p>
                 <div className="flex gap-4">
                   <button className="px-6 py-2 bg-gray-900 text-white font-medium hover:bg-gray-800 transition">
                     {locale === "en" ? "View Details" : "詳細を見る"}

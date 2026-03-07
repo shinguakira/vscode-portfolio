@@ -33,7 +33,9 @@ export function InnovativeProjects() {
                     >
                       {project.title}
                     </h3>
-                    <p className="text-xl short:text-sm text-gray-400 mb-8 short:mb-3 leading-relaxed">{project.desc}</p>
+                    <p className="text-xl short:text-sm text-gray-400 mb-8 short:mb-3 leading-relaxed">
+                      {project.desc}
+                    </p>
                     <div className="flex gap-4">
                       <button
                         className={`px-6 short:px-4 py-3 short:py-2 rounded-xl font-bold text-sm bg-gradient-to-r ${project.gradient} text-white`}
