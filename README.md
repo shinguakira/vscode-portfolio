@@ -12,7 +12,7 @@ A portfolio website that replicates the Visual Studio Code editor interface. Bro
 - **Bilingual**: Full Japanese and English support (next-intl)
 - **Interactive Elements**: File explorer, search, git history, extension gallery, settings panel, tutorial overlay
 - **Responsive**: Desktop, mobile landscape (with `short:` variant scaling), and portrait layouts
-- **Visual Regression Testing**: 168 Playwright snapshot tests across 4 viewports × 2 locales
+- **Visual Regression Testing**: 184 Playwright snapshot tests (168 section + 16 feature screenshots)
 - **SSG Optimized**: Screenshot routes pre-rendered as static HTML at build time
 
 ## Sections & Themes
@@ -60,6 +60,18 @@ Each section is available in 3 visual themes: **Modern**, **Innovative**, and **
 | Modern                                                     | Innovative                                                         | Professional                                                           |
 | ---------------------------------------------------------- | ------------------------------------------------------------------ | ---------------------------------------------------------------------- |
 | ![FAQ Modern](e2e/__snapshots__/ja/desktop/faq-modern.png) | ![FAQ Innovative](e2e/__snapshots__/ja/desktop/faq-innovative.png) | ![FAQ Professional](e2e/__snapshots__/ja/desktop/faq-professional.png) |
+
+## Interactive Features
+
+The VS Code UI includes fully interactive elements beyond the portfolio sections.
+
+| Explorer | Search | Git History | Changelog |
+| -------- | ------ | ----------- | --------- |
+| ![Explorer](e2e/__snapshots__/en/features/explorer.png) | ![Search](e2e/__snapshots__/en/features/search.png) | ![Git History](e2e/__snapshots__/en/features/git-history.png) | ![Changelog](e2e/__snapshots__/en/features/changelog.png) |
+
+| Extensions | Terminal | Settings | Tutorial |
+| ---------- | -------- | -------- | -------- |
+| ![Extensions](e2e/__snapshots__/en/features/extensions.png) | ![Terminal](e2e/__snapshots__/en/features/terminal.png) | ![Settings](e2e/__snapshots__/en/features/settings.png) | ![Tutorial](e2e/__snapshots__/en/features/tutorial.png) |
 
 ## Tech Stack
 
@@ -122,7 +134,7 @@ npx knip              # Detect unused code/dependencies
 ### Visual Regression Testing
 
 ```bash
-# Run all 168 snapshot tests
+# Run all 184 snapshot tests
 npx playwright test
 
 # Run specific viewport/locale

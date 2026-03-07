@@ -31,5 +31,5 @@ VS Code editor-themed portfolio site. Next.js 16 (App Router), React 19, TypeScr
 
 - `npm run check` — tsc + oxfmt + eslint --fix
 - `npx knip` — detect unused code/dependencies
-- `npx playwright test` — 168 visual regression snapshots (4 viewports × 2 locales)
+- `npx playwright test` — 184 visual regression snapshots (168 section + 16 interactive feature)
 - `npx playwright test --update-snapshots` — update baselines after intentional changes
