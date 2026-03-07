@@ -1,6 +1,5 @@
 "use client"
 
-import { Card } from "@/components/ui/card"
 import { getPreviewType } from "@/lib/file-utils"
 import type { PreviewTheme } from "@/types"
 
@@ -76,11 +75,11 @@ export function PreviewPanel({ fileName, content, theme = "modern" }: PreviewPan
 
   return (
     <div className="min-h-full bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 p-8">
-      <Card className="max-w-4xl mx-auto p-8 bg-slate-900/50 border-slate-800 backdrop-blur">
+      <div className="max-w-4xl mx-auto p-8 bg-slate-900/50 border border-slate-800 backdrop-blur rounded-xl shadow-sm">
         <pre className="text-slate-300 leading-relaxed whitespace-pre-wrap font-mono text-sm">
           {content}
         </pre>
-      </Card>
+      </div>
     </div>
   )
 }

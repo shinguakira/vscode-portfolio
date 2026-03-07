@@ -4,15 +4,16 @@ import { ChevronRight, Download, ExternalLink, Github, Star, X } from "lucide-re
 import Image from "next/image"
 import { useState } from "react"
 
-import { Badge } from "@/components/ui/badge"
-import { Card } from "@/components/ui/card"
-import { extensions } from "@/constants/portfolio-data"
+import { getExtensions } from "@/constants/portfolio-data"
 import { EXTENSION_COLOR_MAP } from "@/constants/preview-data"
+import { useLocale } from "@/contexts/locale-context"
 import { IconFromKey } from "@/lib/icon-map"
 import type { Extension, PreviewTheme } from "@/types"
 
 export function ExtensionGallery({ theme }: { theme: PreviewTheme }) {
+  const locale = useLocale()
   const [selectedExtension, setSelectedExtension] = useState<Extension | null>(null)
+  const extensions = getExtensions(locale)
 
   const colorMap = EXTENSION_COLOR_MAP
 
@@ -21,8 +22,12 @@ export function ExtensionGallery({ theme }: { theme: PreviewTheme }) {
       <div className="min-h-full bg-white">
         <div className="max-w-4xl mx-auto px-8 py-24">
           <div className="mb-16 border-b border-gray-200 pb-8">
-            <h1 className="text-5xl font-serif font-bold text-gray-900 mb-3">プロジェクト一覧</h1>
-            <p className="text-xl text-gray-600">クリックして詳細を表示</p>
+            <h1 className="text-5xl font-serif font-bold text-gray-900 mb-3">
+              {locale === "en" ? "Projects" : "プロジェクト一覧"}
+            </h1>
+            <p className="text-xl text-gray-600">
+              {locale === "en" ? "Click to view details" : "クリックして詳細を表示"}
+            </p>
           </div>
 
           <div className="space-y-6">
@@ -258,7 +263,9 @@ export function ExtensionGallery({ theme }: { theme: PreviewTheme }) {
             <h1 className="text-8xl font-black mb-6 text-transparent bg-clip-text bg-gradient-to-r from-teal-400 via-green-400 to-emerald-400">
               PROJECTS
             </h1>
-            <p className="text-2xl text-gray-400 font-light">クリックして詳細を表示</p>
+            <p className="text-2xl text-gray-400 font-light">
+              {locale === "en" ? "Click to view details" : "クリックして詳細を表示"}
+            </p>
           </div>
 
           <div className="grid md:grid-cols-2 gap-6">
@@ -504,15 +511,17 @@ export function ExtensionGallery({ theme }: { theme: PreviewTheme }) {
           <h1 className="text-5xl font-bold mb-4 bg-gradient-to-r from-teal-400 to-emerald-400 bg-clip-text text-transparent">
             Featured Projects
           </h1>
-          <p className="text-xl text-slate-400">クリックして詳細を表示</p>
+          <p className="text-xl text-slate-400">
+            {locale === "en" ? "Click to view details" : "クリックして詳細を表示"}
+          </p>
         </div>
 
         <div className="space-y-6">
           {extensions.map((ext) => (
-            <Card
+            <div
               key={ext.id}
               onClick={() => setSelectedExtension(ext)}
-              className="p-6 bg-slate-900/50 border-slate-800 backdrop-blur hover:border-slate-600 transition-all cursor-pointer group"
+              className="p-6 bg-slate-900/50 border border-slate-800 backdrop-blur hover:border-slate-600 transition-all cursor-pointer group rounded-xl shadow-sm"
             >
               <div className="flex items-start gap-5">
                 <div
@@ -528,12 +537,12 @@ export function ExtensionGallery({ theme }: { theme: PreviewTheme }) {
                   <p className="text-slate-400 text-sm leading-relaxed mb-4">{ext.description}</p>
                   <div className="flex flex-wrap gap-2 mb-4">
                     {ext.tags.slice(0, 4).map((tag) => (
-                      <Badge
+                      <span
                         key={tag}
-                        className="px-2 py-1 bg-slate-800 text-slate-300 border-slate-700 text-xs"
+                        className="inline-flex items-center rounded-md border px-2 py-1 bg-slate-800 text-slate-300 border-slate-700 text-xs font-medium"
                       >
                         {tag}
-                      </Badge>
+                      </span>
                     ))}
                   </div>
                   <div className="flex items-center gap-6 text-sm">
@@ -550,7 +559,7 @@ export function ExtensionGallery({ theme }: { theme: PreviewTheme }) {
                   </div>
                 </div>
               </div>
-            </Card>
+            </div>
           ))}
         </div>
       </div>
@@ -561,9 +570,9 @@ export function ExtensionGallery({ theme }: { theme: PreviewTheme }) {
           className="fixed inset-0 bg-black/80 flex items-center justify-center z-50 p-4"
           onClick={() => setSelectedExtension(null)}
         >
-          <Card
-            className="max-w-4xl w-full max-h-[90vh] overflow-y-auto bg-slate-900 border-slate-700"
-            onClick={(e) => e.stopPropagation()}
+          <div
+            className="max-w-4xl w-full max-h-[90vh] overflow-y-auto bg-slate-900 border border-slate-700 rounded-xl shadow-sm"
+            onClick={(e: React.MouseEvent) => e.stopPropagation()}
           >
             {/* Header */}
             <div className="p-6 md:p-8 border-b border-slate-800">
@@ -678,12 +687,12 @@ export function ExtensionGallery({ theme }: { theme: PreviewTheme }) {
                   <h3 className="text-sm font-bold text-slate-400 mb-3">Technologies</h3>
                   <div className="flex flex-wrap gap-2">
                     {selectedExtension.tags.map((tag) => (
-                      <Badge
+                      <span
                         key={tag}
-                        className="px-3 py-1.5 bg-teal-500/10 text-teal-400 border-teal-500/30"
+                        className="inline-flex items-center rounded-md border px-3 py-1.5 bg-teal-500/10 text-teal-400 border-teal-500/30 text-xs font-medium"
                       >
                         {tag}
-                      </Badge>
+                      </span>
                     ))}
                   </div>
                 </div>
@@ -734,7 +743,7 @@ export function ExtensionGallery({ theme }: { theme: PreviewTheme }) {
                 </div>
               </div>
             </div>
-          </Card>
+          </div>
         </div>
       )}
     </div>

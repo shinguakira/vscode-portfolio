@@ -15,6 +15,7 @@ import {
 import Image from "next/image"
 import { useState } from "react"
 
+import { useLocale } from "@/contexts/locale-context"
 import { useTheme } from "@/contexts/theme-context"
 import { adjustBrightness } from "@/lib/color-utils"
 import { IconFromKey } from "@/lib/icon-map"
@@ -25,6 +26,7 @@ interface ExtensionShowcaseProps {
 }
 
 export function ExtensionShowcase({ extension }: ExtensionShowcaseProps) {
+  const locale = useLocale()
   const { settings } = useTheme()
   const [selectedImageIndex, setSelectedImageIndex] = useState(0)
 
@@ -178,7 +180,7 @@ export function ExtensionShowcase({ extension }: ExtensionShowcaseProps) {
               style={{ color: textPrimary }}
             >
               <span style={{ color: accentColor }}>▎</span>
-              スクリーンショット
+              {locale === "en" ? "Screenshots" : "スクリーンショット"}
             </h2>
 
             {/* メイン画像表示エリア */}
@@ -209,7 +211,9 @@ export function ExtensionShowcase({ extension }: ExtensionShowcaseProps) {
                       />
                     </div>
                     <p className="text-sm" style={{ color: textSecondary }}>
-                      スクリーンショットはありません
+                      {locale === "en"
+                        ? "No screenshots available"
+                        : "スクリーンショットはありません"}
                     </p>
                   </div>
                 )}
@@ -298,7 +302,7 @@ export function ExtensionShowcase({ extension }: ExtensionShowcaseProps) {
               style={{ color: textPrimary }}
             >
               <span style={{ color: accentColor }}>▎</span>
-              主な機能
+              {locale === "en" ? "Key Features" : "主な機能"}
             </h2>
             <div className="grid gap-3">
               {extension.features.map((feature, index) => (
@@ -337,7 +341,7 @@ export function ExtensionShowcase({ extension }: ExtensionShowcaseProps) {
               style={{ color: textPrimary }}
             >
               <span style={{ color: accentColor }}>▎</span>
-              技術スタック
+              {locale === "en" ? "Tech Stack" : "技術スタック"}
             </h2>
             <div className="flex flex-wrap gap-2">
               {extension.tags.map((tag) => (
@@ -370,7 +374,7 @@ export function ExtensionShowcase({ extension }: ExtensionShowcaseProps) {
               style={{ color: textPrimary }}
             >
               <span style={{ color: accentColor }}>▎</span>
-              カテゴリ
+              {locale === "en" ? "Categories" : "カテゴリ"}
             </h2>
             <div className="flex flex-wrap gap-2">
               {extension.categories.map((category) => (
@@ -401,32 +405,36 @@ export function ExtensionShowcase({ extension }: ExtensionShowcaseProps) {
               style={{ color: textPrimary }}
             >
               <span style={{ color: accentColor }}>▎</span>
-              プロジェクト情報
+              {locale === "en" ? "Project Info" : "プロジェクト情報"}
             </h2>
             <div className="space-y-3 text-sm">
               <div
                 className="flex justify-between items-center py-2 border-b"
                 style={{ borderColor }}
               >
-                <span style={{ color: textMuted }}>バージョン</span>
+                <span style={{ color: textMuted }}>
+                  {locale === "en" ? "Version" : "バージョン"}
+                </span>
                 <span style={{ color: textPrimary }}>{extension.version}</span>
               </div>
               <div
                 className="flex justify-between items-center py-2 border-b"
                 style={{ borderColor }}
               >
-                <span style={{ color: textMuted }}>公開者</span>
+                <span style={{ color: textMuted }}>{locale === "en" ? "Publisher" : "公開者"}</span>
                 <span style={{ color: textPrimary }}>{extension.publisher}</span>
               </div>
               <div
                 className="flex justify-between items-center py-2 border-b"
                 style={{ borderColor }}
               >
-                <span style={{ color: textMuted }}>ダウンロード</span>
+                <span style={{ color: textMuted }}>
+                  {locale === "en" ? "Downloads" : "ダウンロード"}
+                </span>
                 <span style={{ color: textPrimary }}>{extension.downloads.toLocaleString()}</span>
               </div>
               <div className="flex justify-between items-center py-2">
-                <span style={{ color: textMuted }}>評価</span>
+                <span style={{ color: textMuted }}>{locale === "en" ? "Rating" : "評価"}</span>
                 <div className="flex items-center gap-1">
                   {[...Array(5)].map((_, i) => (
                     <Star
@@ -459,7 +467,7 @@ export function ExtensionShowcase({ extension }: ExtensionShowcaseProps) {
               style={{ color: textPrimary }}
             >
               <span style={{ color: accentColor }}>▎</span>
-              リンク
+              {locale === "en" ? "Links" : "リンク"}
             </h2>
             <div className="space-y-2">
               {extension.repository && (
@@ -471,7 +479,9 @@ export function ExtensionShowcase({ extension }: ExtensionShowcaseProps) {
                   style={{ backgroundColor: bgCardHover, color: textPrimary }}
                 >
                   <Github className="w-4 h-4" />
-                  <span className="text-sm">リポジトリを見る</span>
+                  <span className="text-sm">
+                    {locale === "en" ? "View Repository" : "リポジトリを見る"}
+                  </span>
                   <ExternalLink className="w-3 h-3 ml-auto" style={{ color: textMuted }} />
                 </a>
               )}
@@ -484,7 +494,9 @@ export function ExtensionShowcase({ extension }: ExtensionShowcaseProps) {
                   style={{ backgroundColor: bgCardHover, color: textPrimary }}
                 >
                   <ExternalLink className="w-4 h-4" />
-                  <span className="text-sm">デモサイトを見る</span>
+                  <span className="text-sm">
+                    {locale === "en" ? "View Demo" : "デモサイトを見る"}
+                  </span>
                   <ExternalLink className="w-3 h-3 ml-auto" style={{ color: textMuted }} />
                 </a>
               )}

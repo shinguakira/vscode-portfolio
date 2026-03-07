@@ -4,8 +4,8 @@ import { ChevronLeft, ChevronRight, HelpCircle, X } from "lucide-react"
 import type React from "react"
 import { useCallback, useEffect, useState } from "react"
 
-import { Button } from "@/components/ui/button"
-import { TUTORIAL_STEPS, type TutorialStep } from "@/constants/tutorial-steps"
+import { getTutorialSteps, type TutorialStep } from "@/constants/tutorial-steps"
+import { useLocale } from "@/contexts/locale-context"
 import { useTheme } from "@/contexts/theme-context"
 
 interface TutorialOverlayProps {
@@ -27,7 +27,9 @@ export function TutorialOverlay({
   onChangePreviewTheme,
   onRestartRef,
 }: TutorialOverlayProps) {
+  const locale = useLocale()
   const { accentColor, bgSidebar: backgroundColor, textPrimary: textColor } = useTheme()
+  const TUTORIAL_STEPS = getTutorialSteps(locale)
   const [showInitialModal, setShowInitialModal] = useState(false)
   const [isTutorialActive, setIsTutorialActive] = useState(false)
   const [currentStep, setCurrentStep] = useState(0)
@@ -62,7 +64,7 @@ export function TutorialOverlay({
     if (element) {
       setTargetRect(element.getBoundingClientRect())
     }
-  }, [currentStep, isTutorialActive])
+  }, [currentStep, isTutorialActive, TUTORIAL_STEPS])
 
   const executeStepAction = useCallback(
     (step: TutorialStep) => {
@@ -144,7 +146,14 @@ export function TutorialOverlay({
       clearTimeout(actionTimer)
       clearTimeout(positionTimer)
     }
-  }, [currentStep, isTutorialActive, onUIStateChange, updateTargetPosition, executeStepAction])
+  }, [
+    currentStep,
+    isTutorialActive,
+    onUIStateChange,
+    updateTargetPosition,
+    executeStepAction,
+    TUTORIAL_STEPS,
+  ])
 
   useEffect(() => {
     if (!isTutorialActive) return
@@ -217,11 +226,13 @@ export function TutorialOverlay({
               style={{ color: accentColor }}
             />
             <h2 className={`font-bold ${isSmallScreen ? "text-sm" : "text-xl"}`}>
-              ポートフォリオへようこそ!
+              {locale === "en" ? "Welcome to the Portfolio!" : "ポートフォリオへようこそ!"}
             </h2>
           </div>
           <p className={`opacity-80 ${isSmallScreen ? "text-xs mb-3" : "text-sm mb-6"}`}>
-            VS Code風のUIで作成されています。使い方の説明をご覧になりますか？
+            {locale === "en"
+              ? "This portfolio is built with a VS Code-style UI. Would you like a guided tour?"
+              : "VS Code風のUIで作成されています。使い方の説明をご覧になりますか？"}
           </p>
           <label
             className={`flex items-center gap-2 cursor-pointer opacity-70 hover:opacity-100 ${isSmallScreen ? "text-xs mb-2" : "text-sm mb-4"}`}
@@ -233,23 +244,22 @@ export function TutorialOverlay({
               className={`rounded ${isSmallScreen ? "w-3 h-3" : "w-4 h-4"}`}
               style={{ accentColor }}
             />
-            今後このメッセージを表示しない
+            {locale === "en" ? "Don't show this again" : "今後このメッセージを表示しない"}
           </label>
           <div className="flex gap-2 justify-end">
-            <Button
-              variant="outline"
+            <button
               onClick={skipTutorial}
-              className={`border-current/30 bg-transparent ${isSmallScreen ? "text-xs px-2 py-1 h-7" : ""}`}
+              className={`inline-flex items-center justify-center rounded-md border border-current/30 bg-transparent text-sm font-medium transition-all hover:bg-white/10 ${isSmallScreen ? "text-xs px-2 py-1 h-7" : "h-9 px-4 py-2"}`}
             >
-              スキップ
-            </Button>
-            <Button
+              {locale === "en" ? "Skip" : "スキップ"}
+            </button>
+            <button
               onClick={startTutorial}
-              className={isSmallScreen ? "text-xs px-2 py-1 h-7" : ""}
+              className={`inline-flex items-center justify-center rounded-md text-sm font-medium transition-all ${isSmallScreen ? "text-xs px-2 py-1 h-7" : "h-9 px-4 py-2"}`}
               style={{ backgroundColor: accentColor, color: "#fff" }}
             >
-              説明を見る
-            </Button>
+              {locale === "en" ? "Take the Tour" : "説明を見る"}
+            </button>
           </div>
         </div>
       </div>
@@ -411,35 +421,38 @@ export function TutorialOverlay({
         </p>
 
         <div className="flex justify-between items-center">
-          <Button
-            variant="outline"
-            size="sm"
+          <button
             onClick={prevStep}
             disabled={currentStep === 0}
-            className={`border-current/30 disabled:opacity-30 bg-transparent ${isSmallScreen ? "text-[10px] px-1.5 py-0.5 h-5" : ""}`}
+            className={`inline-flex items-center justify-center rounded-md border border-current/30 disabled:opacity-30 bg-transparent text-sm font-medium transition-all hover:bg-white/10 ${isSmallScreen ? "text-[10px] px-1.5 py-0.5 h-5" : "h-8 px-3"}`}
           >
             <ChevronLeft className={isSmallScreen ? "w-2.5 h-2.5" : "w-4 h-4 mr-1"} />
-            {!isSmallScreen && "前へ"}
-          </Button>
-          <Button
-            size="sm"
+            {!isSmallScreen && (locale === "en" ? "Prev" : "前へ")}
+          </button>
+          <button
             onClick={nextStep}
-            className={isSmallScreen ? "text-[10px] px-1.5 py-0.5 h-5" : ""}
+            className={`inline-flex items-center justify-center rounded-md text-sm font-medium transition-all ${isSmallScreen ? "text-[10px] px-1.5 py-0.5 h-5" : "h-8 px-3"}`}
             style={{ backgroundColor: accentColor, color: "#fff" }}
           >
             {currentStep === TUTORIAL_STEPS.length - 1 ? (
               isSmallScreen ? (
-                "完了"
+                locale === "en" ? (
+                  "Done"
+                ) : (
+                  "完了"
+                )
+              ) : locale === "en" ? (
+                "Close"
               ) : (
                 "閉じる"
               )
             ) : (
               <>
-                {!isSmallScreen && "次へ"}
+                {!isSmallScreen && (locale === "en" ? "Next" : "次へ")}
                 <ChevronRight className={isSmallScreen ? "w-2.5 h-2.5" : "w-4 h-4 ml-1"} />
               </>
             )}
-          </Button>
+          </button>
         </div>
       </div>
     </div>
