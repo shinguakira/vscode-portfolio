@@ -6,7 +6,7 @@ import { NextIntlClientProvider } from "next-intl"
 import type React from "react"
 
 import { LocaleProvider } from "@/contexts/locale-context"
-import { routing } from "@/i18n/routing"
+import { routing } from "@/lib/i18n/routing"
 
 const geistMono = Geist_Mono({ subsets: ["latin"] })
 
