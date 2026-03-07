@@ -15,6 +15,52 @@ Visual Studio Codeのエディタインターフェースを再現したポー�
 - **ビジュアルリグレッションテスト**: 4ビューポート × 2言語で計168のPlaywrightスナップショットテスト
 - **SSG最適化**: スクリーンショットルートをビルド時に静的HTMLとして事前レンダリング
 
+## セクション & テーマ
+
+各セクションは **Modern**、**Innovative**、**Professional** の3つのビジュアルテーマで表示できます。
+
+### プロフィール
+
+| Modern | Innovative | Professional |
+|--------|------------|--------------|
+| ![Profile Modern](e2e/__snapshots__/ja/desktop/profile-modern.png) | ![Profile Innovative](e2e/__snapshots__/ja/desktop/profile-innovative.png) | ![Profile Professional](e2e/__snapshots__/ja/desktop/profile-professional.png) |
+
+### プロジェクト
+
+| Modern | Innovative | Professional |
+|--------|------------|--------------|
+| ![Projects Modern](e2e/__snapshots__/ja/desktop/projects-modern.png) | ![Projects Innovative](e2e/__snapshots__/ja/desktop/projects-innovative.png) | ![Projects Professional](e2e/__snapshots__/ja/desktop/projects-professional.png) |
+
+### スキル
+
+| Modern | Innovative | Professional |
+|--------|------------|--------------|
+| ![Skills Modern](e2e/__snapshots__/ja/desktop/skills-modern.png) | ![Skills Innovative](e2e/__snapshots__/ja/desktop/skills-innovative.png) | ![Skills Professional](e2e/__snapshots__/ja/desktop/skills-professional.png) |
+
+### 経歴
+
+| Modern | Innovative | Professional |
+|--------|------------|--------------|
+| ![Experience Modern](e2e/__snapshots__/ja/desktop/experience-modern.png) | ![Experience Innovative](e2e/__snapshots__/ja/desktop/experience-innovative.png) | ![Experience Professional](e2e/__snapshots__/ja/desktop/experience-professional.png) |
+
+### 強み
+
+| Modern | Innovative | Professional |
+|--------|------------|--------------|
+| ![Strong Points Modern](e2e/__snapshots__/ja/desktop/strong-points-modern.png) | ![Strong Points Innovative](e2e/__snapshots__/ja/desktop/strong-points-innovative.png) | ![Strong Points Professional](e2e/__snapshots__/ja/desktop/strong-points-professional.png) |
+
+### お問い合わせ
+
+| Modern | Innovative | Professional |
+|--------|------------|--------------|
+| ![Contact Modern](e2e/__snapshots__/ja/desktop/contact-modern.png) | ![Contact Innovative](e2e/__snapshots__/ja/desktop/contact-innovative.png) | ![Contact Professional](e2e/__snapshots__/ja/desktop/contact-professional.png) |
+
+### FAQ
+
+| Modern | Innovative | Professional |
+|--------|------------|--------------|
+| ![FAQ Modern](e2e/__snapshots__/ja/desktop/faq-modern.png) | ![FAQ Innovative](e2e/__snapshots__/ja/desktop/faq-innovative.png) | ![FAQ Professional](e2e/__snapshots__/ja/desktop/faq-professional.png) |
+
 ## 技術スタック
 
 - **フレームワーク**: Next.js 16 (App Router)、React 19、TypeScript (strict)
