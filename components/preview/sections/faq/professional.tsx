@@ -9,19 +9,19 @@ export function ProfessionalFaq() {
 
   return (
     <div className="min-h-full bg-white">
-      <div className="max-w-4xl mx-auto px-8 py-24">
-        <div className="mb-16 border-b border-gray-200 pb-8">
-          <h1 className="text-5xl font-serif font-bold text-gray-900 mb-3">
+      <div className="max-w-4xl mx-auto px-8 short:px-4 py-24 short:py-8">
+        <div className="mb-16 short:mb-4 border-b border-gray-200 pb-8 short:pb-3">
+          <h1 className="text-5xl short:text-2xl font-serif font-bold text-gray-900 mb-3 short:mb-1">
             {locale === "en" ? "Frequently Asked Questions" : "よくある質問"}
           </h1>
-          <p className="text-xl text-gray-600">
+          <p className="text-xl short:text-sm text-gray-600">
             {locale === "en" ? "" : "Frequently Asked Questions"}
           </p>
         </div>
 
         <div className="space-y-0">
           {FAQ_CATEGORIES.map((section) => (
-            <div key={section.category} className="mb-12">
+            <div key={section.category} className="mb-12 short:mb-4">
               <h2 className="text-sm font-bold text-gray-500 uppercase tracking-wider mb-6 pb-3 border-b border-gray-200">
                 {section.category}
               </h2>
@@ -41,7 +41,7 @@ export function ProfessionalFaq() {
           ))}
         </div>
 
-        <div className="border-t border-gray-200 pt-12 text-center">
+        <div className="border-t border-gray-200 pt-12 short:pt-4 text-center">
           <p className="text-gray-600 mb-6">
             {locale === "en"
               ? "If you have any other questions, feel free to contact us."

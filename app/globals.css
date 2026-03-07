@@ -1,6 +1,7 @@
 @import "tailwindcss";
 
 @custom-variant dark (&:is(.dark *));
+@custom-variant short (@media (max-height: 500px));
 
 :root {
   /* より暗い黒色をベースにした配色に変更 */

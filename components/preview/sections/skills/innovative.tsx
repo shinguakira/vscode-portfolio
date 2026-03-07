@@ -64,18 +64,18 @@ export function InnovativeSkills() {
 
   return (
     <div className="min-h-full bg-black">
-      <div className="max-w-7xl mx-auto px-8 py-20">
-        <h1 className="text-7xl font-black mb-20 text-center text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-purple-400">
+      <div className="max-w-7xl mx-auto px-8 short:px-4 py-20 short:py-6">
+        <h1 className="text-7xl short:text-3xl font-black mb-20 short:mb-6 text-center text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-purple-400">
           {locale === "en" ? "Technology Stack" : "テクノロジースタック"}
         </h1>
 
-        <div className="space-y-16">
+        <div className="space-y-16 short:space-y-6">
           {skillCategories.map((category, catIndex) => {
             const gradient = CATEGORY_GRADIENTS[category.category] ?? "from-gray-400 to-gray-500"
             return (
               <div key={catIndex}>
                 <h2
-                  className={`text-3xl font-black mb-8 text-transparent bg-clip-text bg-gradient-to-r ${gradient}`}
+                  className={`text-3xl short:text-xl font-black mb-8 short:mb-3 text-transparent bg-clip-text bg-gradient-to-r ${gradient}`}
                 >
                   {category.category}
                 </h2>
@@ -88,20 +88,20 @@ export function InnovativeSkills() {
                         <div
                           className={`absolute -inset-0.5 bg-gradient-to-br ${color} rounded-2xl blur opacity-40 group-hover:opacity-100 transition duration-500`}
                         />
-                        <div className="relative bg-black border border-gray-800 rounded-2xl p-6 text-center h-full flex flex-col items-center justify-center">
-                          <div className="text-5xl mb-4">{icon}</div>
+                        <div className="relative bg-black border border-gray-800 rounded-2xl p-6 short:p-3 text-center h-full flex flex-col items-center justify-center">
+                          <div className="text-5xl short:text-2xl mb-4 short:mb-1">{icon}</div>
                           <div
-                            className={`text-2xl font-black mb-3 text-transparent bg-clip-text bg-gradient-to-r ${color}`}
+                            className={`text-2xl short:text-base font-black mb-3 short:mb-1 text-transparent bg-clip-text bg-gradient-to-r ${color}`}
                           >
                             {skill.name}
                           </div>
                           <div className="flex items-center gap-3">
                             <span
-                              className={`text-3xl font-black text-transparent bg-clip-text bg-gradient-to-r ${getRankColor(skill.rank)}`}
+                              className={`text-3xl short:text-xl font-black text-transparent bg-clip-text bg-gradient-to-r ${getRankColor(skill.rank)}`}
                             >
                               {skill.rank}
                             </span>
-                            <span className="text-gray-500 text-lg">
+                            <span className="text-gray-500 text-lg short:text-sm">
                               {skill.years}
                               {locale === "en" ? " yr(s)" : "年"}
                             </span>

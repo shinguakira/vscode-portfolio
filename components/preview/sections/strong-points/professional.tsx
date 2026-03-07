@@ -11,17 +11,17 @@ export function ProfessionalStrongPoints() {
 
   return (
     <div className="min-h-full bg-white">
-      <div className="max-w-4xl mx-auto px-8 py-24">
-        <div className="mb-16 border-b border-gray-200 pb-8">
-          <h1 className="text-5xl font-serif font-bold text-gray-900 mb-3">
+      <div className="max-w-4xl mx-auto px-8 short:px-4 py-24 short:py-8">
+        <div className="mb-16 short:mb-4 border-b border-gray-200 pb-8 short:pb-3">
+          <h1 className="text-5xl short:text-2xl font-serif font-bold text-gray-900 mb-3 short:mb-1">
             {locale === "en" ? "Strengths & Highlights" : "強み・専門性"}
           </h1>
-          <p className="text-xl text-gray-600">
+          <p className="text-xl short:text-sm text-gray-600">
             {locale === "en" ? "" : "What I Bring to the Table"}
           </p>
         </div>
 
-        <div className="space-y-12 mb-16">
+        <div className="space-y-12 short:space-y-4 mb-16 short:mb-4">
           <div>
             <h2 className="text-sm font-bold text-gray-500 uppercase tracking-wider mb-6 pb-3 border-b border-gray-200">
               {locale === "en" ? "Technical Strengths" : "技術的な強み"}
@@ -57,14 +57,14 @@ export function ProfessionalStrongPoints() {
           </div>
         </div>
 
-        <div className="border-t border-gray-200 pt-12">
+        <div className="border-t border-gray-200 pt-12 short:pt-4">
           <h2 className="text-sm font-bold text-gray-500 uppercase tracking-wider mb-6">
             {locale === "en" ? "Achievement Summary" : "実績サマリー"}
           </h2>
-          <div className="grid md:grid-cols-4 gap-6 text-center">
+          <div className="grid md:grid-cols-4 gap-6 short:gap-3 text-center">
             {ACHIEVEMENT_STATS.map((stat) => (
-              <div key={stat.label} className="border border-gray-200 p-6">
-                <div className="text-3xl font-bold text-gray-900 mb-1">{stat.num}</div>
+              <div key={stat.label} className="border border-gray-200 p-6 short:p-3">
+                <div className="text-3xl short:text-xl font-bold text-gray-900 mb-1">{stat.num}</div>
                 <div className="text-xs text-gray-500 uppercase tracking-wide">{stat.label}</div>
               </div>
             ))}

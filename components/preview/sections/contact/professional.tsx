@@ -19,15 +19,15 @@ export function ProfessionalContact() {
 
   return (
     <div className="min-h-full bg-white">
-      <div className="max-w-4xl mx-auto px-8 py-24">
-        <div className="mb-16 border-b border-gray-200 pb-8">
-          <h1 className="text-5xl font-serif font-bold text-gray-900 mb-3">
+      <div className="max-w-4xl mx-auto px-8 short:px-4 py-24 short:py-8">
+        <div className="mb-16 short:mb-4 border-b border-gray-200 pb-8 short:pb-3">
+          <h1 className="text-5xl short:text-2xl font-serif font-bold text-gray-900 mb-3 short:mb-1">
             {locale === "en" ? "Contact" : "お問い合わせ"}
           </h1>
-          <p className="text-xl text-gray-600">Get in Touch</p>
+          <p className="text-xl short:text-sm text-gray-600">Get in Touch</p>
         </div>
 
-        <div className="grid md:grid-cols-2 gap-16">
+        <div className="grid md:grid-cols-2 gap-16 short:gap-6">
           <div>
             <h2 className="text-sm font-bold text-gray-500 uppercase tracking-wider mb-6 pb-3 border-b border-gray-200">
               {locale === "en" ? "Contact Info" : "連絡先"}
@@ -69,7 +69,7 @@ export function ProfessionalContact() {
           </div>
         </div>
 
-        <div className="mt-16 pt-12 border-t border-gray-200 text-center">
+        <div className="mt-16 short:mt-4 pt-12 short:pt-4 border-t border-gray-200 text-center">
           <p className="text-gray-600 mb-6">
             {locale === "en"
               ? "Feel free to reach out for work inquiries or consultations."
