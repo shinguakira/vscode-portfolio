@@ -7,6 +7,7 @@ export default defineConfig({
   retries: 0,
   workers: 1,
   reporter: "list",
+  snapshotPathTemplate: "{testDir}/__snapshots__/{arg}{ext}",
   use: {
     baseURL: "http://localhost:3099",
     screenshot: "off",

@@ -1,5 +1,4 @@
-import { test } from "@playwright/test"
-import path from "path"
+import { expect, test } from "@playwright/test"
 
 const SECTIONS = ["profile", "projects", "skills", "contact", "strong-points", "faq", "experience"]
 const THEMES = ["modern", "innovative", "professional"]
@@ -11,8 +10,6 @@ const VIEWPORTS = [
   { name: "mobile-landscape-viewport", width: 844, height: 390, fullPage: false },
   { name: "mobile-portrait", width: 390, height: 844, fullPage: true },
 ]
-
-const OUTPUT_DIR = path.join(__dirname, "..", "screenshots")
 
 test.setTimeout(30000)
 
@@ -27,10 +24,13 @@ for (const viewport of VIEWPORTS) {
           })
           await page.waitForSelector("[data-ready]", { timeout: 15000 })
           await page.waitForTimeout(500)
-          await page.screenshot({
-            path: path.join(OUTPUT_DIR, viewport.name, `${locale}-${section}-${theme}.png`),
-            fullPage: viewport.fullPage,
-          })
+          await expect(page).toHaveScreenshot(
+            [locale, viewport.name, `${section}-${theme}.png`],
+            {
+              fullPage: viewport.fullPage,
+              maxDiffPixelRatio: 0.01,
+            }
+          )
         })
       }
     }
