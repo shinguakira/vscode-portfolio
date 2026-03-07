@@ -52,6 +52,13 @@ Keep files under 300 lines. If a file grows beyond that, split it by feature or 
 Use the `@/` path alias for all imports outside the current directory.
 Use relative paths (`./` or `../`) only for siblings or direct children within the same component directory.
 
+### i18n
+
+- **No JSON message files.** This project does NOT use `messages/ja.json` or `messages/en.json`.
+- All translations are inline in components using `locale === "en" ? "English" : "日本語"` pattern via `useLocale()` hook.
+- `next-intl` is used only for locale routing and detection, not for message translation.
+- Do NOT create `messages/` directory or add `messages` to `getRequestConfig`.
+
 ### Components
 
 - All components use `"use client"` directive (except SSG pages)
