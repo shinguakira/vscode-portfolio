@@ -26,6 +26,7 @@ VS Code editor-themed portfolio site. Next.js 16 (App Router), React 19, TypeScr
 - **i18n** — NO JSON message files. Inline translations via `locale === "en" ? "..." : "..."` with `useLocale()`. next-intl is for routing only. Do NOT create `messages/` directory.
 - **Theme colors** — derived from `adjustBrightness()` in `lib/color-utils.ts`
 - **Settings** — hydrated via useEffect to avoid SSR mismatch
+- **No database** — data volume is small and static; TypeScript constants give type safety, SSG compatibility, and zero infrastructure
 
 ## Quality
 

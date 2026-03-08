@@ -16,6 +16,7 @@ A portfolio website that replicates the Visual Studio Code editor interface. Bro
 - **Responsive**: Desktop, mobile landscape (with `short:` variant scaling), and portrait layouts
 - **Visual Regression Testing**: 184 Playwright snapshot tests (168 section + 16 feature screenshots)
 - **SSG Optimized**: Screenshot routes pre-rendered as static HTML at build time
+- **No Database**: All data managed as TypeScript constants — type-safe, SSG-friendly, zero infrastructure
 
 ## Sections & Themes
 
