@@ -2,6 +2,8 @@
 
 # VSCode Portfolio
 
+**Preview:** https://v0-project-steel-nine.vercel.app/
+
 A portfolio website that replicates the Visual Studio Code editor interface. Browse portfolio sections as if they were files in an IDE — complete with tabs, sidebar, terminal, settings panel, and theme customization.
 
 ## Features
@@ -119,12 +121,6 @@ Open [http://localhost:3000](http://localhost:3000).
 npm run build
 npm run start
 ```
-
-Build output shows SSG status:
-
-- `○ (Static)` — pre-rendered as static content
-- `● (SSG)` — pre-rendered with `generateStaticParams`
-- `ƒ (Dynamic)` — server-rendered on demand
 
 ### Quality Checks
 

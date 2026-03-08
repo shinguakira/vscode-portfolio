@@ -2,6 +2,8 @@
 
 # VSCode Portfolio
 
+**Preview:** https://v0-project-steel-nine.vercel.app/
+
 Visual Studio Codeのエディタインターフェースを再現したポートフォリオサイトです。IDE上でファイルを閲覧するようにポートフォリオの各セクションを表示できます。タブ、サイドバー、ターミナル、設定パネル、テーマカスタマイズなどを備えています。
 
 ## 特徴
